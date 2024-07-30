@@ -1,7 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <img src="images/hero.jpg" alt="Hero Image">
+            <div class="hero-text">
+                <h1>Welcome to Our Professional Website</h1>
+                <p>Your success is our mission.</p>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <h2>About Us</h2>
+            <div class="content">
+                <img src="images/about.jpg" alt="About Us">
+                <p>We are a leading company in our industry. Our team of professionals is dedicated to providing top-notch services to our clients.</p>
+            </div>
+        </section>
+
+        <section id="services" class="services">
+            <h2>Our Services</h2>
+            <div class="service-list">
+                <div class="service-item">
+                    <img src="images/service1.jpg" alt="Service 1">
+                    <h3>Service One</h3>
+                    <p>Description of service one.</p>
+                </div>
+                <div class="service-item">
+                    <img src="images/service2.jpg" alt="Service 2">
+                    <h3>Service Two</h3>
+                    <p>Description of service two.</p>
+                </div>
+                <div class="service-item">
+                    <img src="images/service3.jpg" alt="Service 3">
+                    <h3>Service Three</h3>
+                    <p>Description of service three.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <h2>Contact Us</h2>
+            <form action="#" method="post">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+
+                <button type="submit">Send</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Professional Website. All rights reserved.</p>
+    </footer>
 </body>
 </html>
