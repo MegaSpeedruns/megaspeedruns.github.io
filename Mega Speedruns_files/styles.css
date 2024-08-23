@@ -70,9 +70,9 @@ nav ul li a {
 
 /* title text styles */
 .title-text {
-    position: absolute;
-    top: 4%; /* Move text down from the top */
-    left: 50%;
+    position: relative;
+    top: -40%; /* Move text down from the top */
+    left: 38%;
     transform: translate(-50%, 0); /* Center horizontally and adjust vertical positioning */
     text-align: center;
     color: white;
@@ -83,10 +83,10 @@ nav ul li a {
 }
 
 .links {
-    position: absolute;
-    top: calc(58.5%); /* Move the section down */
+    position: relative;
+    top: -500px; /* Move the section down */
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0px);
     width: 90%;
     text-align: center;
     background: rgba(0, 0, 0, 0.7);
@@ -96,10 +96,10 @@ nav ul li a {
 }
 
 .links-MMM {
-    position: absolute;
-    top: 55.5%; /* Move the section down */
+    position: relative;
+    top: -500px; /* Move the section down */
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0px);
     width: 90%;
     text-align: center;
     background: rgba(0, 0, 0, 0.7);
@@ -109,10 +109,10 @@ nav ul li a {
 }
 
 .links-mst1 {
-    position: absolute;
-	top: 587px;
+    position: relative;
+	top: -500px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0px);
     width: 90%;
     text-align: center;
     background: rgba(0, 0, 0, 0.7);
@@ -122,10 +122,10 @@ nav ul li a {
 }
 
 .links-mst2 {
-    position: absolute;
-	top: 923px;
+    position: relative;
+	top: -500px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0px);
     width: 90%;
     text-align: center;
     background: rgba(0, 0, 0, 0.7);
