@@ -1,0 +1,197 @@
+body, h1, h2, h3, p, ul, li, img, a {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+/* Set body font and background color */
+body {
+    font-family: Arial, sans-serif;
+    color: #fff; /* White text */
+}
+
+/* Outline text with black */
+h1, h2, h3, p, a, label, button {
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* Black outline */
+}
+
+h1 {
+    font-size: 2em;
+}
+
+/* Header styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+    background-color: #333;
+}
+
+header .logo img {
+    width: 0px;
+    height: 0px;
+}
+
+.nav-wrapper {
+    flex: 1;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 2em; /* Increase font size */
+}
+
+nav ul li {
+    flex: 1;
+    text-align: center;
+}
+
+nav ul li a {
+    color: #fff;
+    display: block;
+    padding: 20px;
+}
+
+/* title section styles */
+.title {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* title text styles */
+.title-text {
+    position: absolute;
+    top: 4%; /* Move text down from the top */
+    left: 50%;
+    transform: translate(-50%, 0); /* Center horizontally and adjust vertical positioning */
+    text-align: center;
+    color: white;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    width: 75%; /* Adjust width as needed */
+}
+
+.links {
+    position: absolute;
+    top: calc(58.5%); /* Move the section down */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 40px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.links-MMM {
+    position: absolute;
+    top: 55.5%; /* Move the section down */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 40px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.links-mst1 {
+    position: absolute;
+	top: 587px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 40px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.links-mst2 {
+    position: absolute;
+	top: 923px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 40px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.links h2 {
+    margin-bottom: 20px;
+}
+
+.link-list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.link-item {
+    flex: 1 1 30%; 
+    margin: 10px; 
+    box-sizing: border-box; 
+    text-align: center;
+}
+
+.link-item img {
+    width: 250px; 
+    height: 250px; 
+    object-fit: cover;
+}
+
+.link-item-packs img {
+    width: 323px; 
+    height: 290px; 
+    object-fit: cover;
+	padding: 10px 0px
+}
+
+.link-item-wide img {
+    width: 400px; 
+    height: 225px; 
+    object-fit: cover;
+	padding: 0px
+}
+
+.link-item-widen img {
+    width: 400px; 
+    height: 225px; 
+    object-fit: cover;
+	padding: 0px 88px
+}
+
+.about {
+    padding: 20px 20px;
+    text-align: center;
+}
+
+.about img {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
