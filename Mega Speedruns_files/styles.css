@@ -202,9 +202,8 @@ footer {
     padding: 10px 0;
 	width: 100%;
     position: absolute;
-    top: 108vh;
+	top: calc(100vh + 40px);
     left: 0; 
-    z-index: 10;
 }
 
 .footer {
@@ -214,7 +213,6 @@ footer {
     padding: 10px 0;
 	width: 100%;
     position: relative;
-    top: 20vh;
-    left: 0; 
-    z-index: 10;
+    bottom: -20vh;
+    left: 0;
 }
