@@ -1,15 +1,19 @@
+html {
+}
+
+body {
+	height: 100vh;
+	font-family: Arial, sans-serif;
+    color: #fff; /* White text */
+}
+
+/* Font settings*/
 body, h1, h2, h3, p, ul, li, img, a {
     margin: 0;
     padding: 0;
     list-style: none;
     text-decoration: none;
     box-sizing: border-box;
-}
-
-/* Set body font and background color */
-body {
-    font-family: Arial, sans-serif;
-    color: #fff; /* White text */
 }
 
 /* Outline text with black */
@@ -61,7 +65,7 @@ nav ul li a {
 /* title section styles */
 .title {
     position: relative;
-    height: 100vh;
+	top: 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -84,7 +88,7 @@ nav ul li a {
 
 .links {
     position: relative;
-    top: -500px; /* Move the section down */
+    top: 80px; 
     left: 50%;
     transform: translate(-50%, 0px);
     width: 90%;
@@ -97,7 +101,7 @@ nav ul li a {
 
 .links-MMM {
     position: relative;
-    top: -500px; /* Move the section down */
+    top: 80px; /* Move the section down */
     left: 50%;
     transform: translate(-50%, 0px);
     width: 90%;
@@ -110,7 +114,7 @@ nav ul li a {
 
 .links-mst1 {
     position: relative;
-	top: -500px;
+	top: 80px;
     left: 50%;
     transform: translate(-50%, 0px);
     width: 90%;
@@ -123,7 +127,7 @@ nav ul li a {
 
 .links-mst2 {
     position: relative;
-	top: -500px;
+	top: 80px;
     left: 50%;
     transform: translate(-50%, 0px);
     width: 90%;
@@ -178,6 +182,7 @@ nav ul li a {
 	padding: 0px 88px
 }
 
+/*
 .about {
     padding: 20px 20px;
     text-align: center;
@@ -188,10 +193,28 @@ nav ul li a {
     height: 200px;
     margin-bottom: 20px;
 }
+*/
 
 footer {
     background-color: #333;
     color: white;
     text-align: center;
     padding: 10px 0;
+	width: 100%;
+    position: absolute;
+    top: 108vh;
+    left: 0; 
+    z-index: 10;
+}
+
+.footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+	width: 100%;
+    position: relative;
+    top: 20vh;
+    left: 0; 
+    z-index: 10;
 }
