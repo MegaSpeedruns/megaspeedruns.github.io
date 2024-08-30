@@ -2,12 +2,12 @@ html {
 }
 
 body {
-	height: 100vh;
-	font-family: Arial, sans-serif;
+    height: 100vh;
+    font-family: Arial, sans-serif;
     color: #fff; /* White text */
 }
 
-/* Font settings*/
+/* Font settings */
 body, h1, h2, h3, p, ul, li, img, a {
     margin: 0;
     padding: 0;
@@ -62,17 +62,17 @@ nav ul li a {
     padding: 20px;
 }
 
-/* title section styles */
+/* Title section styles */
 .title {
     position: relative;
-	top: 40px;
+    top: 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-/* title text styles */
+/* Title text styles */
 .title-text {
     position: relative;
     top: -40%; /* Move text down from the top */
@@ -86,48 +86,10 @@ nav ul li a {
     width: 75%; /* Adjust width as needed */
 }
 
-.links {
-    position: relative;
-    top: 80px; 
-    left: 50%;
-    transform: translate(-50%, 0px);
-    width: 90%;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 40px 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.links-MMM {
+/* Links section styles */
+.links, .links-MMM, .links-mst1, .links-mst2 {
     position: relative;
     top: 80px; /* Move the section down */
-    left: 50%;
-    transform: translate(-50%, 0px);
-    width: 90%;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 40px 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.links-mst1 {
-    position: relative;
-	top: 80px;
-    left: 50%;
-    transform: translate(-50%, 0px);
-    width: 90%;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 40px 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.links-mst2 {
-    position: relative;
-	top: 80px;
     left: 50%;
     transform: translate(-50%, 0px);
     width: 90%;
@@ -149,51 +111,104 @@ nav ul li a {
 }
 
 .link-item {
-    flex: 1 1 30%; 
-    margin: 10px; 
-    box-sizing: border-box; 
+    flex: 1 1 30%;
+    margin: 10px;
+    box-sizing: border-box;
     text-align: center;
 }
 
 .link-item img {
-    width: 250px; 
-    height: 250px; 
+    width: 250px;
+    height: 250px;
     object-fit: cover;
 }
 
 .link-item-packs img {
-    width: 323px; 
-    height: 290px; 
+    width: 323px;
+    height: 290px;
     object-fit: cover;
-	padding: 10px 0px
+    padding: 10px 0px;
 }
 
-.link-item-wide img {
-    width: 400px; 
-    height: 225px; 
+.link-item-wide img, .link-item-widen img {
+    width: 400px;
+    height: 225px;
     object-fit: cover;
-	padding: 0px
+    padding: 0px;
 }
 
 .link-item-widen img {
-    width: 400px; 
-    height: 225px; 
-    object-fit: cover;
-	padding: 0px 88px
+    padding: 0px 88px;
 }
 
-/*
-.about {
-    padding: 20px 20px;
-    text-align: center;
+/* Collapsible list styles */
+.collapsible-list {
+	position: relative;
+	top: 55px;
+    width: 90%;
+    margin: 20px auto;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-.about img {
-    width: 200px;
-    height: 200px;
-    margin-bottom: 20px;
+.collapsible {
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 1.75em;
 }
-*/
+
+.collapsible.active, .collapsible:hover {
+    background-color: #555;
+}
+
+.content {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.8);
+	text-align:justify;
+}
+
+.content ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.list-item {
+	display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+	font-size: 1.5em;
+}
+
+.list-item img {
+    width: 175px;
+    height: 150px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+.list-item span {
+	display:inline-block;    
+    width:20%;
+    text-align:center;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+	display: relative; 
+	justify-content: space-between;
+}
 
 footer {
     background-color: #333;
