@@ -100,6 +100,62 @@ nav ul li a {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+.links-speedruns {
+    position: relative;
+    top: 80px; /* Move the section down */
+    left: 50%;
+    transform: translate(-50%, 0px);
+    width: 90%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 40px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.prompt
+{
+	text-size: 1.5em;
+}
+
+label {
+            font-size: 24px;
+            font-weight: bold;
+			position: relative;
+			margin-left: 20px;
+        }
+
+        /* Increase text size for the dropdown menu */
+        select {
+			position: relative;
+			margin-left: 20px;
+            font-size: 20px;
+            padding: 10px;
+            width: 100%; /* Make dropdown take full width of its container */
+            max-width: 400px; /* Optional: set a max-width for the dropdown */
+        }
+
+        /* Increase text size for the submit button */
+        input[type="submit"] {
+            font-size: 24px;
+            padding: 10px 20px;
+        }
+		
+		input{
+			position: relative;
+			margin-left: 20px;
+			font-size: 20px;
+			min-width: 45vh;
+			min-height: 4vh;
+		}
+
+        /* Optional: Center the form on the page */
+        form {
+            margin: 20px auto;
+            text-align: center;
+        }
+		
+
 .links h2 {
     margin-bottom: 20px;
 }
@@ -183,7 +239,18 @@ nav ul li a {
     padding: 0;
 }
 
-.list-item {
+a {
+            color: blue;
+            text-decoration: none; /* Optional: Remove underline */
+        }
+
+        /* Change color on hover */
+        a:hover {
+            color: orange;
+            text-decoration: underline; /* Optional: Add underline on hover */
+        }
+
+.list-item, .list-item-speedrun {
 	display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -196,6 +263,13 @@ nav ul li a {
 .list-item img {
     width: 175px;
     height: 150px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+.list-item-speedrun img {
+    width: 125px;
+    height: 100px;
     margin-right: 5px;
     border-radius: 5px;
 }
@@ -219,6 +293,14 @@ footer {
     position: absolute;
 	top: calc(100vh + 40px);
     left: 0; 
+}
+
+.about img {
+	width: 0px;
+    height: 0px;
+	position: relative;
+	left: 190vh;
+	top: 25vh;
 }
 
 .footer {
