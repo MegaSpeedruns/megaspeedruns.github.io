@@ -209,6 +209,18 @@ label {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+.collapsible-list-inner {
+	position: relative;
+	top: 0px;
+	bottom: 0px;
+    width: 100%;
+    margin: 20px auto;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0px;
+    border-radius: 0px;
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
+}
+
 .collapsible {
     background-color: #333;
     color: white;
@@ -222,7 +234,7 @@ label {
 }
 
 .collapsible.active, .collapsible:hover {
-    background-color: #555;
+    background-color: #3117BB;
 }
 
 .content {
