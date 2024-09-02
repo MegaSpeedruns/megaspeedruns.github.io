@@ -115,7 +115,7 @@ nav ul li a {
 
 .prompt
 {
-	text-size: 1.5em;
+	text-size: 1.25em;
 }
 
 label {
@@ -213,6 +213,7 @@ label {
 	position: relative;
 	top: 0px;
 	bottom: 0px;
+	font-size: 0.9em;
     width: 100%;
     margin: 20px auto;
     background: rgba(0, 0, 0, 0.7);
@@ -269,18 +270,18 @@ a {
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid #ccc;
-	font-size: 1.5em;
+	font-size: 1.20em;
 }
 
 .list-item img {
-    width: 175px;
-    height: 150px;
+    width: 150px;
+    height: 120px;
     margin-right: 5px;
     border-radius: 5px;
 }
 
 .list-item-speedrun img {
-    width: 125px;
+    width: 120px;
     height: 100px;
     margin-right: 5px;
     border-radius: 5px;
