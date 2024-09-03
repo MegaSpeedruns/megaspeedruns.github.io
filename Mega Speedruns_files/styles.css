@@ -238,6 +238,22 @@ label {
     background-color: #3117BB;
 }
 
+.collapsible-inner {
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 1.75em;
+}
+
+.collapsible-inner.active, .collapsible-inner:hover {
+	background-color: #8117BB;
+}
+
 .content {
     padding: 0 18px;
     display: none;
