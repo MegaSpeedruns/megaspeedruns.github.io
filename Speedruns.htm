@@ -64,7 +64,7 @@
             <button class="collapsible">Leaderboards - Levels</button>
             <div class="content">
 			<section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - Intro Week</button>
+            <button class="collapsible-inner">MST2 - Intro Week</button>
 			<div class="content">
                 <li class="list-item">
                         <img src="Mega%20Speedruns_files/MST2SS/Unknown_Area.png" alt="Unknown Area">
@@ -141,7 +141,7 @@
 			</button>
 		</section>
 		<section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - Underground Week</button>
+            <button class="collapsible-inner">MST2 - Underground Week</button>
 			<div class="content">
 			<ul>
                     <li class="list-item">
@@ -219,7 +219,7 @@
 			</button>
 		</section>
 		<section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - Box Week</button>
+            <button class="collapsible-inner">MST2 - Box Week</button>
 			<div class="content">
 			<ul>
                     <li class="list-item">
@@ -290,7 +290,7 @@
 			</button>
 		</section>
 		<section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - Quack Man Week</button>
+            <button class="collapsible-inner">MST2 - Quack Man Week</button>
 			<div class="content">
 			<ul>
                     <li class="list-item">
@@ -368,7 +368,7 @@
 			</button>
 		</section>
 		<section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - Favorites Week</button>
+            <button class="collapsible-inner">MST2 - Favorites Week</button>
 			<div class="content">
 			<ul>
                     <li class="list-item">
@@ -453,7 +453,7 @@
 			</button>
 		</section>
 		<section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - Movie Week</button>
+            <button class="collapsible-inner">MST2 - Movie Week</button>
 			<div class="content">
 			<ul>
                     <li class="list-item">
@@ -538,7 +538,7 @@
 			</button>
 		</section>
 		<section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - Sky Week</button>
+            <button class="collapsible-inner">MST2 - Sky Week</button>
 			<div class="content">
 			<ul>
                     <li class="list-item">
@@ -616,7 +616,7 @@
 			</button>
 		</section>
 		<section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - Space Week</button>
+            <button class="collapsible-inner">MST2 - Space Week</button>
 			<div class="content">
 			<ul>
                     <li class="list-item">
@@ -694,7 +694,7 @@
 			</button>
 		</section>
 		<section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - No Buster Week</button>
+            <button class="collapsible-inner">MST2 - No Buster Week</button>
 			<div class="content">
 			<ul>
                     <li class="list-item">
@@ -772,7 +772,7 @@
 			</button>
 		</section>
 	<section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - Indie Week</button>
+            <button class="collapsible-inner">MST2 - Indie Week</button>
 			<div class="content">
 			<ul>
     <li class="list-item">
@@ -850,7 +850,7 @@
 	</button>
 </section>
 <section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - Fortress Week</button>
+            <button class="collapsible-inner">MST2 - Fortress Week</button>
 			<div class="content">
 			<ul>
     <li class="list-item">
@@ -928,7 +928,7 @@
 	</button>
 </section>
 <section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - Nightmare Week</button>
+            <button class="collapsible-inner">MST2 - Nightmare Week</button>
 			<div class="content">
 			<ul>
     <li class="list-item">
@@ -1006,7 +1006,7 @@
 	</button>
 </section>
 <section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - All In One Week</button>
+            <button class="collapsible-inner">MST2 - All In One Week</button>
 			<div class="content">
 			<ul>
     <li class="list-item">
@@ -1091,7 +1091,7 @@
 	</button>
 </section>
 <section id="collapsible-list-inner" class="collapsible-list-inner">
-            <button class="collapsible">MST2 - Finale Week</button>
+            <button class="collapsible-inner">MST2 - Finale Week</button>
 			<div class="content">
 			<ul>
     <li class="list-item">
@@ -1477,6 +1477,22 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var coll = document.getElementsByClassName("collapsible");
+            for (var i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    if (content.style.display === "block") {
+                        content.style.display = "none";
+                    } else {
+                        content.style.display = "block";
+                    }
+                });
+            }
+        });
+    </script>
+	<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var coll = document.getElementsByClassName("collapsible-inner");
             for (var i = 0; i < coll.length; i++) {
                 coll[i].addEventListener("click", function() {
                     this.classList.toggle("active");
