@@ -114,41 +114,39 @@ nav ul li a {
 
 .prompt
 {
-	text-size: 1.25em;
+	text-size: 0.0em;
 }
 
 label {
-            font-size: 24px;
+            font-size: 1.1em;
             font-weight: bold;
 			position: relative;
 			margin-left: 20px;
         }
 
-        /* Increase text size for the dropdown menu */
         select {
 			position: relative;
 			margin-left: 20px;
-            font-size: 20px;
+            font-size: 1.1em;
             padding: 10px;
-            width: 100%; /* Make dropdown take full width of its container */
-            max-width: 400px; /* Optional: set a max-width for the dropdown */
+            width: 100%; 
+            max-width: 350px; 
         }
 
-        /* Increase text size for the submit button */
         input[type="submit"] {
-            font-size: 24px;
+            font-size: 1.1em;
             padding: 10px 20px;
         }
 		
 		input{
 			position: relative;
 			margin-left: 20px;
-			font-size: 20px;
+			padding: 10px;
+			font-size: 1.1em;
 			min-width: 45vh;
-			min-height: 4vh;
+			min-height: 2vh;
 		}
 
-        /* Optional: Center the form on the page */
         form {
             margin: 20px auto;
             text-align: center;
