@@ -110,7 +110,6 @@ nav ul li a {
     background: rgba(0, 0, 0, 0.7);
     padding: 40px 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .prompt
@@ -200,13 +199,24 @@ label {
 /* Collapsible list styles */
 .collapsible-list {
 	position: relative;
-	top: 55px;
-    width: 90%;
-    margin: 20px auto;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 20px;
+	top: 0px;
+    width: 100%;
+    margin: 0px auto;
+	padding-bottom: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.shadow-box {
+	position: relative;
+    top: 80px;
+    left: 50%;
+    transform: translate(-50%, 0px);
+    width: 90%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px 20px 0px 20px;
+    border-radius: 0px;
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
 }
 
 .visual {
@@ -222,7 +232,6 @@ label {
     background: rgba(0, 0, 0, 0.7);
     padding: 0px;
     border-radius: 0px;
-    box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
 }
 
 .collapsible {
@@ -287,10 +296,9 @@ label {
 }
 
 .content {
-    padding: 0 18px;
+    padding: 0 20px;
     display: none;
     overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.8);
 	text-align:justify;
 }
 
