@@ -1,6 +1,3 @@
-html {
-}
-
 body {
     height: 100vh;
     font-family: Arial, sans-serif;
@@ -114,7 +111,7 @@ nav ul li a {
 
 .prompt
 {
-	text-size: 0.0em;
+	font-size: 0.0em;
 }
 
 label {
@@ -130,7 +127,7 @@ label {
             font-size: 1.1em;
             padding: 10px;
             width: 100%; 
-            max-width: 350px; 
+            max-width: 300px; 
         }
 
         input[type="submit"] {
@@ -143,11 +140,17 @@ label {
 			margin-left: 20px;
 			padding: 10px;
 			font-size: 1.1em;
-			min-width: 45vh;
+			min-width: 30vh;
 			min-height: 2vh;
 		}
 
         form {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .adjust {
+            padding: 0px;
             margin: 20px auto;
             text-align: center;
         }
@@ -244,10 +247,6 @@ label {
     font-size: 1.5em;
 }
 
-.vision {
-	
-}
-
 .collapsible.active, .collapsible:hover {
     background-color: #3117BB;
 }
@@ -298,6 +297,7 @@ label {
     display: none;
     overflow: hidden;
 	text-align:justify;
+    text-transform: capitalize;
 }
 
 .content ul {
@@ -327,7 +327,24 @@ a {
 	font-size: 1.20em;
 }
 
+.spacing {
+	display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+	font-size: 1.20em;
+}
+
 .list-item img {
+    width: 100px;
+    height: 80px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+.imgResize {
     width: 100px;
     height: 80px;
     margin-right: 5px;
