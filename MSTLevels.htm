@@ -1633,7 +1633,6 @@
                     if (content.style.display === "block") {
                         content.style.display = "none";
                         hideAllExpandableContent();
-                        revertFooterPosition();
                     } else {
                         content.style.display = "block";
                     }
@@ -1717,11 +1716,9 @@
     }
 
     function revertFooterPosition() {
-        {
             footer.style.marginTop = '0px';
             footer.style.position = 'absolute'; // Keep footer at bottom when no collapsible is open
             footer.style.top = 'top: 95.8vh;';
-        }
     }
 
 </script>
