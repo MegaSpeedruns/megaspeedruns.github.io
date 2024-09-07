@@ -1476,6 +1476,7 @@
                         hideAllExpandableContent();
                     } else {
                         content.style.display = "block";
+                        adjustFooterPosition();
                     }
                 });
             }
@@ -1493,6 +1494,7 @@
                         content.style.display = "none";
                     } else {
                         content.style.display = "block";
+                        adjustFooterPosition();
                     }
                 });
             }
@@ -1505,6 +1507,7 @@
                 var content = document.getElementById(contentId);
                 if (content) {
                     content.style.display = 'none';
+                    adjustFooterPosition();
                 }
             }
         }
@@ -1533,6 +1536,7 @@
             // Show the content of the clicked button
             var e = document.getElementById(id);
             e.style.display = 'block';
+            adjustFooterPosition();
         }
     </script>
 
@@ -1694,6 +1698,28 @@
 
     </script>
 
+<script>
+    function adjustFooterPosition() {
+        var collapsibles = document.querySelectorAll('.collapsible-list > div');
+        var footer = document.getElementById('footer');
+
+        // Check if any collapsible is open
+        var isAnyCollapsibleOpen = Array.from(collapsibles).some(section => section.style.display === "block");
+
+        if (isAnyCollapsibleOpen) {
+            footer.style.position = 'relative'; // Move the footer down
+            footer.style.marginTop = '-68vh';
+        } else {
+            footer.style.marginTop = '0px';
+            footer.style.position = 'absolute'; // Keep footer at bottom when no collapsible is open
+            footer.style.top = 'top: 95.8vh;';
+        }
+    }
+
+</script>
+
 </body>
+
+<div id= "footer">MegaSpeedruns</div>
 
 </html>
