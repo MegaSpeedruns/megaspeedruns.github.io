@@ -73,14 +73,14 @@ nav ul li a {
 .title-text {
     position: relative;
     top: -40%; /* Move text down from the top */
-    left: 38%;
+    left: 40.8%;
     transform: translate(-50%, 0); /* Center horizontally and adjust vertical positioning */
     text-align: center;
     color: white;
     padding: 20px;
     background: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
-    width: 75%; /* Adjust width as needed */
+    width: 80%; /* Adjust width as needed */
 }
 
 /* Links section styles */
