@@ -169,7 +169,14 @@ form {
 
 .link-list {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.link-list-alt {
+    display: flex;
+    position: center;
+    justify-content: space-evenly;
     flex-wrap: wrap;
 }
 
@@ -202,6 +209,13 @@ form {
 
 .link-item-widen img {
     padding: 0px 88px;
+}
+
+.link-item-alt img {
+    width: 400px;
+    height: 350px;
+    object-fit: cover;
+    padding: 10px 0px;
 }
 
 /* Collapsible list styles */
@@ -402,6 +416,16 @@ footer {
     text-align: center;
     position: absolute;
     top: 97vh;
+    padding: 10px 0;
+    width: 100%;
+}
+
+#footerB {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    position: relative;
+    top: 40vh;
     padding: 10px 0;
     width: 100%;
 }
