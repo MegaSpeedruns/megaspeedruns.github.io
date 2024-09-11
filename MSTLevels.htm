@@ -65,7 +65,7 @@
     </div>
 </div>
 
-<div class="shadow-box">
+<div class="layout">
     <section id="collapsible-list" class="collapsible-list">
         <div id="MST1W1" style="display: none;">
             <li class="list-item">
@@ -1605,8 +1605,6 @@
 
 </body>
 
-<div id="footer">Mega Speedruns</div>
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const menuBtns = document.querySelectorAll(".menu-btn");
@@ -1695,31 +1693,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 </script>
 
-<script>
-    adjustFooterPosition();
-    function adjustFooterPosition() {
-        var collapsibles = document.querySelectorAll('.collapsible-list > div');
-        var footer = document.getElementById('footer');
-
-        // Check if any collapsible is open
-        var isAnyCollapsibleOpen = Array.from(collapsibles).some(section => section.style.display === "block");
-
-        if (isAnyCollapsibleOpen) {
-            footer.style.position = 'relative'; // Move the footer down
-            footer.style.marginTop = '90vh';
-        } else {
-            footer.style.marginTop = '0px';
-            footer.style.position = 'absolute'; // Keep footer at bottom when no collapsible is open
-            footer.style.top = 'top: 160vh;';
-        }
-    }
-
-    function revertFooterPosition() {
-            footer.style.marginTop = '0px';
-            footer.style.position = 'absolute'; // Keep footer at bottom when no collapsible is open
-            footer.style.top = 'top: 160vh;';
-    }
-
-</script>
+<div class="footerC">Mega Speedruns</div>
 
 </html>
