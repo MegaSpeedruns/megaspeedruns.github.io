@@ -2,7 +2,6 @@ body {
     height: 100vh;
     font-family: Arial, sans-serif;
     color: #fff;
-    /* White text */
 }
 
 /* Font settings */
@@ -43,6 +42,13 @@ header .logo img {
     flex: 1;
 }
 
+.shadow {
+    position: relative;
+    background: rgba(0, 0, 0, 0.5);
+    height: 0px; 
+    top: 0px;
+}
+
 nav ul {
     display: flex;
     justify-content: space-between;
@@ -71,18 +77,18 @@ body {
 
 .menu-container {
     width: 200px;
-    position: relative;
+    position: absolute;
     left: 0;
-    top: 0px;
-    height: 0px;
-    background-color: #333;
+    top: 75px;
+    height: 1120px;
+    background-color: #222;
     padding-top: 0px;
 }
 
 .menu {
+    height: 0%; /* Ensure the menu takes up the full height of its container */
     display: flex;
-    flex-direction: column;
-    padding: 0;
+    flex-direction: column; /* Align menu items vertically */
 }
 
 .menu-item {
@@ -118,12 +124,8 @@ body {
 
 .submenu {
     display: none;
-    background-color: #444;
+    background-color: #111;
     padding-left: 5px;
-}
-
-.submenu:active {
-    background-color: #3117BB;
 }
 
 .submenu a {
@@ -141,6 +143,8 @@ body {
 /* Title section styles */
 .title {
     position: relative;
+    min-height: 0px;
+    background: rgba(0, 0, 0, 0.5);
     top: 40px;
     display: flex;
     flex-direction: column;
@@ -162,7 +166,6 @@ body {
     background: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     width: 80%;
-    /* Adjust width as needed */
 }
 
 /* Links section styles */
@@ -203,6 +206,58 @@ label {
     position: relative;
     margin-left: 20px;
 }
+
+/* Default main menu button style */
+.menu-btn {
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    border: none;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    font-size: 18px;
+}
+
+/* Default submenu button style */
+.submenu .expandable {
+    background-color: #222;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    display: block;
+    border: none;
+    text-align: left;
+    width: 100%;
+    outline: none;
+}
+
+/* When the main menu or submenu is focused */
+.menu-item:focus-within .menu-btn {
+    back0ground-color: #3117BB; /* Active color for main menu button */
+}
+
+.submenu .expandable:focus-within {
+    background-color: #3117BB; /* Active color for submenu button */
+}
+
+/* Submenu is hidden by default */
+.submenu {
+    display: none;
+}
+
+/* Show submenu when the main menu item or its submenu is in focus */
+.menu-item:focus-within .submenu {
+    display: block;
+}
+
+/* Hover effect for submenu buttons */
+.submenu .expandable:hover {
+    background-color: #3117BB; /* Optional hover effect */
+}
+
+
 
 select {
     position: relative;
@@ -300,17 +355,17 @@ form {
     top: 0px;
     width: 100%;
     margin: 0px auto;
-    background: rgba(0, 0, 0, 0.7);
     border-radius: 0px;
 }
 
-.shadow-box {
+.layout {
     position: relative;
     top: 0px;
-    left: 180px;
-    width: calc(100% - 240px);
+    left: 200px;
+    width: calc(100% - 200px);
     text-align: center;
-    padding: 20px 20px 0px 20px;
+    background: rgba(0, 0, 0, 0.7);
+    height: 1121px;
     border-radius: 0px;
     flex-wrap: wrap;
 }
@@ -529,5 +584,15 @@ footer {
     width: 100%;
     position: relative;
     top: 20vh;
+    left: 0;
+}
+
+.footerC {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    position: relative;
     left: 0;
 }
