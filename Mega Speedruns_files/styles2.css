@@ -70,13 +70,13 @@ body {
 
 
 .menu-container {
-    width: 250px;
+    width: 200px;
     position: relative;
     left: 0;
-    top: 0;
-    height: 100%;
+    top: 0px;
+    height: 0px;
     background-color: #333;
-    padding-top: 20px;
+    padding-top: 0px;
 }
 
 .menu {
@@ -86,6 +86,13 @@ body {
 }
 
 .menu-item {
+    border-left: 1px solid #555;
+    border-right: 1px solid #555;
+    border-bottom: 1px solid #555;
+}
+
+.nav-wrapper li {
+    border-left: 1px solid #555;
     border-bottom: 1px solid #555;
 }
 
@@ -105,10 +112,18 @@ body {
     background-color: #3117BB;
 }
 
+.menu-btn:active {
+    background-color: #3117BB;
+}
+
 .submenu {
     display: none;
     background-color: #444;
-    padding-left: 15px;
+    padding-left: 5px;
+}
+
+.submenu:active {
+    background-color: #3117BB;
 }
 
 .submenu a {
@@ -281,25 +296,23 @@ form {
 
 /* Collapsible list styles */
 .collapsible-list {
-    position: relative;
+    position: absolute;
     top: 0px;
     width: 100%;
     margin: 0px auto;
-    padding-bottom: 20px;
-    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 0px;
 }
 
 .shadow-box {
     position: relative;
-    top: 80px;
-    left: 50%;
-    transform: translate(-50%, 0px);
-    width: 90%;
+    top: 0px;
+    left: 180px;
+    width: calc(100% - 240px);
     text-align: center;
-    background: rgba(0, 0, 0, 0.7);
     padding: 20px 20px 0px 20px;
     border-radius: 0px;
-    box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
+    flex-wrap: wrap;
 }
 
 .visual {
@@ -307,7 +320,6 @@ form {
 }
 
 .collapsible-list-inner {
-    position: relative;
     bottom: 0px;
     font-size: 0.9em;
     width: 100%;
@@ -355,21 +367,34 @@ form {
     color: white;
     cursor: pointer;
     margin: 0px;
-    margin-top: 7px;
+    margin-top: 0px;
     padding: 10px;
-    width: 18.8%;
+    width: 100%;
     border: none;
     text-align: left;
     outline: none;
-    font-size: 1em;
+    font-size: 0.8em;
 }
 
-.nav-wrapper li {
-    border-left: 1px solid #555;
-    border-bottom: 1px solid #555;
+.expanding {
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    margin: 0px;
+    margin-top: 0px;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 0.8em;
 }
 
 .expandable.active, .expandable:hover {
+    background-color: #8117BB;
+}
+
+.expanding.active, .expanding:hover {
     background-color: #8117BB;
 }
 
@@ -453,7 +478,7 @@ a:hover {
     text-align: center;
     color: white;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-    display: relative;
+    display: flex;
     justify-content: space-between;
 }
 
