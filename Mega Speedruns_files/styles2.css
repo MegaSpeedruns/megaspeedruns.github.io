@@ -53,7 +53,7 @@ nav ul {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    font-size: 1.8em;
+    font-size: 1.5em;
 }
 
 nav ul li {
@@ -64,7 +64,7 @@ nav ul li {
 nav ul li a {
     color: #fff;
     display: block;
-    padding: 20px;
+    padding: 15px;
 }
 
 
@@ -79,7 +79,7 @@ body {
     width: 200px;
     position: absolute;
     left: 0;
-    top: 75px;
+    top: 59px;
     height: 1120px;
     background-color: #222;
     padding-top: 0px;
@@ -201,7 +201,7 @@ body {
 }
 
 label {
-    font-size: 1.1em;
+    font-size: 1.0em;
     font-weight: bold;
     position: relative;
     margin-left: 20px;
