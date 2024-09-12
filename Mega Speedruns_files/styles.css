@@ -458,6 +458,7 @@ a:hover {
 }
 
 footer {
+    border-top: 1px solid #555;
     background-color: #333;
     color: white;
     text-align: center;
@@ -477,6 +478,7 @@ footer {
 }
 
 #footer {
+    border-top: 1px solid #555;
     background-color: #333;
     color: white;
     text-align: center;
@@ -487,6 +489,7 @@ footer {
 }
 
 #footerB {
+    border-top: 1px solid #555;
     background-color: #333;
     color: white;
     text-align: center;
@@ -497,6 +500,7 @@ footer {
 }
 
 .footer {
+    border-top: 1px solid #555;
     background-color: #333;
     color: white;
     text-align: center;

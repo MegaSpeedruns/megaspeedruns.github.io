@@ -76,13 +76,14 @@ body {
 
 
 .menu-container {
-    width: 200px;
+    width: 199px;
     position: absolute;
     left: 0;
     top: 59px;
     height: 1120px;
     background-color: #222;
     padding-top: 0px;
+    border-right: 1px solid #555;
 }
 
 .menu {
@@ -93,7 +94,6 @@ body {
 
 .menu-item {
     border-left: 1px solid #555;
-    border-right: 1px solid #555;
     border-bottom: 1px solid #555;
 }
 
@@ -538,6 +538,7 @@ a:hover {
 }
 
 footer {
+    border-top: 1px solid #555;
     background-color: #333;
     color: white;
     text-align: center;
@@ -557,6 +558,7 @@ footer {
 }
 
 #footer {
+    border-top: 1px solid #555;
     background-color: #333;
     color: white;
     text-align: center;
@@ -567,6 +569,7 @@ footer {
 }
 
 #footerB {
+    border-top: 1px solid #555;
     background-color: #333;
     color: white;
     text-align: center;
@@ -577,6 +580,7 @@ footer {
 }
 
 .footer {
+    border-top: 1px solid #555;
     background-color: #333;
     color: white;
     text-align: center;
@@ -588,6 +592,7 @@ footer {
 }
 
 .footerC {
+    border-top: 1px solid #555;
     background-color: #333;
     color: white;
     text-align: center;
