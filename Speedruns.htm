@@ -2025,7 +2025,7 @@
                     list.innerHTML = '<img src="Mega%20Speedruns_files/' + snapshot.val().Tournament + 'SS/' + snapshot.val().Run + '.png"' + snapshot.val().Run + ' alt="' + newStr + '" class="imgResize">' +
                         '<span>Level: ' + newStr + '</span>' + '<span>Category: ' + snapshot.val().Category + '</span>' +
                         '<span>Runner: ' + snapshot.val().Runner + '</span>' + '<span>Time: ' + snapshot.val().Time + '</span>' +
-                        '<span><a href=' + snapshot.val().Link + 'target="_blank">Watch Run</a></span>';
+                        '<span><a href="' + snapshot.val().Link + '" target="_blank">Watch Run</a></span>';
 
                     document.getElementById("allSpeedruns").appendChild(list);
                 }
