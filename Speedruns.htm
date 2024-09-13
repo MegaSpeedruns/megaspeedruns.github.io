@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mega Speedruns</title>
-    <link rel="stylesheet" href="Mega%20Speedruns_files/styles.css">
+    <link rel="stylesheet" href="Mega%20Speedruns_files/styles2.css">
     <style>
         body {
             background: url('Mega%20Speedruns_files/bg2.png') no-repeat center center fixed;
@@ -30,32 +30,53 @@
         </nav>
     </header>
     <main>
-        <section id="home" class="title">
-            <div class="title-text">
-                <h1>MST Speedruns</h1>
+        <div class="menu-container">
+            <div class="menu">
+                <div class="menu-item" onclick="javascript:showhide('allSpeedruns')">
+                    <button class="menu-btn">All Speedruns</button>
+                </div>
+                <div class="menu-item">
+                    <button class="menu-btn">Leaderboards MST1</button>
+                    <div class="submenu">
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST1W1')">Week 1 - Group A</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST1W2')">Week 2 - Group B</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST1W3')">Week 3 - Round 1</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST1W4')">Week 4 - Round 2</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST1W5')">Week 5 - Round 3</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST1W6')">Week 6 - Round 4 Finals</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST1W7')">Week 7 - Bonus</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <button class="menu-btn">Leaderboards MST2</button>
+                    <div class="submenu">
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W1')">Week 1 - Intro</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W2')">Week 2 - Underground</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W3')">Week 3 - Box</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W4')">Week 4 - Quack Man</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W5')">Week 5 - Favorites</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W6')">Week 6 - Movie</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W7')">Week 7 - Sky</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W8')">Week 8 - Space</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W9')">Week 9 - No Buster</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W10')">Week 10 - Indie</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W11')">Week 11 - Fortress</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W12')">Week 12 - Nightmare</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W13')">Week 13 - All In One</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MST2W14')">Week 14 - Finale</button>
+                    </div>
+                </div>
+                <div class="menu-item" class="expandable" onclick="javascript:showhide('levelPacks')">
+                    <button class="menu-btn">Leaderboards LevelPacks</button>
+                </div>
+                <div class="menu-item" class="expandable" onclick="javascript:showhide('submitRun')">
+                    <button class="menu-btn">Submit A Run</button>
+                </div>
             </div>
-        </section>
-
-        <div class="shadow-box">
-
+        </div>
+        
+        <div class="layout">
             <section id="collapsible-list" class="collapsible-list">
-                <button class="collapsible">All Speedruns</button>
-                <div class="content" id="allSpeedruns">
-                </div>
-            </section>
-
-            <section id="collapsible-list" class="collapsible-list">
-                <button class="collapsible">Leaderboards - MST1 Levels</button>
-                <div class="button-layout">
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST1W1')">MST1 Week 1 - Group A</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST1W2')">MST1 Week 2 - Group B</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST1W3')">MST1 Week 3 - Round 1</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST1W4')">MST1 Week 4 - Round 2</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST1W5')">MST1 Week 5 - Round 3</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST1W6')">MST1 Week 6 - Round 4 Finals</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST1W7')">MST1 Week 7 - Bonus</button>
-                </div>
-                </button>
                 <div id="MST1W1" style="display: none;">
                     <li class="list-item">
                         <img src="Mega%20Speedruns_files/MST1SS/Infiltrate_The_Airship.png"
@@ -323,7 +344,7 @@
                     <li class="list-item">
                         <img src="Mega%20Speedruns_files/MST1SS/Cossacks_Fiery_Cookie_Furnace.png" alt="Cossacks Fiery Cookie Furnace">
                         <span>Level: Cossacks Fiery Cookie Furnace</span>
-                        <span>1st: SkyPilotSamurai (Time: 2:13.260) Any% 
+                        <span>1st: SkyPilotSamurai - 2:13.260 - Any% 
                             <a href="https://www.youtube.com/watch?v=CunH8ILIgLI" target="_blank">Watch Run</a></span>
                         <span>2nd: </span>
                         <span>3rd: </span>
@@ -504,40 +525,8 @@
                     </li>                    
                 </div>
             </section>
-
+        
             <section id="collapsible-list" class="collapsible-list">
-                <button class="collapsible">Leaderboards - MST2 Levels</button>
-                <div class="button-layout">
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W1')">MST2 Week 1 -
-                        Intro</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W2')">MST2 Week 2 -
-                        Underground</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W3')">MST2 Week 3 -
-                        Box</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W4')">MST2 Week 4 - Quack
-                        Man</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W5')">MST2 Week 5 -
-                        Favorites</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W6')">MST2 Week 6 -
-                        Movie</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W7')">MST2 Week 7 -
-                        Sky</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W8')">MST2 Week 8 -
-                        Space</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W9')">MST2 Week 9 - No
-                        Buster</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W10')">MST2 Week 10 -
-                        Indie</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W11')">MST2 Week 11 -
-                        Fortress</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W12')">MST2 Week 12 -
-                        Nightmare</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W13')">MST2 Week 13 - All
-                        In One</button>
-                    <button type="button" class="expandable" onclick="javascript:showhide('MST2W14')">MST2 Week 14 -
-                        Finale</button>
-                </div>
-                </button>
                 <div id="MST2W1" style="display: none;">
                     <li class="list-item">
                         <img src="Mega%20Speedruns_files/MST2SS/Unknown_Area.png" alt="Unknown Area">
@@ -1167,8 +1156,9 @@
                     <li class="list-item">
                         <img src="Mega%20Speedruns_files/MST2SS/A_Wave_Of_Water.png" alt="A Wave Of Water">
                         <span>Level: A Wave Of Water</span>
-                        <span>1st: Lorenzo (Time: 2:58.600) Damageless <a
-                                href="https://www.youtube.com/watch?v=CunH8ILIgLI" target="_blank">Watch Run</a></span>
+                        <span>1st: Lorenzo - 2:58.600 - Damageless/Minimum Damage<a
+                                href="https://www.youtube.com/watch?v=CunH8ILIgLI" target="_blank">Watch Run</a>
+                            </span>
                         <span>2nd: </span>
                         <span>3rd: </span>
                     </li>
@@ -1498,7 +1488,7 @@
                         <img src="Mega%20Speedruns_files/MST2SS/Rapid_Red_Fortress.png"
                             alt="Rapid Red Fortress (Fortress)">
                         <span>Level: Rapid Red Fortress (Fortress)</span>
-                        <span>1st: Runner: Lorenzo (Time: 2:40.580) Any% <a
+                        <span>1st: Lorenzo - 2:40.580 - Any% <a
                                 href="https://www.youtube.com/watch?v=KF8tRAvaKx0" target="_blank">Watch Run</a></span>
                         <span>2nd: </span>
                         <span>3rd: </span>
@@ -1627,8 +1617,12 @@
             </section>
 
             <section id="collapsible-list" class="collapsible-list">
-                <button class="collapsible">Leaderboards - LevelPacks</button>
-                <div class="content">
+                <div class="content" id="allSpeedruns">
+                </div>
+            </section>
+
+            <section id="collapsible-list" class="collapsible-list">
+                <div id="levelPacks" style="display: none;">
                     <li class="list-item">
                         <img src="Mega%20Speedruns_files/MST2_Intro.png" alt="MST2 - Week 1 Intro">
                         <span>LevelPack: MST2 - Week 1 Intro</span>
@@ -1732,8 +1726,7 @@
             </section>
 
             <section id="collapsible-list" class="collapsible-list">
-                <button class="collapsible">Submit A Run</button>
-                <div class="content">
+                <div class="content" id="submitRun">
                     <ul>
                         <br>
                         <label>Tournament</label>
@@ -1829,6 +1822,7 @@
 
                         <label>Time</label>
                         <input type="text" id="Time">
+                        (Format: H:M:S.MS)
                         <br><br>
 
                         (Run starts from hit play until screen fades to black, no edits) <br><br>
@@ -1839,11 +1833,12 @@
                     </ul>
                 </div>
             </section>
+        </div>
 
     </main>
 
-    <!-- JavaScript for Collapsible List -->
-    <script>
+<!-- JavaScript for Collapsible List -->
+<script>
         document.addEventListener("DOMContentLoaded", function () {
             var coll = document.getElementsByClassName("collapsible");
             for (var i = 0; i < coll.length; i++) {
@@ -1859,10 +1854,26 @@
                     }
                 });
             }
-        });
-    </script>
 
-    <script>
+            showhide('allSpeedruns');
+        });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const menuBtns = document.querySelectorAll(".menu-btn");
+    
+        menuBtns.forEach(btn => {
+            btn.addEventListener("click", function () {
+                const submenu = this.nextElementSibling;
+                submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+            });
+        });
+    });
+</script>
+
+
+<script>
         document.addEventListener("DOMContentLoaded", function () {
             var coll = document.getElementsByClassName("collapsible-inner");
             for (var i = 0; i < coll.length; i++) {
@@ -1890,36 +1901,30 @@
                 }
             }
         }
+</script>
 
-        function showhide(id) {
-            hideAllExpandableContent(); // Hide all other contents
-            var e = document.getElementById(id);
-            e.style.display = 'block';
+<script>
+    // Function to hide all collapsible sections
+    function hideAllSections() {
+        const sections = document.querySelectorAll(".collapsible-list > div");
+        sections.forEach(section => {
+            section.style.display = 'none';
+        });
+    }
+
+    // Function to show the clicked section and hide others
+    function showhide(id) {
+        hideAllSections(); // Hide all sections first
+        var element = document.getElementById(id);
+        if (element.style.display === 'none') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
         }
-    </script>
+    }
+</script>
 
-    <script>
-        function showhide(id) {
-            // Get all elements with class "expandable"
-            var buttons = document.getElementsByClassName("expandable");
-
-            // Loop through all expandable buttons to hide their content
-            for (var i = 0; i < buttons.length; i++) {
-                var contentId = buttons[i].getAttribute("onclick").match(/'([^']+)'/)[1];
-                var content = document.getElementById(contentId);
-                if (content) {
-                    content.style.display = 'none';
-                }
-            }
-
-            // Show the content of the clicked button
-            var e = document.getElementById(id);
-            e.style.display = 'block';
-            adjustFooterPosition();
-        }
-    </script>
-
-    <script type="module">
+<script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
 
         const firebaseConfig = {
@@ -2061,7 +2066,7 @@
         UpdBtn.addEventListener('click', UpdateData);
         DelBtn.addEventListener('click', DeleteData);
 
-    </script>
+</script>
 
 <script>
     function adjustFooterPosition() {
@@ -2564,8 +2569,48 @@ runDropdown.innerHTML =
     fillLevels();
 </script>
 
-</body>
+<script>
+    function openPopoutPlayer(videoUrl) {
+        // Define the size of the pop-out window
+        const width = 800;
+        const height = 450;
+        const left = (window.screen.width / 2) - (width / 2);
+        const top = (window.screen.height / 2) - (height / 2);
 
-<div id= "footer">MegaSpeedruns</div>
+        // Create a new window and write the video embed HTML inside it
+        const playerWindow = window.open(
+            '',
+            'VideoPlayer',
+            `width=${width},height=${height},top=${top},left=${left}`
+        );
+
+        // HTML content for the pop-out window
+        playerWindow.document.write(`
+            <html>
+            <head>
+                <title>Video Player</title>
+                <style>
+                    body {
+                        margin: 0;
+                        overflow: hidden;
+                    }
+                    iframe {
+                        width: 100%;
+                        height: 100%;
+                        border: none;
+                    }
+                </style>
+            </head>
+            <body>
+                <iframe src="${videoUrl}" allowfullscreen></iframe>
+            </body>
+            </html>
+        `);
+
+        playerWindow.document.close();
+    }
+</script>
+
+</body>
 
 </html>
