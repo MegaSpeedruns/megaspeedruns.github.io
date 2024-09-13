@@ -76,14 +76,15 @@ body {
 
 
 .menu-container {
-    width: 199px;
+    width: 200px;
     position: absolute;
     left: 0;
     top: 59px;
     height: 1120px;
     background-color: #222;
     padding-top: 0px;
-    border-right: 1px solid #555;
+    border-left: 1px solid #555;
+    border-bottom: 1px solid #555;
 }
 
 .menu {
@@ -93,7 +94,6 @@ body {
 }
 
 .menu-item {
-    border-left: 1px solid #555;
     border-bottom: 1px solid #555;
 }
 
@@ -352,19 +352,23 @@ form {
 /* Collapsible list styles */
 .collapsible-list {
     position: absolute;
-    top: 0px;
+    top: -1px;
     width: 100%;
     margin: 0px auto;
     border-radius: 0px;
+    min-height: 1121;
+    background: rgba(0, 0, 0, 0.5);
+    border-left: 1px solid #555;
+    border-right: 1px solid #555;
+    border-top: 1px solid #555;
 }
 
 .layout {
     position: relative;
     top: 0px;
     left: 200px;
-    width: calc(100% - 200px);
+    width: calc(100% - 202px);
     text-align: center;
-    background: rgba(0, 0, 0, 0.7);
     height: 1121px;
     border-radius: 0px;
     flex-wrap: wrap;
@@ -597,8 +601,37 @@ footer {
     color: white;
     text-align: center;
     padding: 10px 0;
-    top: -1px;
+    top: 0px;
     width: 100%;
     position: relative;
     left: 0;
+}
+
+#submitRun {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #555;
+    text-align: center;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.buttonStyle {
+    background-color: #333; /* Background */
+            border: none; /* Remove borders */
+            color: white; /* White text */
+            padding: 5px;
+            min-width: 70px;
+            max-width: 70px;
+            max-height: 70px;
+            text-align: center; /* Center the text */
+            text-decoration: none; /* Remove underline */
+            display: inline-block; /* Make the button an inline-block */
+            font-size: 16px; /* Increase font size */
+            cursor: pointer; /* Add a pointer on hover */
+            border-radius: 8px; /* Rounded corners */
+            transition: background-color 0.2s ease; /* Smooth transition on hover */
+}
+
+.buttonStyle:hover {
+    background-color: #3117BB; /* Darker green on hover */
 }
