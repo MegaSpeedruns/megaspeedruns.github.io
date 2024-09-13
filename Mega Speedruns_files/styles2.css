@@ -80,7 +80,7 @@ body {
     position: absolute;
     left: 0;
     top: 59px;
-    height: 1120px;
+    height: 1167px;
     background-color: #222;
     padding-top: 0px;
     border-left: 1px solid #555;
@@ -359,7 +359,7 @@ form {
     left: 201px;
     width: calc(100% - 203px);
     text-align: center;
-    height: 1121px;
+    height: 1115px;
     border-radius: 0px;
     flex-wrap: wrap;
 }
