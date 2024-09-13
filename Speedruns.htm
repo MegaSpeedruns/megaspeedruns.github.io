@@ -67,7 +67,7 @@
                         <button type="button" class="expandable" onclick="javascript:showhide('MST2W14')">Week 14 - Finale</button>
                     </div>
                 </div>
-                <div class="menu-item" class="expandable" onclick="javascript:showhide('levelPacks')">
+                <div class="menu-item" class="expandable" onclick="showhide('levelPacks'); moveFooter(); extendMenuContainer();">
                     <button class="menu-btn">Leaderboards LevelPacks</button>
                 </div>
                 <div class="menu-item" class="expandable" onclick="javascript:showhide('submitRun')">
@@ -1855,7 +1855,6 @@
                         hideAllExpandableContent();
                     } else {
                         content.style.display = "block";
-                        adjustFooterPosition();
                     }
                 });
             }
@@ -1889,7 +1888,6 @@
                         content.style.display = "none";
                     } else {
                         content.style.display = "block";
-                        adjustFooterPosition();
                     }
                 });
             }
@@ -1902,7 +1900,6 @@
                 var content = document.getElementById(contentId);
                 if (content) {
                     content.style.display = 'none';
-                    adjustFooterPosition();
                 }
             }
         }
@@ -2070,26 +2067,6 @@
         RetBtn.addEventListener('click', RetData);
         UpdBtn.addEventListener('click', UpdateData);
         DelBtn.addEventListener('click', DeleteData);
-
-</script>
-
-<script>
-    function adjustFooterPosition() {
-        var collapsibles = document.querySelectorAll('.collapsible-list > div');
-        var footer = document.getElementById('footer');
-
-        // Check if any collapsible is open
-        var isAnyCollapsibleOpen = Array.from(collapsibles).some(section => section.style.display === "block");
-
-        if (isAnyCollapsibleOpen) {
-            footer.style.position = 'relative'; // Move the footer down
-            footer.style.marginTop = '-60vh';
-        } else {
-            footer.style.marginTop = '0px';
-            footer.style.position = 'fixed'; // Keep footer at bottom when no collapsible is open
-            footer.style.top = 'top: 97vh;';
-        }
-    }
 
 </script>
 
@@ -2616,6 +2593,34 @@ runDropdown.innerHTML =
     }
 </script>
 
+<script>
+    function moveFooter() {
+        // Get the footer element by ID
+        const footer = document.getElementById('footerC');
+        const menuContainer = document.getElementById('menu-container');
+
+        // Get the current position of the footer and parse it as a number
+        const currentTop = parseInt(window.getComputedStyle(footer).top, 10) || 0;
+
+        // Move the footer down by 500px
+        footer.style.top = `${currentTop + 305}px`;
+    }
+</script>
+
+<script>
+function extendMenuContainer() {
+    const menuContainer = document.querySelector('.menu-container');
+    
+    // Get the current height of the menu container and parse it as an integer
+    const currentHeight = parseInt(window.getComputedStyle(menuContainer).height, 10) || 0;
+    
+    // Set the new height by adding 305px
+    menuContainer.style.height = `${currentHeight + 305}px`;
+}
+</script>
+
 </body>
+
+<div id="footerC" class="footerC">Mega Speedruns</div>
 
 </html>
