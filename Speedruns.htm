@@ -1876,7 +1876,6 @@
     });
 </script>
 
-
 <script>
         document.addEventListener("DOMContentLoaded", function () {
             var coll = document.getElementsByClassName("collapsible-inner");
@@ -2594,28 +2593,43 @@ runDropdown.innerHTML =
 </script>
 
 <script>
-    function moveFooter() {
-        // Get the footer element by ID
-        const footer = document.getElementById('footerC');
-        const menuContainer = document.getElementById('menu-container');
-
-        // Get the current position of the footer and parse it as a number
-        const currentTop = parseInt(window.getComputedStyle(footer).top, 10) || 0;
-
-        // Move the footer down by 500px
-        footer.style.top = `${currentTop + 305}px`;
-    }
 </script>
 
 <script>
+
+var moved = 0;
+var extended = 0;
+
+function moveFooter() {
+    const footer = document.getElementById('footerC');
+    const currentTop = parseInt(window.getComputedStyle(footer).top, 10) || 0;
+
+    if (moved == 0) {
+        // Move the footer up by 305px
+        footer.style.top = `${currentTop + 305}px`;
+        moved = 1;  // Set the flag so it won't move back again unless reset
+    }
+}
+
 function extendMenuContainer() {
+    const menuContainer = document.querySelector('.menu-container');
+    const currentHeight = parseInt(window.getComputedStyle(menuContainer).height, 10) || 0;
+
+    if (extended == 0) {
+        // Increase the height by 305px
+        menuContainer.style.height = `${currentHeight + 305}px`;
+        extended = 1;  // Set the flag so it won't extend again unless reset
+    }
+}
+
+function reduceMenuContainer() {
     const menuContainer = document.querySelector('.menu-container');
     
     // Get the current height of the menu container and parse it as an integer
     const currentHeight = parseInt(window.getComputedStyle(menuContainer).height, 10) || 0;
     
     // Set the new height by adding 305px
-    menuContainer.style.height = `${currentHeight + 305}px`;
+    menuContainer.style.height = `${currentHeight - 305}px`;
 }
 </script>
 
