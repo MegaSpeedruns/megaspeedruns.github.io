@@ -35,6 +35,10 @@
         <div class="menu-container">
             <div class="menu">
                 <div class="menu-item" onclick="javascript:showhide('allSpeedruns')">
+                    <video id="speedrunPlayer" controls style="width:100%; display:none;">
+                        <source id="videoSource" src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                     <button class="menu-btn">All Speedruns</button>
                 </div>
                 <div class="menu-item">
@@ -74,6 +78,35 @@
                 <div class="menu-item" class="expandable" onclick="showhide('levelPacks2'); moveFooter(); extendMenuContainer();">
                     <button class="menu-btn">Leaderboards LevelPacks MST2</button>
                 </div>
+                <div class="menu-item">
+                    <button class="menu-btn">Leaderboards NCR</button>
+                    <div class="submenu">
+                        <button type="button" class="expandable" onclick="javascript:showhide('NCE1')">NCR1</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('NCE2')">NCR2</button>
+                    </div>
+                </div>
+                <div class="menu-item" class="expandable" onclick="showhide('NCRPacks'); moveFooter(); extendMenuContainer();">
+                    <button class="menu-btn">Leaderboards LevelPacks NCR</button>
+                </div>
+                <script>
+                /*
+                <div class="menu-item">
+                    <button class="menu-btn">Leaderboards MSBR</button>
+                    <div class="submenu">
+                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR1')">MSBR1</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR2')">MSBR2</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR3')">MSBR3</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR4')">MSBR4</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR5')">MSBR5</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR6')">MSBR6</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR7')">MSBR7</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR8')">MSBR8</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR9')">MSBR9</button>
+                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR10')">MSBR10</button>
+                    </div>
+                </div>
+                */
+                </script>
                 <div class="menu-item" class="expandable" onclick="javascript:showhide('submitRun')">
                     <button class="menu-btn">Submit A Run</button>
                 </div>
@@ -84,7 +117,8 @@
             <h2>MST Speedruns</h2>
         </div>
         
-        <div class="layout">
+        <div class="layout" id="layout">
+            <iframe id="speedrunPlayer" width="100%" height="400" style="display:none;" frameborder="0" allowfullscreen></iframe>
             <section id="collapsible-list" class="collapsible-list">
                 <div id="MST1W1" style="display: none;">
                     <li class="list-item">
@@ -1165,9 +1199,7 @@
                     <li class="list-item">
                         <img src="Mega%20Speedruns_files/MST2SS/A_Wave_Of_Water.png" alt="A Wave Of Water">
                         <span>Level: A Wave Of Water</span>
-                        <span>1st: Lorenzo - 2:58.600 - Damageless/Minimum Damage<a
-                                href="https://www.youtube.com/watch?v=CunH8ILIgLI" target="_blank">Watch Run</a>
-                            </span>
+                        <span>1st: </span>
                         <span>2nd: </span>
                         <span>3rd: </span>
                     </li>
@@ -1626,10 +1658,157 @@
             </section>
 
             <section id="collapsible-list" class="collapsible-list">
-                <div class="content" id="allSpeedruns">
+                <div id="NCE1" style="display: none;">
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/The_Village_Of_Love.png" alt="The Village Of Love">
+                        <span>Level: NRS - The Village Of Love</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MST1SS/Mega_Knight_Pridemoor_Keep.png" alt="Pridemoor Keep">
+                        <span>Level: MST1 - Mega Knight - Pridemoor Keep</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Between_Those_Clouds.png" alt="Between Those Clouds">
+                        <span>Level: NRS - Between Those Clouds</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/One_Percent_Of_Undiscovered_Under_Ocean.png" alt="One Percent Of Undiscovered Under Ocean">
+                        <span>Level: NRS - One Percent Of Undiscovered Under Ocean</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Inferno_Woods.png" alt="Inferno Woods">
+                        <span>Level: NRS - Inferno Woods</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Sharpened_Silhouette.png" alt="Sharpened Silhouette">
+                        <span>Level: NRS - Sharpened Silhouette</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MST1SS/Rustic_Factory.png" alt="Rustic Factory">
+                        <span>Level: MST1 - Rustic Factory</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Snakestone_Sanctuary.png" alt="Snakestone Sanctuary">
+                        <span>Level: Snakestone Sanctuary</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MST1SS/Toxic_Waltz.png" alt="Toxic Waltz">
+                        <span>Level: MST1 - Toxic Waltz</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Treasure_Mines.png" alt="Treasure Mines">
+                        <span>Level: Treasure Mines</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                </div>
+
+                <div id="NCE2" style="display: none;">
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/City_Breeze.png" alt="City Breeze">
+                        <span>Level: City Breeze</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Bassic.png" alt="Bassic">
+                        <span>Level: Bassic</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Crystaline_Caverns.png" alt="Crystaline Caverns">
+                        <span>Level: Crystaline Caverns</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Troublesome_Tower.png" alt="Troublesome Tower">
+                        <span>Level: Troublesome Tower</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Big_Apple_3_AM.png" alt="Big Apple 3 AM">
+                        <span>Level: Big Apple 3 AM</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Castle_Crusher.png" alt="Castle Crusher">
+                        <span>Level: Castle Crusher</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Slither_City.png" alt="Slither City">
+                        <span>Level: Slither City</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Blue_V_Green_Who_Will_Win.png" alt="Blue V Green Who Will Win">
+                        <span>Level: Blue V Green Who Will Win</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Arcade_Carnival.png" alt="Arcade Carnival">
+                        <span>Level: Arcade Carnival</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE/Bronze_Industry.png" alt="Bronze Industry">
+                        <span>Level: Bronze Industry</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
                 </div>
             </section>
 
+            <section id="collapsible-list" class="collapsible-list">
+                <div class="content" id="allSpeedruns">
+                </div>
+            </section>
 
             <section id="collapsible-list" class="collapsible-list">
                 <div id="levelPacks" style="display: none;">
@@ -1685,7 +1864,6 @@
                     </ul>
                 </div>
             </section>
-
 
             <section id="collapsible-list" class="collapsible-list">
                 <div id="levelPacks2" style="display: none;">
@@ -1792,13 +1970,34 @@
             </section>
 
             <section id="collapsible-list" class="collapsible-list">
+                <div id="NCRPacks" style="display: none;">
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE1.png" alt="NCR1">
+                        <span>LevelPack: NCR - New Challenger Race 1</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/NCE2.png" alt="NCR2">
+                        <span>LevelPack: NCR2 - New Challenger Race 2</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="collapsible-list" class="collapsible-list">
                 <div class="content" id="submitRun">
                     <ul>
                         <br>
-                        <label>Tournament</label>
+                        <label>Tournament/Pack</label>
                         <select id="Tournament">
                             <option value="MST1">MST1</option>
                             <option value="MST2">MST2</option>
+                            <option value="NCE">NCR</option>
                         </select>
 
                         <label>Pack/Level</label>
@@ -1876,7 +2075,7 @@
                         <label>Category</label>
                         <select id="Category">
                             <option value="Any%">Any%</option>
-                            <option value="Damageless/Minimum Damage">Damageless/Minimum Damage</option>
+                            <option value="Damageless/Minimum Damage">Damageless/Min-Damage</option>
                         </select>
 
                         <br><br>
@@ -2259,6 +2458,9 @@ function parseTime(timeString) {
     document.addEventListener('DOMContentLoaded', function() {
         tournamentDropdown.addEventListener('change', function() 
         {
+
+        runDropdown.innerHTML = '';
+
         if (tournamentDropdown.value === 'MST1') 
             {
                 runDropdown.innerHTML =         
@@ -2331,7 +2533,7 @@ function parseTime(timeString) {
 '<option value="Creative_Credits_Carnival">Creative Credits Carnival</option>';
 } 
 
-        else 
+        if (tournamentDropdown.value === 'MST2') 
 {
 runDropdown.innerHTML =         
 '<option value="MST2_Week_1_Intro">MST2 - Week 1 Intro</option>' +
@@ -2491,6 +2693,33 @@ runDropdown.innerHTML =
 '<option value="Red_Mountain_Act2">Red Mountain Act2</option>' +
 '<option value="Megaspeedrush_Rising_Revengeance">Megaspeedrush Rising Revengeance</option>';        
             }
+
+        if (tournamentDropdown.value === 'NCE')
+            {
+                runDropdown.innerHTML =
+                '<option value="NCE1_Levelpack">NCR1 Levelpack</option>' +
+                '<option value="NCE2_Levelpack">NCR2 Levelpack</option>' +
+                '<option value="NRS_The_Village_Of_Love">NRS - The Village Of Love</option>' +
+                '<option value="Mega_Knight_Pridemoor_Keep">MST1 - Mega Knight - Pridemoor Keep</option>' +
+                '<option value="NRS_Between_Those_Clouds">NRS - Between Those Clouds</option>' +
+                '<option value="NRS_One_Percent_Of_Undiscovered_Under_Ocean">NRS - One Percent Of Undiscovered Under Ocean</option>' +
+                '<option value="NRS_Inferno_Woods">NRS - Inferno Woods</option>' +
+                '<option value="NRS_Sharpened_Silhouette">NRS - Sharpened Silhouette</option>' +
+                '<option value="Rustic_Factory">MST1 - Rustic Factory</option>' +
+                '<option value="Snakestone_Sanctuary">Snakestone Sanctuary</option>' +
+                '<option value="Toxic_Waltz">MST1 - Toxic Waltz</option>' +
+                '<option value="Treasure_Mines">Treasure Mines</option>' +
+                '<option value="City_Breeze">City Breeze</option>' +
+                '<option value="Bassic">Bassic</option>' +
+                '<option value="Crystal_Blue_Cave">Crystal Blue Cave</option>' +
+                '<option value="Troublesome_Tower">Troublesome Tower</option>' +
+                '<option value="Big_Apple_3_AM">Big Apple 3 AM</option>' +
+                '<option value="Castle_Crusher">Castle Crusher</option>' +
+                '<option value="Slither_City">Slither City</option>' +
+                '<option value="Blue_V_Green_Who_Will_Win">Blue V Green Who Will Win</option>' +
+                '<option value="Arcade_Carnival">Arcade Carnival</option>' +
+                '<option value="Bronze_Industry">Bronze Industry</option>';
+            } 
         });
     });
 
@@ -2734,6 +2963,7 @@ runDropdown.innerHTML =
 </script>
 
 <script>
+    /*
     function openPopoutPlayer(videoUrl) {
         // Define the size of the pop-out window
         const width = 800;
@@ -2773,6 +3003,7 @@ runDropdown.innerHTML =
 
         playerWindow.document.close();
     }
+    */
 </script>
 
 <script>
@@ -2811,6 +3042,24 @@ function reduceMenuContainer() {
     // Set the new height by adding 305px
     menuContainer.style.height = `${currentHeight - 305}px`;
 }
+</script>
+
+<script>
+    function playVideo(videoId) {
+        const player = document.getElementById('speedrunPlayer');
+        
+        // Construct the YouTube embed URL
+        const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        
+        // Set the new video URL in the iframe
+        player.src = embedUrl;
+
+        // Show the player
+        player.style.display = 'block';
+
+        // Scroll to the top of the allSpeedruns section to make the video visible
+        document.getElementById('allSpeedruns').scrollIntoView({ behavior: 'smooth' });
+    }
 </script>
 
 </body>
