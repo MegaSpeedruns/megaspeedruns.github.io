@@ -39,7 +39,7 @@
                         <source id="videoSource" src="" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
-                    <button class="menu-btn">All Speedruns</button>
+                    <button class="menu-btn" onclick="toggleMenuItem(this)">All Speedruns</button>
                 </div>
                 <div class="menu-item">
                     <button class="menu-btn">Leaderboards MST1</button>
@@ -73,10 +73,10 @@
                     </div>
                 </div>
                 <div class="menu-item" class="expandable" onclick="showhide('levelPacks'); moveFooter(); extendMenuContainer();">
-                    <button class="menu-btn">Leaderboards LevelPacks MST1</button>
+                    <button class="menu-btn" onclick="toggleMenuItem(this)">Leaderboards LevelPacks MST1</button>
                 </div>
                 <div class="menu-item" class="expandable" onclick="showhide('levelPacks2'); moveFooter(); extendMenuContainer();">
-                    <button class="menu-btn">Leaderboards LevelPacks MST2</button>
+                    <button class="menu-btn" onclick="toggleMenuItem(this)">Leaderboards LevelPacks MST2</button>
                 </div>
                 <div class="menu-item">
                     <button class="menu-btn">Leaderboards NCR</button>
@@ -85,8 +85,8 @@
                         <button type="button" class="expandable" onclick="javascript:showhide('NCE2')">NCR2</button>
                     </div>
                 </div>
-                <div class="menu-item" class="expandable" onclick="showhide('NCRPacks'); moveFooter(); extendMenuContainer();">
-                    <button class="menu-btn">Leaderboards LevelPacks NCR</button>
+                <div class="menu-item" class="expandable" onclick="showhide('NCRPacks')">
+                    <button class="menu-btn" onclick="toggleMenuItem(this)">Leaderboards LevelPacks NCR</button>
                 </div>
                 <script>
                 /*
@@ -108,7 +108,7 @@
                 */
                 </script>
                 <div class="menu-item" class="expandable" onclick="javascript:showhide('submitRun')">
-                    <button class="menu-btn">Submit A Run</button>
+                    <button class="menu-btn" onclick="toggleMenuItem(this)">Submit A Run</button>
                 </div>
             </div>
         </div>
@@ -2104,6 +2104,7 @@
 
 <!-- JavaScript for Collapsible List -->
 <script>
+    /*
         document.addEventListener("DOMContentLoaded", function () {
             var coll = document.getElementsByClassName("collapsible");
             for (var i = 0; i < coll.length; i++) {
@@ -2121,47 +2122,37 @@
 
             showhide('allSpeedruns');
         });
+        */
 </script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const menuBtns = document.querySelectorAll(".menu-btn");
-    
-        menuBtns.forEach(btn => {
-            btn.addEventListener("click", function () {
-                const submenu = this.nextElementSibling;
-                submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+   document.addEventListener("DOMContentLoaded", function () {
+    const menuBtns = document.querySelectorAll(".menu-btn");
+
+    menuBtns.forEach(btn => {
+        btn.addEventListener("click", function () {
+            const submenu = this.nextElementSibling;
+
+            // Check if the clicked submenu is already visible
+            const isVisible = submenu.style.display === "block";
+
+            // Hide all submenus
+            const allSubmenus = document.querySelectorAll(".submenu");
+            allSubmenus.forEach(s => {
+                s.style.display = "none";
             });
+
+            // If it was not visible, show it
+            if (!isVisible) {
+                submenu.style.display = "block";
+            }
         });
     });
-</script>
 
-<script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var coll = document.getElementsByClassName("collapsible-inner");
-            for (var i = 0; i < coll.length; i++) {
-                coll[i].addEventListener("click", function () {
-                    this.classList.toggle("active");
-                    var content = this.nextElementSibling;
-                    if (content.style.display === "block") {
-                        content.style.display = "none";
-                    } else {
-                        content.style.display = "block";
-                    }
-                });
-            }
-        });
+    showhide('allSpeedruns');
+});
 
-        function hideAllExpandableContent() {
-            var expandableContents = document.getElementsByClassName("expandable");
-            for (var i = 0; i < expandableContents.length; i++) {
-                var contentId = expandableContents[i].getAttribute("onclick").match(/'([^']+)'/)[1];
-                var content = document.getElementById(contentId);
-                if (content) {
-                    content.style.display = 'none';
-                }
-            }
-        }
+
 </script>
 
 <script>
@@ -2174,15 +2165,21 @@
     }
 
     // Function to show the clicked section and hide others
-    function showhide(id) {
-        hideAllSections(); // Hide all sections first
-        var element = document.getElementById(id);
-        if (element.style.display === 'none') {
-            element.style.display = 'block';
+    function showhide(elementId) {
+    // Get all collapsible elements by class name or specific IDs
+    var allElements = document.querySelectorAll('.collapsible-list > div'); // Adjust selector as needed
+
+    // Loop through each element and collapse it if it's not the one clicked
+    allElements.forEach(function(element) {
+        if (element.id === elementId) {
+            // Toggle the clicked element's visibility
+            element.style.display = "block";
         } else {
-            element.style.display = 'none';
+            // Hide other elements
+            element.style.display = "none";
         }
-    }
+    });
+}
 </script>
 
 <script type="module">
@@ -3060,6 +3057,36 @@ function reduceMenuContainer() {
         // Scroll to the top of the allSpeedruns section to make the video visible
         document.getElementById('allSpeedruns').scrollIntoView({ behavior: 'smooth' });
     }
+
+    function toggleMenuItem(menuItem) {
+    // Get all menu-item elements
+    var allMenuItems = document.querySelectorAll('.menu-item');
+
+    // Check the submenu of the clicked menu item
+    var clickedSubmenu = menuItem.querySelector('.submenu');
+    
+    // Toggle the clicked menu item's submenu
+    if (clickedSubmenu) {
+        // If the submenu is already open, close it
+        var isVisible = (clickedSubmenu.style.display === "block");
+    }
+
+    // Collapse all submenus that are not the clicked one
+    allMenuItems.forEach(function(item) {
+        var submenu = item.querySelector('.submenu');
+        if (submenu) {
+            // Collapse all other submenus
+            submenu.style.display = "none";
+        }
+    });
+
+    // Toggle the clicked menu-item's submenu
+    if (clickedSubmenu) {
+        // If it was visible, hide it; otherwise, show it
+        clickedSubmenu.style.display = isVisible ? "none" : "block";
+    }
+}
+
 </script>
 
 </body>

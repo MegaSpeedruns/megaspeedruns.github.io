@@ -1765,13 +1765,26 @@
 </body>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+   document.addEventListener("DOMContentLoaded", function () {
     const menuBtns = document.querySelectorAll(".menu-btn");
 
     menuBtns.forEach(btn => {
         btn.addEventListener("click", function () {
             const submenu = this.nextElementSibling;
-            submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+
+            // Check if the clicked submenu is already visible
+            const isVisible = submenu.style.display === "block";
+
+            // Hide all submenus
+            const allSubmenus = document.querySelectorAll(".submenu");
+            allSubmenus.forEach(s => {
+                s.style.display = "none";
+            });
+
+            // If it was not visible, show it
+            if (!isVisible) {
+                submenu.style.display = "block";
+            }
         });
     });
 });
