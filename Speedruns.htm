@@ -2341,10 +2341,19 @@
                     //var category = catSnap.replace(/_/g, " ");
                     var link = linkSnap.replace(/_/g, " ");
 
-                    list.innerHTML = '<img src="Mega%20Speedruns_files/' + snapshot.val().Tournament + 'SS/' + snapshot.val().Run + '.png"' + snapshot.val().Run + ' alt="' + level + '" class="imgResize">' +
+                    let word = "Week";
+
+                    if (level.indexOf(word) !== -1) {
+                        list.innerHTML = '<img src="Mega%20Speedruns_files/' + snapshot.val().Tournament + 'SS/' + snapshot.val().Run + '.png"' + snapshot.val().Run + ' alt="' + level + '" class="imgResize">' +
+                        '<span>LevelPack: ' + level + '</span>' + '<span>Category: ' + snapshot.val().Category + '</span>' +
+                        '<span>Runner: ' + snapshot.val().Runner + '</span>' + '<span>Time: ' + snapshot.val().Time + '</span>' +
+                        '<span><a href="' + snapshot.val().Link + '" target="_blank">Watch Run</a></span>';
+                    } else {
+                        list.innerHTML = '<img src="Mega%20Speedruns_files/' + snapshot.val().Tournament + 'SS/' + snapshot.val().Run + '.png"' + snapshot.val().Run + ' alt="' + level + '" class="imgResize">' +
                         '<span>Level: ' + level + '</span>' + '<span>Category: ' + snapshot.val().Category + '</span>' +
                         '<span>Runner: ' + snapshot.val().Runner + '</span>' + '<span>Time: ' + snapshot.val().Time + '</span>' +
                         '<span><a href="' + snapshot.val().Link + '" target="_blank">Watch Run</a></span>';
+                    }
 
                     document.getElementById("allSpeedruns").appendChild(list);
 
@@ -2375,6 +2384,8 @@
 
     // Flag to track if the level was found
     let levelFound = false;
+
+    levelName = levelName.replace(/\bWeek\b\s+\S+/, "-");
 
     // Store the times for each level in an object (if not already existing)
     if (!window.leaderboard) window.leaderboard = {};
@@ -2575,7 +2586,7 @@ runDropdown.innerHTML =
 '<option value="Cutthroat_Caldera">Cutthroat Caldera</option>' +
 '<option value="To_The_Center">To The Center</option>' +
 '<option value="Frozen_Factory">Frozen Factory</option>' +
-'<option value="Breaking_News_Ruffian_Slinkys_At_Block_Park_More_At_11">Breaking News - Ruffian Slinkys At Block Park More At 11</option>' +
+'<option value="Breaking_News_-_Ruffian_Slinkys_At_Block_Park_More_At_11">Breaking News - Ruffian Slinkys At Block Park More At 11</option>' +
 '<option value="Warehouse_War">Warehouse War</option>' +
 '<option value="Boxed_In_Boxes">Boxed In Boxes</option>' +
 '<option value="Punch_Punch">Punch Punch</option>' +
@@ -2732,13 +2743,13 @@ runDropdown.innerHTML =
         if (tournamentDropdown.value === 'MST1') 
             {
                 runDropdown.innerHTML =         
-'<option value="MST1_Week_1_Group_A">MST1 - Week 1 Group A</option>' + 
-'<option value="MST1_Week_2_Group_B">MST1 - Week 2 Group B</option>' +
-'<option value="MST1_Week_3_Round_1">MST1 - Week 3 Round 1</option>' +
-'<option value="MST1_Week_4_Round_2">MST1 - Week 4 Round 2</option>' +
-'<option value="MST1_Week_5_Round_3">MST1 - Week 5 Round 3</option>' +
-'<option value="MST1_Week_6_Round_4_Finals">MST1 - Week 6 Round 4 Finals</option>' +
-'<option value="MST1_Week_7_Bonus">MST1 - Week 7 Bonus</option>' +
+'<option value="MST1_-_Week_1_Group_A">MST1 - Week 1 Group A</option>' + 
+'<option value="MST1_-_Week_2_Group_B">MST1 - Week 2 Group B</option>' +
+'<option value="MST1_-_Week_3_Round_1">MST1 - Week 3 Round 1</option>' +
+'<option value="MST1_-_Week_4_Round_2">MST1 - Week 4 Round 2</option>' +
+'<option value="MST1_-_Week_5_Round_3">MST1 - Week 5 Round 3</option>' +
+'<option value="MST1_-_Week_6_Round_4_Finals">MST1 - Week 6 Round 4 Finals</option>' +
+'<option value="MST1_-_Week_7_Bonus">MST1 - Week 7 Bonus</option>' +
 '<option value="Infiltrate_The_Airship">Infiltrate The Airship</option>' +
 '<option value="Its_Tradition">It\'s Tradition</option>' +
 '<option value="Pick_A_Card_When_Its_Dawn">Pick A Card When it\'s Dawn</option>' +
@@ -2804,20 +2815,20 @@ runDropdown.innerHTML =
         else 
 {
 runDropdown.innerHTML =         
-'<option value="MST2_Week_1_Intro">MST2 - Week 1 Intro</option>' +
-'<option value="MST2_Week_2_Underground">MST2 - Week 2 Underground</option>' +
-'<option value="MST2_Week_3_Box">MST2 - Week 3 Box</option>' +
-'<option value="MST2_Week_4_Quack_Man">MST2 - Week 4 Quack Man</option>' +
-'<option value="MST2_Week_5_Favorites">MST2 - Week 5 Favorites</option>' +
-'<option value="MST2_Week_6_Movie">MST2 - Week 6 Movie</option>' +
-'<option value="MST2_Week_7_Sky">MST2 - Week 7 Sky</option>' +
-'<option value="MST2_Week_8_Space">MST2 - Week 8 Space</option>' +
-'<option value="MST2_Week_9_No_Buster">MST2 - Week 9 No Buster</option>' +
-'<option value="MST2_Week_10_Indie">MST2 - Week 10 Indie</option>' +
-'<option value="MST2_Week_11_Fortress">MST2 - Week 11 Fortress</option>' +
-'<option value="MST2_Week_12_Nightmare">MST2 - Week 12 Nightmare</option>' +
-'<option value="MST2_Week_13_All_In_One">MST2 - Week 13 All In One</option>' +
-'<option value="MST2_Week_14_Finale">MST2 - Week 14 Finale</option>' +
+'<option value="MST2_-_Week_1_Intro">MST2 - Week 1 Intro</option>' +
+'<option value="MST2_-_Week_2_Underground">MST2 - Week 2 Underground</option>' +
+'<option value="MST2_-_Week_3_Box">MST2 - Week 3 Box</option>' +
+'<option value="MST2_-_Week_4_Quack_Man">MST2 - Week 4 Quack Man</option>' +
+'<option value="MST2_-_Week_5_Favorites">MST2 - Week 5 Favorites</option>' +
+'<option value="MST2_-_Week_6_Movie">MST2 - Week 6 Movie</option>' +
+'<option value="MST2_-_Week_7_Sky">MST2 - Week 7 Sky</option>' +
+'<option value="MST2_-_Week_8_Space">MST2 - Week 8 Space</option>' +
+'<option value="MST2_-_Week_9_No_Buster">MST2 - Week 9 No Buster</option>' +
+'<option value="MST2_-_Week_10_Indie">MST2 - Week 10 Indie</option>' +
+'<option value="MST2_-_Week_11_Fortress">MST2 - Week 11 Fortress</option>' +
+'<option value="MST2_-_Week_12_Nightmare">MST2 - Week 12 Nightmare</option>' +
+'<option value="MST2_-_Week_13_All_In_One">MST2 - Week 13 All In One</option>' +
+'<option value="MST2_-_Week_14_Finale">MST2 - Week 14 Finale</option>' +
 '<option value="Unknown_Area">Unknown Area</option>' +
 '<option value="Mikey_Sierra_Tango">Mikey Sierra Tango</option>' +
 '<option value="Jump_Into_Lake_Fierce">Jump Into Lake Fierce</option>' +
@@ -3016,17 +3027,18 @@ var moved = 0;
 var extended = 0;
 
 function moveFooter() {
-    const footer = document.getElementById('footerC');
+    /*const footer = document.getElementById('footerC');
     const currentTop = parseInt(window.getComputedStyle(footer).top, 10) || 0;
 
     if (moved == 0) {
         // Move the footer up by 305px
         footer.style.top = `${currentTop + 305}px`;
         moved = 1;  // Set the flag so it won't move back again unless reset
-    }
+    }*/
 }
 
 function extendMenuContainer() {
+    /*
     const menuContainer = document.querySelector('.menu-container');
     const currentHeight = parseInt(window.getComputedStyle(menuContainer).height, 10) || 0;
 
@@ -3035,9 +3047,11 @@ function extendMenuContainer() {
         menuContainer.style.height = `${currentHeight + 305}px`;
         extended = 1;  // Set the flag so it won't extend again unless reset
     }
+    */
 }
 
 function reduceMenuContainer() {
+    /*
     const menuContainer = document.querySelector('.menu-container');
     
     // Get the current height of the menu container and parse it as an integer
@@ -3045,6 +3059,7 @@ function reduceMenuContainer() {
     
     // Set the new height by adding 305px
     menuContainer.style.height = `${currentHeight - 305}px`;
+    */
 }
 </script>
 
