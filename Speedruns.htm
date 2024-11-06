@@ -1814,50 +1814,50 @@
             <section id="collapsible-list" class="collapsible-list">
                 <div id="levelPacks" style="display: none;">
                     <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Group_A.png" alt="MST1 - Group A">
-                        <span>LevelPack: MST1 - Group A</span>
+                        <img src="Mega%20Speedruns_files/MST1_Group_A.png" alt="MST1 - Week 1 Group A">
+                        <span>LevelPack: MST1 - Week 1 Group A</span>
                         <span>1st: </span>
                         <span>2nd: </span>
                         <span>3rd: </span>
                     </li>
                     <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Group_B.png" alt="MST1 - Group B">
-                        <span>LevelPack: MST1 - Group B</span>
+                        <img src="Mega%20Speedruns_files/MST1_Group_B.png" alt="MST1 - Week 2 Group B">
+                        <span>LevelPack: MST1 - Week 2 Group B</span>
                         <span>1st: </span>
                         <span>2nd: </span>
                         <span>3rd: </span>
                     </li>
                     <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Round_1.png" alt="MST1 - Round 1">
-                        <span>LevelPack: MST1 - Round 1</span>
+                        <img src="Mega%20Speedruns_files/MST1_Round_1.png" alt="MST1 - Week 3 Round 1">
+                        <span>LevelPack: MST1 - Week 3 Round 1</span>
                         <span>1st: </span>
                         <span>2nd: </span>
                         <span>3rd: </span>
                     </li>
                     <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Round_2.png" alt="MST1 - Round 2">
-                        <span>LevelPack: MST1 - Round 2</span>
+                        <img src="Mega%20Speedruns_files/MST1_Round_2.png" alt="MST1 - Week 4 Round 2">
+                        <span>LevelPack: MST1 - Week 4 Round 2</span>
                         <span>1st: </span>
                         <span>2nd: </span>
                         <span>3rd: </span>
                     </li>
                     <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Round_3.png" alt="MST1 - Round 3">
-                        <span>LevelPack: MST1 - Round 3</span>
+                        <img src="Mega%20Speedruns_files/MST1_Round_3.png" alt="MST1 - Week 5 Round 3">
+                        <span>LevelPack: MST1 - Week 5 Round 3</span>
                         <span>1st: </span>
                         <span>2nd: </span>
                         <span>3rd: </span>
                     </li>
                     <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Round_4.png" alt="MST1 - Round 4 Finals">
-                        <span>LevelPack: MST1 - Round 4 (Finals)</span>
+                        <img src="Mega%20Speedruns_files/MST1_Round_4.png" alt="MST1 - Week 6 Round 4 Finals">
+                        <span>LevelPack: MST1 - Week 6 Round 4 (Finals)</span>
                         <span>1st: </span>
                         <span>2nd: </span>
                         <span>3rd: </span>
                     </li>
                     <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Bonus.png" alt="MST1 - Bonus">
-                        <span>LevelPack: MST1 - Bonus</span>
+                        <img src="Mega%20Speedruns_files/MST1_Bonus.png" alt="MST1 - Week 7 Bonus">
+                        <span>LevelPack: MST1 - Week 7 Bonus</span>
                         <span>1st: </span>
                         <span>2nd: </span>
                         <span>3rd: </span>
@@ -2385,7 +2385,7 @@
     // Flag to track if the level was found
     let levelFound = false;
 
-    levelName = levelName.replace(/\bWeek\b\s+\S+/, "-");
+    levelName = levelName.replace(/\bWeek\b\s+\d+/g, (match) => `- ${match}`);
 
     // Store the times for each level in an object (if not already existing)
     if (!window.leaderboard) window.leaderboard = {};
