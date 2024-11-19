@@ -117,7 +117,7 @@
         <div class="title-text"">
             <a href="https://example.com" class="clickable-text"></a>
             <h2>Speedruns</h2>
-            <span id="clickable-text">Reorder</span>
+            <span id="clickable-text"></span>
         </div>
         
         <div class="layout" id="layout">
@@ -2325,7 +2325,6 @@ function showhide(elementId) {
         var x = "0";
         var i = "0";
         var y = "0";
-        var z = "0";
 
         function getID() {
             const dbRef = ref(db);
@@ -2483,11 +2482,10 @@ function showhide(elementId) {
                     console.log(error);
                 }
             })
-            z = "1";
         }
 
         document.getElementById("clickable-text").addEventListener("click", () => {
-                getID();
+                //getID();
                 if(Number(y) == 0) y = "1";
                     else y = "0";
         });
