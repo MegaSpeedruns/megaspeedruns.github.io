@@ -114,8 +114,10 @@
             </div>
         </div>
 
-        <div class="title-text">
+        <div class="title-text"">
+            <a href="https://example.com" class="clickable-text"></a>
             <h2>Speedruns</h2>
+            <span id="clickable-text">Reorder</span>
         </div>
         
         <div class="layout" id="layout">
@@ -2157,7 +2159,7 @@
                         <label>Category</label>
                         <select id="Category">
                             <option value="Any%">Any%</option>
-                            <option value="Damageless/Minimum Damage">Damageless/Min-Damage</option>
+                            <option value="Damageless/Min-Damage">Damageless/Min-Damage</option>
                         </select>
 
                         <br><br>
@@ -2211,6 +2213,10 @@
             showhide('allSpeedruns');
         });
         */
+        function handleClick() {
+        alert("You clicked the title text!");
+        // Add your custom logic here
+    }
 </script>
 
 <script>
@@ -2250,10 +2256,11 @@
         sections.forEach(section => {
             section.style.display = 'none';
         });
+        
     }
 
     // Function to show the clicked section and hide others
-    function showhide(elementId) {
+function showhide(elementId) {
     // Get all collapsible elements by class name or specific IDs
     var allElements = document.querySelectorAll('.collapsible-list > div'); // Adjust selector as needed
 
@@ -2267,6 +2274,17 @@
             element.style.display = "none";
         }
     });
+
+    // Handle clickable-text visibility
+    const clickableText = document.getElementById('clickable-text');
+
+    // Determine which button was clicked
+    const clickedButton = document.activeElement; // This gets the currently focused button
+    if (clickedButton && clickedButton.textContent.trim() === "All Speedruns") {
+        clickableText.style.display = "inline"; // Show the clickable-text
+    } else if (Number(z) != "0") {
+        clickableText.style.display = "none"; // Hide the clickable-text
+    }
 }
 </script>
 
@@ -2306,9 +2324,15 @@
 
         var x = "0";
         var i = "0";
+        var y = "0";
+        var z = "0";
 
         function getID() {
             const dbRef = ref(db);
+            x = "0";
+            i = "0";
+            document.getElementById("allSpeedruns").innerHTML = "";
+            console.log("Get ID called");
 
             get(child(dbRef, 'SpeedRunner/')).then((snapshot) => {
                 if (snapshot.exists()) {
@@ -2437,7 +2461,8 @@
                         '<span><a href="' + snapshot.val().Link + '" target="_blank">Watch Run</a></span>';
                     }
 
-                    document.getElementById("allSpeedruns").appendChild(list);
+                    if(Number(y) == "0") document.getElementById("allSpeedruns").prepend(list);
+                    else document.getElementById("allSpeedruns").append(list);
 
                     console.log(level);
                     console.log(runner);
@@ -2458,7 +2483,14 @@
                     console.log(error);
                 }
             })
+            z = "1";
         }
+
+        document.getElementById("clickable-text").addEventListener("click", () => {
+                getID();
+                if(Number(y) == 0) y = "1";
+                    else y = "0";
+        });
 
     function updateLeaderboard(levelName, runner, time, data) {
     // Locate all list items
