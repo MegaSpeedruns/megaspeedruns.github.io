@@ -143,8 +143,6 @@ body {
 /* Title text styles */
 .title-text {
     position: relative;
-    /* Move text down from the top */
-    /* Center horizontally and adjust vertical positioning */
     text-align: center;
     color: white;
     padding-top: 12px;
@@ -155,7 +153,14 @@ body {
     left: 202px;
     width: calc(100% - 202px);
     flex-wrap: wrap;
-    /* Adjust width as needed */
+}
+
+#clickable-text {
+    cursor: pointer; /* Makes the text appear interactive */
+}
+
+#clickable-text:hover {
+    color: orange;
 }
 
 /* Links section styles */
