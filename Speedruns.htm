@@ -2437,7 +2437,7 @@ function showhide(elementId) {
                     var runnerSnap = snapshot.val().Runner;
 
                     var timeSnap = snapshot.val().Time;
-                    let result = timeSnap.replace(/^0+:.*/, "");
+                    let result = timeSnap.replace(/^0+:?/, "");
                     timeSnap = result;
 
                     var catSnap = snapshot.val().category;
