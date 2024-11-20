@@ -2435,7 +2435,11 @@ function showhide(elementId) {
 
                     var lvlSnap = snapshot.val().Run;
                     var runnerSnap = snapshot.val().Runner;
+
                     var timeSnap = snapshot.val().Time;
+                    let result = timeSnap.replace(/^0+:.*/, "");
+                    timeSnap = result;
+
                     var catSnap = snapshot.val().category;
                     var linkSnap = snapshot.val().Link;
 
@@ -2451,12 +2455,12 @@ function showhide(elementId) {
                     if (level.indexOf(word) !== -1) {
                         list.innerHTML = '<img src="Mega%20Speedruns_files/' + snapshot.val().Tournament + 'SS/' + snapshot.val().Run + '.png"' + snapshot.val().Run + ' alt="' + level + '" class="imgResize">' +
                         '<span>LevelPack: ' + level + '</span>' + '<span>Category: ' + snapshot.val().Category + '</span>' +
-                        '<span>Runner: ' + snapshot.val().Runner + '</span>' + '<span>Time: ' + snapshot.val().Time + '</span>' +
+                        '<span>Runner: ' + snapshot.val().Runner + '</span>' + '<span>Time: ' + timeSnap + '</span>' +
                         '<span><a href="' + snapshot.val().Link + '" target="_blank">Watch Run</a></span>';
                     } else {
                         list.innerHTML = '<img src="Mega%20Speedruns_files/' + snapshot.val().Tournament + 'SS/' + snapshot.val().Run + '.png"' + snapshot.val().Run + ' alt="' + level + '" class="imgResize">' +
                         '<span>Level: ' + level + '</span>' + '<span>Category: ' + snapshot.val().Category + '</span>' +
-                        '<span>Runner: ' + snapshot.val().Runner + '</span>' + '<span>Time: ' + snapshot.val().Time + '</span>' +
+                        '<span>Runner: ' + snapshot.val().Runner + '</span>' + '<span>Time: ' + timeSnap + '</span>' +
                         '<span><a href="' + snapshot.val().Link + '" target="_blank">Watch Run</a></span>';
                     }
 
