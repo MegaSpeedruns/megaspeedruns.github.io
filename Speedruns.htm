@@ -2495,7 +2495,7 @@ function showhide(elementId) {
                     else y = "0";
         });
 
-    function updateLeaderboard(levelName, runner, time, data) {
+        function updateLeaderboard(levelName, runner, time, data) {
     // Locate all list items
     const items = document.querySelectorAll('.list-item');
 
@@ -2509,7 +2509,12 @@ function showhide(elementId) {
     if (!window.leaderboard[levelName]) window.leaderboard[levelName] = [];
 
     // Add the runner and their time to the leaderboard for this level
-    window.leaderboard[levelName].push({ runner, time });
+    window.leaderboard[levelName].push({
+        runner,
+        time,
+        link: data ? data.link : null,
+        category: data ? data.category : ''
+    });
 
     // Sort the times by ascending order (fastest first)
     window.leaderboard[levelName].sort((a, b) => parseTime(a.time) - parseTime(b.time));
@@ -2537,39 +2542,38 @@ function showhide(elementId) {
             }
 
             // Update the inner text of each place with sorted leaderboard
-            firstPlace.innerHTML = window.leaderboard[levelName][0]
-                ? `1st: ${window.leaderboard[levelName][0].runner} - ${window.leaderboard[levelName][0].time} ${data ? data.category : ''}`
-                : '1st: ';
-            secondPlace.innerHTML = window.leaderboard[levelName][1]
-                ? `2nd: ${window.leaderboard[levelName][1].runner} - ${window.leaderboard[levelName][1].time} ${data ? data.category : ''}`
-                : '2nd: ';
-            thirdPlace.innerHTML = window.leaderboard[levelName][2]
-                ? `3rd: ${window.leaderboard[levelName][2].runner} - ${window.leaderboard[levelName][2].time} ${data ? data.category : ''}`
-                : '3rd: ';
+            const leaderboard = window.leaderboard[levelName];
 
-            // Ensure we remove any existing "Watch Run" link before appending a new one to the 1st place
-            const existingLink = firstPlace.querySelector('a');
-            if (existingLink) {
-                firstPlace.removeChild(existingLink);
-            }
+            // Helper to update a position and optionally add a link
+            const updatePosition = (span, position, entry) => {
+                if (entry) {
+                    span.innerHTML = `${position}: ${entry.runner} - ${entry.time} ${entry.category}`;
+                    if (entry.link) {
+                        // Add the "Watch Run" link
+                        const existingLink = span.querySelector('a');
+                        if (existingLink) span.removeChild(existingLink); // Remove existing link
 
-            // Add the "Watch Run" link after the 1st place if data.link exists
-            if (data && data.link) {
-                console.log(`Adding link for ${levelName}: ${data.link}`);  // Debugging log
+                        const watchRunLink = document.createElement('a');
+                        watchRunLink.href = entry.link;
+                        watchRunLink.target = '_blank';
+                        watchRunLink.textContent = 'Watch Run';
 
-                // Create the link element
-                const watchRunLink = document.createElement('a');
-                watchRunLink.href = data.link;
-                watchRunLink.target = '_blank';  // Open link in a new tab
-                watchRunLink.textContent = 'Watch Run';
+                        span.appendChild(document.createElement('br')); // Line break
+                        span.appendChild(watchRunLink); // Append new link
+                    }
+                } else {
+                    span.innerHTML = `${position}: `;
+                }
+            };
 
-                // Append the link to the 1st place span
-                firstPlace.appendChild(document.createElement('br'));  // Add a line break
-                firstPlace.appendChild(watchRunLink);
-            }
+            // Update each position
+            updatePosition(firstPlace, '1st', leaderboard[0]);
+            updatePosition(secondPlace, '2nd', leaderboard[1]);
+            updatePosition(thirdPlace, '3rd', leaderboard[2]);
         }
     });
 }
+
 
 // Utility function to parse time in format "minutes:seconds.milliseconds" into milliseconds
 function parseTime(timeString) {
