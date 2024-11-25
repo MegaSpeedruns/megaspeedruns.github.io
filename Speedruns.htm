@@ -2180,17 +2180,17 @@
                         <label>MS</label>
                         <input class="time" type="text" id="Millisecond">
                         <br><br>
-                        <p id="TimeInfo"> Time format: [Hours | Minutes | Seconds | Milliseconds] </p>
+                        <p id="TimeInfo"> Time format: [ Hours | Minutes | Seconds | Milliseconds ] </p>
 
                         <br>
 
-                        Levels: Run starts when "Ready" first appears on screen, and ends when screen (fully) fades to black <br><br>
-                        Packs: Run starts from hit play on first level, and ends when final level (fully) fades to black <br><br>
+                        Levels: Run starts when "Ready" first appears on screen, and ends when screen (fully) fades to black. <br><br>
+                        Packs: Run starts from hit play on first level, and ends when final level (fully) fades to black. <br><br>
                         <p id="InfoEnd">(No Edited Runs) </p>
                         
                         <br>
 
-                        <button id="AddBtn">
+                        <button class="sendButton" id="AddBtn">
                             <h1>Send</h1>
                         </button>
                     </ul>
@@ -2389,11 +2389,12 @@ function showhide(elementId) {
                 ID: Number(x)
             })
                 .then(() => {
-                    console.log(Hour);
                     const audio = new Audio('Mega%20Speedruns_files/Sounds/MM1UP.wav'); 
                     audio.volume = 0.4;
                     audio.play(); 
-                    alert("Run Submited Successfully")
+                    setTimeout(() => {
+                        alert("Run Submitted Successfully");
+                    }, 20);
                 })
                 .catch((error) => {
                     alert("Unsuccessful");
