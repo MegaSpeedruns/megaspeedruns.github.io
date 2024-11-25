@@ -263,17 +263,26 @@ select {
     max-width: 300px;
 }
 
-input[type="submit"] {
+.input[type="submit"] {
     font-size: 1.1em;
     padding: 10px 20px;
 }
 
-input {
+.input {
     position: relative;
     margin-left: 20px;
     padding: 10px;
     font-size: 1.1em;
     min-width: 30vh;
+    min-height: 2vh;
+}
+
+.time {
+    position: relative;
+    margin-left: 20px;
+    padding: 10px;
+    font-size: 1.1em;
+    max-width: 4vh;
     min-height: 2vh;
 }
 
