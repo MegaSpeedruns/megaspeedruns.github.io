@@ -163,34 +163,6 @@ body {
     color: orange;
 }
 
-/* Links section styles */
-.links, .links-MMM, .links-mst1, .links-mst2 {
-    position: relative;
-    top: 80px;
-    /* Move the section down */
-    left: 50%;
-    transform: translate(-50%, 0px);
-    width: 90%;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 40px 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.links-speedruns {
-    position: relative;
-    top: 80px;
-    /* Move the section down */
-    left: 50%;
-    transform: translate(-50%, 0px);
-    width: 90%;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 40px 20px;
-    border-radius: 10px;
-}
-
 .prompt {
     font-size: 0.0em;
 }
@@ -252,8 +224,6 @@ label {
     background-color: #3117BB; /* Optional hover effect */
 }
 
-
-
 select {
     position: relative;
     margin-left: 20px;
@@ -295,62 +265,6 @@ form {
     padding: 0px;
     margin: 20px auto;
     text-align: center;
-}
-
-
-.links h2 {
-    margin-bottom: 20px;
-}
-
-.link-list {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-}
-
-.link-list-alt {
-    display: flex;
-    position: center;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-}
-
-.link-item {
-    flex: 1 1 30%;
-    margin: 10px;
-    box-sizing: border-box;
-    text-align: center;
-}
-
-.link-item img {
-    width: 250px;
-    height: 250px;
-    object-fit: cover;
-}
-
-.link-item-packs img {
-    width: 323px;
-    height: 290px;
-    object-fit: cover;
-    padding: 10px 0px;
-}
-
-.link-item-wide img, .link-item-widen img {
-    width: 400px;
-    height: 225px;
-    object-fit: cover;
-    padding: 0px;
-}
-
-.link-item-widen img {
-    padding: 0px 88px;
-}
-
-.link-item-alt img {
-    width: 400px;
-    height: 350px;
-    object-fit: cover;
-    padding: 10px 0px;
 }
 
 /* Collapsible list styles */
@@ -467,20 +381,6 @@ form {
     overflow: hidden;
 }
 
-.content {
-    padding: 0 20px;
-    display: none;
-    overflow: hidden;
-    text-align: justify;
-    text-transform: capitalize;
-}
-
-.content ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
 a {
     color: lightblue;
     text-decoration: none;
@@ -494,14 +394,22 @@ a:hover {
     /* Optional: Add underline on hover */
 }
 
-.list-item, .list-item-speedrun {
+.list-item {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    align-items: center;
+    flex-wrap: wrap; /* Allows items to wrap within the container */
+    justify-content: center; /* Aligns items horizontally */
+    align-items: flex-start; /* Aligns items to the top */
     padding: 10px;
     border-bottom: 1px solid #ccc;
-    font-size: 1.20em;
+    font-size: 1.2em;
+}
+
+.list-item img {
+    width: 100px;
+    height: 80px;
+    margin-right: 20px;
+    border-radius: 5px;
+    margin-left: 5px;
 }
 
 .spacing {
@@ -514,13 +422,6 @@ a:hover {
     font-size: 1.20em;
 }
 
-.list-item img {
-    width: 100px;
-    height: 80px;
-    margin-right: 5px;
-    border-radius: 5px;
-}
-
 .imgResize {
     width: 100px;
     height: 80px;
@@ -528,21 +429,28 @@ a:hover {
     border-radius: 5px;
 }
 
-.list-item-speedrun img {
-    width: 100px;
-    height: 80px;
-    margin-right: 5px;
-    border-radius: 5px;
+.list-item span {
+    display: block; /* Ensures spans stack when content exceeds width */
+    width: 100%; /* Adjust width to wrap within the container */
+    word-wrap: break-word; /* Allows long words or URLs to break */
+    text-align: left; /* Centers the text */
+    overflow-wrap: break-word; /* Ensures compatibility for modern browsers */
+    max-width: 19%; /* Set a maximum width to trigger wrapping */
+    margin: auto; /* Centers the span within its container */
 }
 
-.list-item span {
-    display: inline-block;
-    width: 20%;
-    text-align: center;
-    color: white;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-    display: flex;
-    justify-content: space-between;
+.content span {
+    display: block; /* Ensures spans stack when content exceeds width */
+    width: 100%; /* Adjust width to wrap within the container */
+    word-wrap: break-word; /* Allows long words or URLs to break */
+    text-align: left; /* Centers the text */
+    overflow-wrap: break-word; /* Ensures compatibility for modern browsers */
+    max-width: 15%; /* Set a maximum width to trigger wrapping */ /* Centers the span within its container */
+}
+
+.content img {
+    margin-left: 5px;
+    margin-right: -10px;
 }
 
 footer {
