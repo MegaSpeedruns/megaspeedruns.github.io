@@ -2165,22 +2165,29 @@
                         <br><br>
                         
                         <label>Runner</label>
-                        <input type="text" id="Runner">
+                        <input class="input" type="text" id="Runner">
 
                         <label>Link (Video)</label>
-                        <input type="text" id="Link">
+                        <input class="input" type="text" id="Link">
 
-                        <label>Time</label>
-                        <input type="text" id="Time">
-                        (Format: H:M:S.MS)
-
+                        <label>Time:</label><label>H</label>
+                        <input class="time" type="text" id="Hour">
+                        <label>M</label>
+                        <input class="time" type="text" id="Minute">
+                        <label>S</label>
+                        <input class="time" type="text" id="Second">
+                        <label>MS</label>
+                        <input class="time" type="text" id="Millisecond">
                         <br><br>
+                        <p id="TimeInfo"> Time format: [Hours | Minutes | Seconds | Milliseconds] </p>
 
-                        Packs: Run starts from hit play on first level, and ends when final level (fully) fades to black <br><br>
+                        <br>
+
                         Levels: Run starts when "Ready" first appears on screen, and ends when screen (fully) fades to black <br><br>
-                        (No Edited Runs)
+                        Packs: Run starts from hit play on first level, and ends when final level (fully) fades to black <br><br>
+                        <p id="InfoEnd">(No Edited Runs) </p>
                         
-                        <br><br>
+                        <br>
 
                         <button id="AddBtn">
                             <h1>Send</h1>
@@ -2282,7 +2289,8 @@ function showhide(elementId) {
     const clickedButton = document.activeElement; // This gets the currently focused button
     if (clickedButton && clickedButton.textContent.trim() === "All Speedruns") {
         clickableText.style.display = "inline"; // Show the clickable-text
-    } else if (Number(z) != "0") {
+    } else //if (Number(z) != "0") 
+    {
         clickableText.style.display = "none"; // Hide the clickable-text
     }
 }
@@ -2312,7 +2320,12 @@ function showhide(elementId) {
         let Run = document.getElementById('Run');
         let Category = document.getElementById('Category');
         let ID = document.getElementById('ID');
-        let Time = document.getElementById('Time');
+        //let Time = document.getElementById("Time");
+        let Hour = document.getElementById('Hour');
+        let Minute = document.getElementById('Minute'); 
+        let Second = document.getElementById('Second');  
+        let Millisecond = document.getElementById('Millisecond');
+        //let Time = Hour + ":" + Minute + ":" + Second + "." + Millisecond;
 
         let AddBtn = document.getElementById('AddBtn');
         let UpdBtn = document.getElementById('UpdBtn');
@@ -2346,6 +2359,7 @@ function showhide(elementId) {
                 //alert("Unsuccessful");
                 //console.log(error);
                 }
+                document.getElementById("InfoEnd").innerHTML += "&nbsp;Runs Submited: " + Number(x);
             })
         }
 
@@ -2358,16 +2372,26 @@ function showhide(elementId) {
         }
 
         function AddData() {
+            var addZero = "";
+            var addZero2 = "";
+
+            if (Minute.value.length == 1) addZero = "0";
+            if (Second.value.length == 1) addZero2 = "0";
+
             set(ref(db, 'SpeedRunner/' + x), {
                 Runner: Runner.value,
                 Link: Link.value,
                 Tournament: Tournament.value,
-                Time: Time.value,
+                Time: Hour.value + ":" + addZero + Minute.value + ":" + addZero2 + Second.value + "." + Millisecond.value,
                 Run: Run.value,
                 Category: Category.value,
                 ID: Number(x)
             })
                 .then(() => {
+                    console.log(Hour);
+                    const audio = new Audio('Mega%20Speedruns_files/Sounds/MM1UP.wav'); 
+                    audio.volume = 0.4;
+                    audio.play(); 
                     alert("Run Submited Successfully")
                 })
                 .catch((error) => {
