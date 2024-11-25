@@ -400,7 +400,7 @@ a:hover {
     justify-content: center; /* Aligns items horizontally */
     align-items: flex-start; /* Aligns items to the top */
     padding: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #555;
     font-size: 1.2em;
 }
 
@@ -418,7 +418,7 @@ a:hover {
     flex-wrap: wrap;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #555;
     font-size: 1.20em;
 }
 
@@ -439,7 +439,7 @@ a:hover {
     margin: auto; /* Centers the span within its container */
 }
 
-.content span {
+.speedruns span {
     display: block; /* Ensures spans stack when content exceeds width */
     width: 100%; /* Adjust width to wrap within the container */
     word-wrap: break-word; /* Allows long words or URLs to break */
@@ -448,7 +448,11 @@ a:hover {
     max-width: 15%; /* Set a maximum width to trigger wrapping */ /* Centers the span within its container */
 }
 
-.content img {
+.speedruns .list-item {
+    border-bottom: 1px solid #555;
+}
+
+.speedruns img {
     margin-left: 5px;
     margin-right: -10px;
 }
