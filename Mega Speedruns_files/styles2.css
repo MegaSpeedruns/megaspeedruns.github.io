@@ -117,10 +117,12 @@ body {
 
 .menu-btn:hover {
     background-color: #3117BB;
+    box-shadow: 0 0 5px #3117BB;
 }
 
 .menu-btn:active {
     background-color: #3117BB;
+    box-shadow: 0 0 5px #3117BB;
 }
 
 .submenu {
@@ -224,15 +226,6 @@ label {
     background-color: #3117BB; /* Optional hover effect */
 }
 
-select {
-    position: relative;
-    margin-left: 20px;
-    font-size: 1.1em;
-    padding: 10px;
-    width: 100%;
-    max-width: 300px;
-}
-
 .input[type="submit"] {
     font-size: 1.1em;
     padding: 10px 20px;
@@ -245,6 +238,12 @@ select {
     font-size: 1.1em;
     min-width: 30vh;
     min-height: 2vh;
+    background-color: #11111175; 
+    color: white; 
+    border: 1px solid #575757; 
+    border-radius: 5px;
+    outline: none; 
+    transition: all 0.2s ease;
 }
 
 .time {
@@ -254,6 +253,51 @@ select {
     font-size: 1.1em;
     max-width: 4vh;
     min-height: 2vh;
+    background-color: #11111175; 
+    color: white; 
+    border: 1px solid #575757; 
+    border-radius: 5px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.input:focus {
+    border-color: orange; 
+    box-shadow: 0 0 5px orange; 
+}
+
+.time:focus {
+    border-color: orange; 
+    box-shadow: 0 0 5px orange; 
+}
+
+select {
+    position: relative;
+    margin-left: 20px;
+    font-size: 1.1em;
+    padding: 10px;
+    width: 100%;
+    max-width: 300px;
+    background-color: #11111175;
+    color: white;
+    border: 1px solid #575757;
+    border-radius: 5px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+select option {
+    background-color: #222;
+}
+
+select:focus {
+    border-color: orange; 
+    box-shadow: 0 0 5px orange;
+    background-color: #11111175;
+}
+
+option:focus {
+    background-color: orange;
 }
 
 form {
@@ -550,4 +594,21 @@ footer {
 
 .buttonStyle:hover {
     background-color: #3117BB; /* Darker green on hover */
+}
+
+.sendButton {
+    width: 80px;
+    height: 35px;
+    border-style: none;
+    border-radius: 5px;
+    background-color: #333;
+    outline: none; /* Remove outline */
+    border: 1px solid #777; /* Default border color */
+    cursor: pointer; /* Ensure the button has a pointer cursor */
+    transition: all 0.2s ease; /* Optional: Smooth transition */
+}
+
+.sendButton:hover {
+    border: 1px solid orange; /* Change border to orange on hover */
+    box-shadow: 0 0 5px orange; /* Optional: Add glow effect */
 }
