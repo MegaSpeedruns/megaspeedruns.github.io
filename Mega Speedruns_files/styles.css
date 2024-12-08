@@ -262,6 +262,7 @@ form {
     height: 290px;
     object-fit: cover;
     padding: 10px 0px;
+    border-radius: 30px;
 }
 
 .link-item-wide img, .link-item-widen img {
@@ -280,6 +281,7 @@ form {
     height: 350px;
     object-fit: cover;
     padding: 10px 0px;
+    border-radius: 30px;
 }
 
 /* Collapsible list styles */
