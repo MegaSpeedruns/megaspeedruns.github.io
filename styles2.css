@@ -291,8 +291,8 @@ select option {
 }
 
 select:focus {
-    border-color: orange; 
-    box-shadow: 0 0 5px orange;
+    border-color: blue; 
+    box-shadow: 0 0 5px blue;
     background-color: #11111175;
 }
 
