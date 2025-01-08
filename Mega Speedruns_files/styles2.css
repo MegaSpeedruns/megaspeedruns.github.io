@@ -24,6 +24,10 @@ h1 {
     font-size: 1.75em;
 }
 
+h2 {
+    font-size: 1.2em;
+}
+
 /* Header styles */
 header {
     display: flex;
@@ -64,7 +68,7 @@ nav ul li {
 nav ul li a {
     color: #fff;
     display: block;
-    padding: 15px;
+    padding: 10px;
 }
 
 
@@ -74,13 +78,12 @@ body {
     padding: 0;
 }
 
-
 .menu-container {
     width: 200px;
     position: absolute;
     left: 0;
-    top: 59px;
-    height: 1167px;
+    top: 48px;
+    height: 1071px;
     background-color: #222;
     padding-top: 0px;
     border-left: 1px solid #555;
@@ -106,13 +109,13 @@ body {
 .menu-btn {
     background-color: #333;
     color: white;
-    padding: 15px;
+    padding: 10px;
     border: none;
     text-align: left;
     width: 100%;
     cursor: pointer;
     outline: none;
-    font-size: 18px;
+    font-size: 5px;
 }
 
 .menu-btn:hover {
@@ -147,8 +150,8 @@ body {
     position: relative;
     text-align: center;
     color: white;
-    padding-top: 12px;
-    padding-bottom: 10px;
+    padding-top: 9px;
+    padding-bottom: 3px;
     min-height: 30px;
     background: rgba(0, 0, 0, 0.5);
     border-radius: 0px;
@@ -180,13 +183,13 @@ label {
 .menu-btn {
     background-color: #333;
     color: white;
-    padding: 15px;
+    padding: 10px;
     border: none;
     text-align: left;
     width: 100%;
     cursor: pointer;
     outline: none;
-    font-size: 18px;
+    font-size: 1.1em;
 }
 
 /* Default submenu button style */
@@ -291,8 +294,8 @@ select option {
 }
 
 select:focus {
-    border-color: orange; 
-    box-shadow: 0 0 5px orange;
+    border-color: blue; 
+    box-shadow: 0 0 5px blue;
     background-color: #11111175;
 }
 
@@ -331,7 +334,7 @@ form {
     left: 201px;
     width: calc(100% - 203px);
     text-align: center;
-    height: 1115px;
+    height: 1019px;
     border-radius: 0px;
     flex-wrap: wrap;
 }
@@ -443,14 +446,17 @@ a:hover {
     flex-wrap: wrap; /* Allows items to wrap within the container */
     justify-content: center; /* Aligns items horizontally */
     align-items: flex-start; /* Aligns items to the top */
-    padding: 10px;
+    padding-left: 5px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-right: 0px;
     border-bottom: 1px solid #555;
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 .list-item img {
-    width: 100px;
-    height: 80px;
+    width: 90px;
+    height: 72px;
     margin-right: 20px;
     border-radius: 5px;
     margin-left: 5px;
@@ -461,14 +467,17 @@ a:hover {
     justify-content: space-between;
     flex-wrap: wrap;
     align-items: center;
-    padding: 10px;
+    padding-right: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
     border-bottom: 1px solid #555;
-    font-size: 1.20em;
+    font-size: 1.1em; /* Speedruns Category Font Size*/
 }
 
 .imgResize {
-    width: 100px;
-    height: 80px;
+    width: 90px;
+    height: 72px;
     margin-right: 5px;
     border-radius: 5px;
 }
@@ -479,7 +488,7 @@ a:hover {
     word-wrap: break-word; /* Allows long words or URLs to break */
     text-align: left; /* Centers the text */
     overflow-wrap: break-word; /* Ensures compatibility for modern browsers */
-    max-width: 19%; /* Set a maximum width to trigger wrapping */
+    max-width: 20%; /* Set a maximum width to trigger wrapping */
     margin: auto; /* Centers the span within its container */
 }
 
@@ -509,7 +518,7 @@ footer {
     padding: 10px 0;
     width: 100%;
     position: absolute;
-    top: 97vh;
+    top: calc(100vh - 38);
     left: 0;
 }
 
@@ -577,19 +586,19 @@ footer {
 
 .buttonStyle {
     background-color: #333; /* Background */
-            border: none; /* Remove borders */
-            color: white; /* White text */
-            padding: 5px;
-            min-width: 70px;
-            max-width: 70px;
-            max-height: 70px;
-            text-align: center; /* Center the text */
-            text-decoration: none; /* Remove underline */
-            display: inline-block; /* Make the button an inline-block */
-            font-size: 16px; /* Increase font size */
-            cursor: pointer; /* Add a pointer on hover */
-            border-radius: 8px; /* Rounded corners */
-            transition: background-color 0.2s ease; /* Smooth transition on hover */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 5px;
+    min-width: 70px;
+    max-width: 70px;
+    max-height: 70px;
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the button an inline-block */
+    font-size: 16px; /* Increase font size */
+    cursor: pointer; /* Add a pointer on hover */
+    border-radius: 8px; /* Rounded corners */
+    transition: background-color 0.2s ease; /* Smooth transition on hover */
 }
 
 .buttonStyle:hover {
