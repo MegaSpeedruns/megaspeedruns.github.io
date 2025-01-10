@@ -83,7 +83,7 @@ body {
     position: absolute;
     left: 0;
     top: 48px;
-    height: 1071px;
+    height: 1062px;
     background-color: #222;
     padding-top: 0px;
     border-left: 1px solid #555;
@@ -280,7 +280,7 @@ select {
     font-size: 1.1em;
     padding: 10px;
     width: 100%;
-    max-width: 300px;
+    max-width: 250px;
     background-color: #11111175;
     color: white;
     border: 1px solid #575757;
