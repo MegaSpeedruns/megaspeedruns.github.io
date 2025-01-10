@@ -42,7 +42,7 @@
                     <button class="menu-btn" onclick="toggleMenuItem(this)">All Speedruns</button>
                 </div>
                 <div class="menu-item">
-                    <button class="menu-btn">Leaderboards MST1</button>
+                    <button class="menu-btn">MST1 Levels</button>
                     <div class="submenu">
                         <button type="button" class="expandable" onclick="javascript:showhide('MST1W1')">Week 1 - Group A</button>
                         <button type="button" class="expandable" onclick="javascript:showhide('MST1W2')">Week 2 - Group B</button>
@@ -53,8 +53,11 @@
                         <button type="button" class="expandable" onclick="javascript:showhide('MST1W7')">Week 7 - Bonus</button>
                     </div>
                 </div>
+                <div class="menu-item" class="expandable" onclick="showhide('levelPacks'); moveFooter(); extendMenuContainer();">
+                    <button class="menu-btn" onclick="toggleMenuItem(this)">MST1 Levelpacks</button>
+                </div>
                 <div class="menu-item">
-                    <button class="menu-btn">Leaderboards MST2</button>
+                    <button class="menu-btn">MST2 Levels</button>
                     <div class="submenu">
                         <button type="button" class="expandable" onclick="javascript:showhide('MST2W1')">Week 1 - Intro</button>
                         <button type="button" class="expandable" onclick="javascript:showhide('MST2W2')">Week 2 - Underground</button>
@@ -72,14 +75,11 @@
                         <button type="button" class="expandable" onclick="javascript:showhide('MST2W14')">Week 14 - Finale</button>
                     </div>
                 </div>
-                <div class="menu-item" class="expandable" onclick="showhide('levelPacks'); moveFooter(); extendMenuContainer();">
-                    <button class="menu-btn" onclick="toggleMenuItem(this)">Leaderboards LevelPacks MST1</button>
-                </div>
                 <div class="menu-item" class="expandable" onclick="showhide('levelPacks2'); moveFooter(); extendMenuContainer();">
-                    <button class="menu-btn" onclick="toggleMenuItem(this)">Leaderboards LevelPacks MST2</button>
+                    <button class="menu-btn" onclick="toggleMenuItem(this)">MST2 Levelpacks</button>
                 </div>
                 <div class="menu-item">
-                    <button class="menu-btn">Leaderboards NCR</button>
+                    <button class="menu-btn">NCR Levels</button>
                     <div class="submenu">
                         <button type="button" class="expandable" onclick="javascript:showhide('NCE1')">NCR1</button>
                         <button type="button" class="expandable" onclick="javascript:showhide('NCE2')">NCR2</button>
@@ -87,7 +87,16 @@
                     </div>
                 </div>
                 <div class="menu-item" class="expandable" onclick="showhide('NCRPacks')">
-                    <button class="menu-btn" onclick="toggleMenuItem(this)">Leaderboards LevelPacks NCR</button>
+                    <button class="menu-btn" onclick="toggleMenuItem(this)">NCR Levelpacks</button>
+                </div>
+                <div class="menu-item">
+                    <button class="menu-btn">MSSS Levels</button>
+                    <div class="submenu">
+                        <button type="button" class="expandable" onclick="javascript:showhide('MSSS1')">MSSS</button>
+                    </div>
+                </div>
+                <div class="menu-item" class="expandable" onclick="showhide('MSSSPacks')">
+                    <button class="menu-btn" onclick="toggleMenuItem(this)">MSSS Levelpacks</button>
                 </div>
                 <script>
                 /*
@@ -569,6 +578,61 @@
                         <span>2nd: </span>
                         <span>3rd: </span>
                     </li>                    
+                </div>
+            </section>
+
+            <section id="collapsible-list" class="collapsible-list">
+                <div id="levelPacks" style="display: none;">
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MST1_Group_A.png" alt="MST1 - Week 1 Group A">
+                        <span>LevelPack: MST1 - Week 1 Group A</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MST1_Group_B.png" alt="MST1 - Week 2 Group B">
+                        <span>LevelPack: MST1 - Week 2 Group B</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MST1_Round_1.png" alt="MST1 - Week 3 Round 1">
+                        <span>LevelPack: MST1 - Week 3 Round 1</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MST1_Round_2.png" alt="MST1 - Week 4 Round 2">
+                        <span>LevelPack: MST1 - Week 4 Round 2</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MST1_Round_3.png" alt="MST1 - Week 5 Round 3">
+                        <span>LevelPack: MST1 - Week 5 Round 3</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MST1_Round_4.png" alt="MST1 - Week 6 Round 4 Finals">
+                        <span>LevelPack: MST1 - Week 6 Round 4 (Finals)</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MST1_Bonus.png" alt="MST1 - Week 7 Bonus">
+                        <span>LevelPack: MST1 - Week 7 Bonus</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    </ul>
                 </div>
             </section>
         
@@ -1888,61 +1952,6 @@
             </section>
 
             <section id="collapsible-list" class="collapsible-list">
-                <div id="levelPacks" style="display: none;">
-                    <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Group_A.png" alt="MST1 - Week 1 Group A">
-                        <span>LevelPack: MST1 - Week 1 Group A</span>
-                        <span>1st: </span>
-                        <span>2nd: </span>
-                        <span>3rd: </span>
-                    </li>
-                    <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Group_B.png" alt="MST1 - Week 2 Group B">
-                        <span>LevelPack: MST1 - Week 2 Group B</span>
-                        <span>1st: </span>
-                        <span>2nd: </span>
-                        <span>3rd: </span>
-                    </li>
-                    <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Round_1.png" alt="MST1 - Week 3 Round 1">
-                        <span>LevelPack: MST1 - Week 3 Round 1</span>
-                        <span>1st: </span>
-                        <span>2nd: </span>
-                        <span>3rd: </span>
-                    </li>
-                    <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Round_2.png" alt="MST1 - Week 4 Round 2">
-                        <span>LevelPack: MST1 - Week 4 Round 2</span>
-                        <span>1st: </span>
-                        <span>2nd: </span>
-                        <span>3rd: </span>
-                    </li>
-                    <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Round_3.png" alt="MST1 - Week 5 Round 3">
-                        <span>LevelPack: MST1 - Week 5 Round 3</span>
-                        <span>1st: </span>
-                        <span>2nd: </span>
-                        <span>3rd: </span>
-                    </li>
-                    <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Round_4.png" alt="MST1 - Week 6 Round 4 Finals">
-                        <span>LevelPack: MST1 - Week 6 Round 4 (Finals)</span>
-                        <span>1st: </span>
-                        <span>2nd: </span>
-                        <span>3rd: </span>
-                    </li>
-                    <li class="list-item">
-                        <img src="Mega%20Speedruns_files/MST1_Bonus.png" alt="MST1 - Week 7 Bonus">
-                        <span>LevelPack: MST1 - Week 7 Bonus</span>
-                        <span>1st: </span>
-                        <span>2nd: </span>
-                        <span>3rd: </span>
-                    </li>
-                    </ul>
-                </div>
-            </section>
-
-            <section id="collapsible-list" class="collapsible-list">
                 <div id="levelPacks2" style="display: none;">
                     <li class="list-item">
                         <img src="Mega%20Speedruns_files/MST2_Intro.png" alt="MST2 - Week 1 Intro">
@@ -2074,6 +2083,150 @@
             </section>
 
             <section id="collapsible-list" class="collapsible-list">
+                <div id="MSSS1" style="display: none;">
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/An_Open_Wound_And_A_Burning_Sun_For_A_J_Enki_Christmas.png" alt="An Open Wound And A Burning Sun For A J-Enki Christmas">
+                        <span>Level: An Open Wound And A Burning Sun For A J-Enki Christmas</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/Lorenzos_Yule_Log_Loops_And_Lava.png" alt="Lorenzo's Yule Log Loops And Lava">
+                        <span>Level: Lorenzo's Yule Log Loops And Lava</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/Roasted_Marshmallows_For_Danikah.png" alt="Roasted Marshmallows For Danikah">
+                        <span>Level: Roasted Marshmallows For Danikah</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/V_Xmas_W_In_Battons_Cave.png" alt="V-Xmas-W In The Battons Cave">
+                        <span>Level: V-Xmas-W In The Battons Cave</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/Ruriks_Christmas_Gift_Delivery_Service.png" alt="Ruriks Christmas Gift Delivery Service">
+                        <span>Level: Ruriks Christmas Gift Delivery Service</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/Jim_Puzzle.png" alt="Jim Puzzle">
+                        <span>Level: Jim Puzzle</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/Hellfire_Spinning_Sheep_Steps.png" alt="Hellfire Spinning Sheep Steps">
+                        <span>Level: Hellfire Spinning Sheep Steps</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/The_Jee_Pocket_Dimension.png" alt="The Jee-Pocket Dimension">
+                        <span>Level: The Jee-Pocket Dimension</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/Oh_No_Scouter_Drunk_The_Spiked_Punch.png" alt="Oh No Scouter Drunk The Spiked Punch">
+                        <span>Level: Oh No Scouter Drunk The Spiked Punch</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/Matts_Very_Green_Christmas.png" alt="Matts Very Green Christmas">
+                        <span>Level: Matts Very Green Christmas</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/Fish_Wrote_Santa_A_Letter_Asking_For_This.png" alt="Fish Wrote Santa A Letter Asking For This">
+                        <span>Level: Fish Wrote Santa A Letter Asking For This</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/FishOnASticks_Spider_Swinging_Adventure.png" alt="FishOnASticks Spider Swinging Adventure">
+                        <span>Level: FishOnASticks Spider Swinging Adventure</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/Mega_Man_II_Taha_Edition.png" alt="MegaMan II Taha Edition">
+                        <span>Level: MegaMan II Taha Edition</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/Toxins_Flashback_Facility.png" alt="Toxins Flashback Facility">
+                        <span>Level: Toxins Flashback Facility</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/CC_Sky_Park.png" alt="CC Sky Park">
+                        <span>Level: CC Sky Park</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/Darkonius_Deadly_Dropshipping_Dungeon.png" alt="Darkonius' Deadly Dropshipping Dungeon">
+                        <span>Level: Darkonius' Deadly Dropshipping Dungeon</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/Chimney_Chombey_Claus_Has_00001_Percent_Chance_Of_Delivering_His_Presents_On_Time.png" alt="Chimney Chombey Claus Has 0,0001% Chance Of Delivering His Presents On Time">
+                        <span>Level: Chimney Chombey Claus Has 0,0001% Chance Of Delivering His Presents On Time</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS/How_SkyPilotSamurai_Saved_Christmas.png" alt="How SkyPilotSamurai Saved Christmas">
+                        <span>Level: How SkyPilotSamurai Saved Christmas</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                </div>
+                
+            </section>
+
+            <section id="collapsible-list" class="collapsible-list">
+                <div id="MSSSPacks" style="display: none;">
+                    <li class="list-item">
+                        <img src="Mega%20Speedruns_files/MSSS1.png" alt="NCR1">
+                        <span>LevelPack: MSSS - Secret Santa</span>
+                        <span>1st: </span>
+                        <span>2nd: </span>
+                        <span>3rd: </span>
+                    </li>
+                </div>
+            </section>
+
+            <section id="collapsible-list" class="collapsible-list">
                 <div class="content" id="submitRun">
                     <ul>
                         <br>
@@ -2082,6 +2235,7 @@
                             <option value="MST1">MST1</option>
                             <option value="MST2">MST2</option>
                             <option value="NCE">NCR</option>
+                            <option value="MSSS">MSSS</option>
                         </select>
 
                         <label>Pack/Level</label>
@@ -2633,234 +2787,259 @@ function parseTime(timeString) {
         if (tournamentDropdown.value === 'MST1') 
             {
                 runDropdown.innerHTML =         
-'<option value="MST1_Week_1_Group_A">MST1 - Week 1 Group A</option>' + 
-'<option value="MST1_Week_2_Group_B">MST1 - Week 2 Group B</option>' +
-'<option value="MST1_Week_3_Round_1">MST1 - Week 3 Round 1</option>' +
-'<option value="MST1_Week_4_Round_2">MST1 - Week 4 Round 2</option>' +
-'<option value="MST1_Week_5_Round_3">MST1 - Week 5 Round 3</option>' +
-'<option value="MST1_Week_6_Round_4_Finals">MST1 - Week 6 Round 4 Finals</option>' +
-'<option value="MST1_Week_7_Bonus">MST1 - Week 7 Bonus</option>' +
-'<option value="Infiltrate_The_Airship">Infiltrate The Airship</option>' +
-'<option value="Its_Tradition">It\'s Tradition</option>' +
-'<option value="Pick_A_Card_When_Its_Dawn">Pick A Card When it\'s Dawn</option>' +
-'<option value="Megaman_And_The_Lost_Kingdom">Megaman And The Lost Kingdom</option>' +
-'<option value="Warm_Front_Cool_Sliding">Warm Front - Cool Sliding</option>' +
-'<option value="Someone_Needs_To_Fix_These_Leaky_Pipes">Someone Needs To Fix These leaky pipes</option>' +
-'<option value="Frozen_Saw">Frozen Saw</option>' +
-'<option value="Toxic_Waltz">Toxic Waltz</option>' +
-'<option value="Bathe_In_Fire">Bathe In Fire</option>' +
-'<option value="Proto_Man_Catches_The_Sigma_Virus">Proto Man Catches The Sigma Virus</option>' +
-'<option value="Endless_Maze">Endless Maze</option>' +
-'<option value="Lost_Ocean_Base">Lost Ocean Base</option>' +
-'<option value="Get_back_To_Work">Get back To Work</option>' +
-'<option value="Desertgros">Desertgros</option>' +
-'<option value="A_Busy_Mountain_Trail">A Busy Mountain Trail</option>' +
-'<option value="Boxes_Brooms_And_Bombs">Boxes Brooms And Bombs</option>' +
-'<option value="Hougwarths_Hogwash">Hougwarths Hogwash</option>' +
-'<option value="Back_To_Bassics">Back To Bassics</option>' +
-'<option value="Frozen_Volcano">Frozen Volcano</option>' +
-'<option value="Repeated_Reflection">Repeated Reflection</option>' +
-'<option value="Crystal_Freeze">Crystal Freeze</option>' +
-'<option value="Gyree_Special">Gyree Special</option>' +
-'<option value="Memories_Of_A_Past_Life">Memories Of A Past Life</option>' +
-'<option value="Mega_Knight_Pridemoor_Keep">Mega Knight - Pridemoor Keep</option>' +
-'<option value="The_Building_Is_Being_Built">The Building Is Being Built</option>' +
-'<option value="Rustic_Factory">Rustic Factory</option>' +
-'<option value="Testing_The_Waters">Testing The Waters</option>' +
-'<option value="House_Of_Cards_And_The_Deck_Is_Stacked_Against_You">House Of Cards And The Deck Is Stacked Against You</option>' +
-'<option value="Reheat_Your_Reheated_Macaroni">Reheat Your Reheated Macaroni</option>' +
-'<option value="Dont_Lose_The_Rhythm">Don\'t Lose The Rhythm</option>' +
-'<option value="The_Ice_Rider">The Ice Rider</option>' +
-'<option value="Attack_On_The_Strangely_Nostalgic_Base">Attack On The Strangely Nostalgic Base</option>' +
-'<option value="The_13_Trials_Of_Fish">The 13 Trials Of Fish</option>' +
-'<option value="Dash_Through_The_Rusty_Factory">Dash Through The Rusty Factory</option>' +
-'<option value="Legend_Of_Zero_Breath_Of_The_Wily">Legend Of Zero - Breath Of The Wily</option>' +
-'<option value="Cossacks_Fiery_Cookie_Furnace">Cossacks Fiery Cookie Furnace</option>' +
-'<option value="ThunderCloud_Fortress">ThunderCloud Fortress</option>' +
-'<option value="Gemrald_Grove">Gemrald Grove</option>' +
-'<option value="Running_To_The_Stars">Running To The Stars</option>' +
-'<option value="Red_Mountain">Red Mountain</option>' +
-'<option value="Stab_Or_Be_Stabbed">Stab Or Be Stabbed</option>' +
-'<option value="Cut_Tile_City">Cut Tile City</option>' +
-'<option value="Desert_Sewer">Desert Sewer</option>' +
-'<option value="Night_Walk">Night Walk</option>' +
-'<option value="4am_City_Pop_Escape">4am - City Pop Escape</option>' +
-'<option value="Season_Runner_2_Electric_Boogaloo">Season Runner 2 Electric Boogaloo</option>' +
-'<option value="Fast_Times_At_Dr_R_High">Fast Times At Dr. R High</option>' +
-'<option value="Pew_Pew_Party_Pavilion">Pew-Pew Party Pavilion</option>' +
-'<option value="Circuit_Breaker">Circuit Breaker</option>' +
-'<option value="Frozen_Volcano_2">Frozen Volcano 2</option>' +
-'<option value="Cut_To_The_Chase">Cut To The Chase</option>' +
-'<option value="MegaSpeedRush">MegaSpeedRush</option>' +
-'<option value="New_Super_Mario_Bros">New Super Mario Bros</option>' +
-'<option value="Circus_Act_1">Circus Act 1</option>' +
-'<option value="Roll_Plays_The_Dating_Game">Roll Plays The Dating Game</option>' +
-'<option value="Drill_Thrill">Drill Thrill</option>' +
-'<option value="Fallen_Tengu">Fallen Tengu</option>' +
-'<option value="The_Mere_Concept_Of_Space">The Mere Concept Of Space</option>' +
-'<option value="Megaman_World_5_Wily_Buffed_Edition">Megaman World 5 Wily Buffed Edition</option>' +
-'<option value="Creative_Credits_Carnival">Creative Credits Carnival</option>';
-} 
+                '<option value="MST1_Week_1_Group_A">MST1 - Week 1 Group A</option>' + 
+                '<option value="MST1_Week_2_Group_B">MST1 - Week 2 Group B</option>' +
+                '<option value="MST1_Week_3_Round_1">MST1 - Week 3 Round 1</option>' +
+                '<option value="MST1_Week_4_Round_2">MST1 - Week 4 Round 2</option>' +
+                '<option value="MST1_Week_5_Round_3">MST1 - Week 5 Round 3</option>' +
+                '<option value="MST1_Week_6_Round_4_Finals">MST1 - Week 6 Round 4 Finals</option>' +
+                '<option value="MST1_Week_7_Bonus">MST1 - Week 7 Bonus</option>' +
+                '<option value="Infiltrate_The_Airship">Infiltrate The Airship</option>' +
+                '<option value="Its_Tradition">It\'s Tradition</option>' +
+                '<option value="Pick_A_Card_When_Its_Dawn">Pick A Card When it\'s Dawn</option>' +
+                '<option value="Megaman_And_The_Lost_Kingdom">Megaman And The Lost Kingdom</option>' +
+                '<option value="Warm_Front_Cool_Sliding">Warm Front - Cool Sliding</option>' +
+                '<option value="Someone_Needs_To_Fix_These_Leaky_Pipes">Someone Needs To Fix These leaky pipes</option>' +
+                '<option value="Frozen_Saw">Frozen Saw</option>' +
+                '<option value="Toxic_Waltz">Toxic Waltz</option>' +
+                '<option value="Bathe_In_Fire">Bathe In Fire</option>' +
+                '<option value="Proto_Man_Catches_The_Sigma_Virus">Proto Man Catches The Sigma Virus</option>' +
+                '<option value="Endless_Maze">Endless Maze</option>' +
+                '<option value="Lost_Ocean_Base">Lost Ocean Base</option>' +
+                '<option value="Get_back_To_Work">Get back To Work</option>' +
+                '<option value="Desertgros">Desertgros</option>' +
+                '<option value="A_Busy_Mountain_Trail">A Busy Mountain Trail</option>' +
+                '<option value="Boxes_Brooms_And_Bombs">Boxes Brooms And Bombs</option>' +
+                '<option value="Hougwarths_Hogwash">Hougwarths Hogwash</option>' +
+                '<option value="Back_To_Bassics">Back To Bassics</option>' +
+                '<option value="Frozen_Volcano">Frozen Volcano</option>' +
+                '<option value="Repeated_Reflection">Repeated Reflection</option>' +
+                '<option value="Crystal_Freeze">Crystal Freeze</option>' +
+                '<option value="Gyree_Special">Gyree Special</option>' +
+                '<option value="Memories_Of_A_Past_Life">Memories Of A Past Life</option>' +
+                '<option value="Mega_Knight_Pridemoor_Keep">Mega Knight - Pridemoor Keep</option>' +
+                '<option value="The_Building_Is_Being_Built">The Building Is Being Built</option>' +
+                '<option value="Rustic_Factory">Rustic Factory</option>' +
+                '<option value="Testing_The_Waters">Testing The Waters</option>' +
+                '<option value="House_Of_Cards_And_The_Deck_Is_Stacked_Against_You">House Of Cards And The Deck Is Stacked Against You</option>' +
+                '<option value="Reheat_Your_Reheated_Macaroni">Reheat Your Reheated Macaroni</option>' +
+                '<option value="Dont_Lose_The_Rhythm">Don\'t Lose The Rhythm</option>' +
+                '<option value="The_Ice_Rider">The Ice Rider</option>' +
+                '<option value="Attack_On_The_Strangely_Nostalgic_Base">Attack On The Strangely Nostalgic Base</option>' +
+                '<option value="The_13_Trials_Of_Fish">The 13 Trials Of Fish</option>' +
+                '<option value="Dash_Through_The_Rusty_Factory">Dash Through The Rusty Factory</option>' +
+                '<option value="Legend_Of_Zero_Breath_Of_The_Wily">Legend Of Zero - Breath Of The Wily</option>' +
+                '<option value="Cossacks_Fiery_Cookie_Furnace">Cossacks Fiery Cookie Furnace</option>' +
+                '<option value="ThunderCloud_Fortress">ThunderCloud Fortress</option>' +
+                '<option value="Gemrald_Grove">Gemrald Grove</option>' +
+                '<option value="Running_To_The_Stars">Running To The Stars</option>' +
+                '<option value="Red_Mountain">Red Mountain</option>' +
+                '<option value="Stab_Or_Be_Stabbed">Stab Or Be Stabbed</option>' +
+                '<option value="Cut_Tile_City">Cut Tile City</option>' +
+                '<option value="Desert_Sewer">Desert Sewer</option>' +
+                '<option value="Night_Walk">Night Walk</option>' +
+                '<option value="4am_City_Pop_Escape">4am - City Pop Escape</option>' +
+                '<option value="Season_Runner_2_Electric_Boogaloo">Season Runner 2 Electric Boogaloo</option>' +
+                '<option value="Fast_Times_At_Dr_R_High">Fast Times At Dr. R High</option>' +
+                '<option value="Pew_Pew_Party_Pavilion">Pew-Pew Party Pavilion</option>' +
+                '<option value="Circuit_Breaker">Circuit Breaker</option>' +
+                '<option value="Frozen_Volcano_2">Frozen Volcano 2</option>' +
+                '<option value="Cut_To_The_Chase">Cut To The Chase</option>' +
+                '<option value="MegaSpeedRush">MegaSpeedRush</option>' +
+                '<option value="New_Super_Mario_Bros">New Super Mario Bros</option>' +
+                '<option value="Circus_Act_1">Circus Act 1</option>' +
+                '<option value="Roll_Plays_The_Dating_Game">Roll Plays The Dating Game</option>' +
+                '<option value="Drill_Thrill">Drill Thrill</option>' +
+                '<option value="Fallen_Tengu">Fallen Tengu</option>' +
+                '<option value="The_Mere_Concept_Of_Space">The Mere Concept Of Space</option>' +
+                '<option value="Megaman_World_5_Wily_Buffed_Edition">Megaman World 5 Wily Buffed Edition</option>' +
+                '<option value="Creative_Credits_Carnival">Creative Credits Carnival</option>';
+            } 
+
+        if (tournamentDropdown.value === 'MSSS')
+            {
+                runDropdown.innerHTML =
+                '<option value="MSSS_Levelpack">MSSS Levelpack</option>' +
+                '<option value="An_Open_Wound_And_A_Burning_Sun_For_A_J_Enki_Christmas">An Open Wound And A Burning Sun For A J-Enki_Christmas</option>' +
+                '<option value="Lorenzos_Yule_Log_Loops_And_Lava">Lorenzos Yule Log Loops And Lava</option>' +
+                '<option value="Roasted_Marshmallows_For_Danikah">Roasted Marshmallows For Danikah</option>' +
+                '<option value="V_Xmas_W_In_Battons_Cave">V-Xmas-W In Battons Cave</option>' +
+                '<option value="Ruriks_Christmas_Gift_Delivery_Service">Ruriks Christmas Gift Delivery Service</option>' +
+                '<option value="Jim_Puzzle">Jim Puzzle</option>' +
+                '<option value="Hellfire_Spinning_Sheep_Steps">Hellfire Spinning Sheep Steps</option>' +
+                '<option value="The_Jee_Pocket_Dimension">The Jee-Pocket Dimension</option>' +
+                '<option value="Oh_No_Scouter_Drunk_The_Spiked_Punch">Oh No Scouter Drunk The Spiked Punch</option>' +
+                '<option value="Matts_Very_Green_Christmas">Matts Very Green Christmas</option>' +
+                '<option value="Fish_Wrote_Santa_A_Letter_Asking_For_This">Fish Wrote Santa A Letter Asking For This</option>' +
+                '<option value="FishOnASticks_Spider_Swinging_Adventure">FishOnASticks Spider Swinging Adventure</option>' +
+                '<option value="Mega_Man_II_Taha_Edition">MegaMan II Taha Edition</option>' +
+                '<option value="Toxins_Flashback_Facility">Toxins Flashback Facility</option>' +
+                '<option value="CC_Sky_Park">CC Sky Park</option>' +
+                '<option value="Darkonius_Deadly_Dropshipping_Dungeon">Darkonius Deadly Dropshipping Dungeon</option>' +
+                '<option value="Chimney_Chombey_Claus_Has_00001_Percent_Chance_Of_Delivering_His_Presents_On_Time">Chimney Chombey Claus Has 0,0001% Chance Of Delivering His Presents On Time</option>' +
+                '<option value="How_SkyPilotSamurai_Saved_Christmas">How SkyPilotSamurai Saved Christmas</option>'
+                ;
+            } 
 
         if (tournamentDropdown.value === 'MST2') 
-{
-runDropdown.innerHTML =         
-'<option value="MST2_Week_1_Intro">MST2 - Week 1 Intro</option>' +
-'<option value="MST2_Week_2_Underground">MST2 - Week 2 Underground</option>' +
-'<option value="MST2_Week_3_Box">MST2 - Week 3 Box</option>' +
-'<option value="MST2_Week_4_Quack_Man">MST2 - Week 4 Quack Man</option>' +
-'<option value="MST2_Week_5_Favorites">MST2 - Week 5 Favorites</option>' +
-'<option value="MST2_Week_6_Movie">MST2 - Week 6 Movie</option>' +
-'<option value="MST2_Week_7_Sky">MST2 - Week 7 Sky</option>' +
-'<option value="MST2_Week_8_Space">MST2 - Week 8 Space</option>' +
-'<option value="MST2_Week_9_No_Buster">MST2 - Week 9 No Buster</option>' +
-'<option value="MST2_Week_10_Indie">MST2 - Week 10 Indie</option>' +
-'<option value="MST2_Week_11_Fortress">MST2 - Week 11 Fortress</option>' +
-'<option value="MST2_Week_12_Nightmare">MST2 - Week 12 Nightmare</option>' +
-'<option value="MST2_Week_13_All_In_One">MST2 - Week 13 All In One</option>' +
-'<option value="MST2_Week_14_Finale">MST2 - Week 14 Finale</option>' +
-'<option value="Unknown_Area">Unknown Area</option>' +
-'<option value="Mikey_Sierra_Tango">Mikey Sierra Tango</option>' +
-'<option value="Jump_Into_Lake_Fierce">Jump Into Lake Fierce</option>' +
-'<option value="Strike_Man_Stadium">Strike Man Stadium</option>' +
-'<option value="The_Sanctum_Of_Serpentology">The Sanctum Of Serpentology</option>' +
-'<option value="Wet_And_Rainy_Day">Wet And Rainy Day</option>' +
-'<option value="The_Return_Of_The_Pirate_Queen">The Return Of The Pirate Queen</option>' +
-'<option value="Wily_Training_Program">Wily Training Program</option>' +
-'<option value="Waterplant_Waterway">Waterplant Waterway</option>' +
-'<option value="Mount_Wattmore">Mount Wattmore</option>' +
-'<option value="Return_The_Slab">Return The Slab</option>' +
-'<option value="Temple_Of_Strength">Temple Of Strength</option>' +
-'<option value="Crystal_Blue_Cave">Crystal Blue Cave</option>' +
-'<option value="Mineshaft_Malarkey">Mineshaft Malarkey</option>' +
-'<option value="Punchy_Rock_Canyon">Punchy Rock Canyon</option>' +
-'<option value="Active_Volcano_Warning_Is_Not_Heeded">Active Volcano Warning Is Not Heeded</option>' +
-'<option value="Magmatic_Cave">Magmatic Cave</option>' +
-'<option value="Ice_Station_Infiltration">Ice Station Infiltration</option>' +
-'<option value="Cutthroat_Caldera">Cutthroat Caldera</option>' +
-'<option value="To_The_Center">To The Center</option>' +
-'<option value="Frozen_Factory">Frozen Factory</option>' +
-'<option value="Breaking_News_-_Ruffian_Slinkys_At_Block_Park_More_At_11">Breaking News - Ruffian Slinkys At Block Park More At 11</option>' +
-'<option value="Warehouse_War">Warehouse War</option>' +
-'<option value="Boxed_In_Boxes">Boxed In Boxes</option>' +
-'<option value="Punch_Punch">Punch Punch</option>' +
-'<option value="Magnetbox_Mania">Magnetbox Mania</option>' +
-'<option value="Crazy_Razys_Blazing_Boxes">Crazy Razys Blazing Boxes</option>' +
-'<option value="Blockses_World">Blockses World</option>' +
-'<option value="Boxes_And_Ballkicks">Boxes And Ballkicks</option>' +
-'<option value="Quackthroom">Quackthroom</option>' +
-'<option value="Bring_Your_Quackman_To_Work_Day">Bring Your Quackman To Work Day</option>' +
-'<option value="Join_Forces_With_Quack_Man">Join Forces With Quack Man</option>' +
-'<option value="Quack_Man_EXE">Quack Man EXE - A NanoSecond Offline</option>' +
-'<option value="Quacktales_The_Moon">Quacktales - The Moon</option>' +
-'<option value="Quackification">Quackification</option>' +
-'<option value="Quack_Maths">Quack Maths</option>' +
-'<option value="Just_Go_Quack_Man">Just Go Quack Man</option>' +
-'<option value="The_Formidable_Patent_Pending_Quack_Mech">The Formidable Patent-Pending Quack Mech</option>' +
-'<option value="The_Unofficial_Quack_Man_Stage">The Unofficial Official Quack Man Stage</option>' +
-'<option value="Rooftop_Rumble">Rooftop Rumble</option>' +
-'<option value="Bizarre_Joe_Joe_Adventure">A Bizarre Joe Joe Adventure</option>' +
-'<option value="Enter_The_Gear_Loop">Enter The Gear Loop</option>' +
-'<option value="MST_Creators_Are_Underpaid_So_We_Hired_Hummer_Team">MST Creators Are Underpaid So We Hired Hummer Team</option>' +
-'<option value="Shocking_Bass">Shocking Bass</option>' +
-'<option value="Conductive_Fists">Conductive Fists</option>' +
-'<option value="Frog_Sewer">Frog Sewer</option>' +
-'<option value="Sheepmans_Bom_Baastic_Thunder_Fleece_Factory">Sheepmans Bom-Baastic Thunder Fleece Factory</option>' +
-'<option value="Less_Is_Moor">Less Is Moor</option>' +
-'<option value="Laser_Lift_Joyride">Laser Lift Joyride</option>' +
-'<option value="Neo_Blue_Castle">Neo Blue Castle</option>' +
-'<option value="Appearance_In_Japan">Appearance In Japan</option>' +
-'<option value="Kikis_Delivery_Level">Kikis Delivery Level</option>' +
-'<option value="Mere_Concept_Of_Saw">The Mere Concept Of Saw</option>' +
-'<option value="Gremlins_2_The_Mega_Batch">Gremlins 2 - The Mega Batch</option>' +
-'<option value="Protoman_And_The_Raiders_Of_Lost_Buster">Protoman And The Raiders Of The Lost Buster</option>' +
-'<option value="We_Will_Be_Right_Back">We Will Be Right Back After This Break</option>' +
-'<option value="Behind_The_Megaman">Behind The Megaman</option>' +
-'<option value="Goldeneye">Goldeneye</option>' +
-'<option value="The_Mummy_And_Cursed_Ancient_Key">The Mummy And The Cursed Ancient Key</option>' +
-'<option value="Free_Willy_The_Fire_At_Seaparks">Free Willy - The Fire At Seaparks</option>' +
-'<option value="Carpnado">Carpnado</option>' +
-'<option value="Flying_Airships">Flying Airships</option>' +
-'<option value="The_Sky_Train">The Sky Train</option>' +
-'<option value="Spintop_Spire">Spintop Spire</option>' +
-'<option value="Thundering_Turbulence">Thundering Turbulence</option>' +
-'<option value="Weathered_Elements">Weathered Elements</option>' +
-'<option value="Ballad_Of_Stealthy_Eugene">The Ballad Of Stealthy Eugene</option>' +
-'<option value="Airmania">Airmania</option>' +
-'<option value="The_Legend_Of_Zelda_Tears_Of_Kamikamin">The Legend Of Zelda - Tears Of The Kamikamin</option>' +
-'<option value="Skydeck">Skydeck</option>' +
-'<option value="Suborbital_Bushido_Driving_Licence">Suborbital Bushido Driving Licence</option>' +
-'<option value="Meteor_Laser">Meteor Laser</option>' +
-'<option value="Cyberclimb_Castle">Cyberclimb Castle</option>' +
-'<option value="Space_Site_Investigation">Space Site Investigation</option>' +
-'<option value="Cosmic_Bird">Cosmic Bird</option>' +
-'<option value="Moon_Explorer">Moon Explorer</option>' +
-'<option value="In_A_Galaxy_Far_Far_Away">In A Galaxy Far, Far Away</option>' +
-'<option value="Cyber_Space_Base">Cyber Space Base</option>' +
-'<option value="Terra_Stardroid_Travel_Agency">Terra Stardroid Travel Agency</option>' +
-'<option value="Cosmic_Corrosion">Cosmic Corrosion</option>' +
-'<option value="Ring_Of_Fire">Ring Of Fire</option>' +
-'<option value="A_Wave_Of_Water">A Wave Of Water</option>' +
-'<option value="The_Jade_Dragon">The Jade Dragon</option>' +
-'<option value="Stone_Break_Prison_Power_Yahoo">Stone Break Prison Power Yahoo</option>' +
-'<option value="A_Feeber_In_Time">A Feeber In Time</option>' +
-'<option value="Electric_Junkyard">Electric Junkyard</option>' +
-'<option value="Sandy_Palace">Sandy Palace</option>' +
-'<option value="Do_You_Feel_The_Magic">Do You Feel The Magic</option>' +
-'<option value="Another_One_Bites_The_Dust">Another One Bites The Dust</option>' +
-'<option value="Sniper_Station">Sniper Station</option>' +
-'<option value="Iridis_Coherence_Epilepsy_Warning">Iridis Coherence -Epilepsy Warning-</option>' +
-'<option value="Lovin_Burning_Town">Lovin Burning Town</option>' +
-'<option value="Downwell">Downwell</option>' +
-'<option value="A_Crafty_Level">A Crafty Level</option>' +
-'<option value="Spelunky_HD">Spelunky HD</option>' +
-'<option value="Crypt_Of_NecroDancer">Crypt Of The NecroDancer</option>' +
-'<option value="Annalynn">Annalynn</option>' +
-'<option value="Gravity_Circuit_Power_Plant">Gravity Circuit - Power Plant</option>' +
-'<option value="Cuphead">Cuphead</option>' +
-'<option value="Binding_Of_Rock">The Binding Of Rock</option>' +
-'<option value="Hollow_Brooick">Hollow Brooick</option>' +
-'<option value="Toxic_Facility">Toxic Facility</option>' +
-'<option value="Flying_Battery">Flying Battery</option>' +
-'<option value="Endless_Fortress">Endless Fortress</option>' +
-'<option value="Mr_X_Fortress">Mr X Fortress</option>' +
-'<option value="Frantic_Fuse_Fortress">Frantic Fuse Fortress</option>' +
-'<option value="Castle_Of_Koopa">Castle Of Koopa</option>' +
-'<option value="Cossacks_Impenetrable_Ice_Cream_Citadel">Cossacks Impenetrable Ice Cream Citadel</option>' +
-'<option value="Protruding_Palace">Protruding Palace</option>' +
-'<option value="Wagagoogaly">Wagagoogaly</option>' +
-'<option value="High_Alert">High Alert</option>' +
-'<option value="Killers_Crypt">Killers Crypt</option>' +
-'<option value="Infestation_Prison_Escape_Night">Infestation Prison Escape Night</option>' +
-'<option value="Giree_Graveyard">Giree Graveyard</option>' +
-'<option value="The_Knightmare">The Knightmare</option>' +
-'<option value="One_Night_At_Tellys">One Night At Tellys</option>' +
-'<option value="Megaman_Exe">Megaman.exe</option>' +
-'<option value="Robot_Hell">Robot Hell</option>' +
-'<option value="Frightening_Lightning">Frightening Lightning</option>' +
-'<option value="Nightmare_Cutter">Nightmare Cutter</option>' +
-'<option value="Gehenna">Gehenna</option>' +
-'<option value="Cosmic_Cruiser">Cosmic Cruiser</option>' +
-'<option value="Toy_Story_2">Toy Story 2</option>' +
-'<option value="There_Are_Crystals_In_The_Sky_For_Those_Who_Can_See_Them">There Are Crystals In The Sky For Those Who Can See Them</option>' +
-'<option value="Quack_Dodgers">Quack Dodgers In The 24th And A Half Century</option>' +
-'<option value="Rapid_Red_Fortress">Rapid Red Fortress</option>' +
-'<option value="Rocks_Toy_Chest">Rocks Toy Chest</option>' +
-'<option value="Donker_Conc">Donker Conc</option>' +
-'<option value="Hi_Tech_High_Noon">Hi-Tech High Noon</option>' +
-'<option value="Lithosphere_Slag_Digester">Lithosphere Slag Digester</option>' +
-'<option value="Lava_Block_Aid">Lava Block-Aid</option>' +
-'<option value="Celeste">Celeste</option>' +
-'<option value="Napalm_Man_And_Explosives_Facility">Napalm Man And His Explosives Facility</option>' +
-'<option value="Final_Frontier">The Final Frontier</option>' +
-'<option value="The_Mysterious_Structure">The Mysterious Structure</option>' +
-'<option value="Airship_Assault">Airship Assault</option>' +
-'<option value="Battleships_Crossfire">Battleships Crossfire</option>' +
-'<option value="Gospel_Of_Memories">Gospel Of Memories</option>' +
-'<option value="I_Sawed_The_Finals">I Sawed The Finals</option>' +
-'<option value="End_Of_The_Line">End Of The Line</option>' +
-'<option value="Red_Mountain_Act2">Red Mountain Act2</option>' +
-'<option value="Megaspeedrush_Rising_Revengeance">Megaspeedrush Rising Revengeance</option>';        
+            {
+                runDropdown.innerHTML =         
+                '<option value="MST2_Week_1_Intro">MST2 - Week 1 Intro</option>' +
+                '<option value="MST2_Week_2_Underground">MST2 - Week 2 Underground</option>' +
+                '<option value="MST2_Week_3_Box">MST2 - Week 3 Box</option>' +
+                '<option value="MST2_Week_4_Quack_Man">MST2 - Week 4 Quack Man</option>' +
+                '<option value="MST2_Week_5_Favorites">MST2 - Week 5 Favorites</option>' +
+                '<option value="MST2_Week_6_Movie">MST2 - Week 6 Movie</option>' +
+                '<option value="MST2_Week_7_Sky">MST2 - Week 7 Sky</option>' +
+                '<option value="MST2_Week_8_Space">MST2 - Week 8 Space</option>' +
+                '<option value="MST2_Week_9_No_Buster">MST2 - Week 9 No Buster</option>' +
+                '<option value="MST2_Week_10_Indie">MST2 - Week 10 Indie</option>' +
+                '<option value="MST2_Week_11_Fortress">MST2 - Week 11 Fortress</option>' +
+                '<option value="MST2_Week_12_Nightmare">MST2 - Week 12 Nightmare</option>' +
+                '<option value="MST2_Week_13_All_In_One">MST2 - Week 13 All In One</option>' +
+                '<option value="MST2_Week_14_Finale">MST2 - Week 14 Finale</option>' +
+                '<option value="Unknown_Area">Unknown Area</option>' +
+                '<option value="Mikey_Sierra_Tango">Mikey Sierra Tango</option>' +
+                '<option value="Jump_Into_Lake_Fierce">Jump Into Lake Fierce</option>' +
+                '<option value="Strike_Man_Stadium">Strike Man Stadium</option>' +
+                '<option value="The_Sanctum_Of_Serpentology">The Sanctum Of Serpentology</option>' +
+                '<option value="Wet_And_Rainy_Day">Wet And Rainy Day</option>' +
+                '<option value="The_Return_Of_The_Pirate_Queen">The Return Of The Pirate Queen</option>' +
+                '<option value="Wily_Training_Program">Wily Training Program</option>' +
+                '<option value="Waterplant_Waterway">Waterplant Waterway</option>' +
+                '<option value="Mount_Wattmore">Mount Wattmore</option>' +
+                '<option value="Return_The_Slab">Return The Slab</option>' +
+                '<option value="Temple_Of_Strength">Temple Of Strength</option>' +
+                '<option value="Crystal_Blue_Cave">Crystal Blue Cave</option>' +
+                '<option value="Mineshaft_Malarkey">Mineshaft Malarkey</option>' +
+                '<option value="Punchy_Rock_Canyon">Punchy Rock Canyon</option>' +
+                '<option value="Active_Volcano_Warning_Is_Not_Heeded">Active Volcano Warning Is Not Heeded</option>' +
+                '<option value="Magmatic_Cave">Magmatic Cave</option>' +
+                '<option value="Ice_Station_Infiltration">Ice Station Infiltration</option>' +
+                '<option value="Cutthroat_Caldera">Cutthroat Caldera</option>' +
+                '<option value="To_The_Center">To The Center</option>' +
+                '<option value="Frozen_Factory">Frozen Factory</option>' +
+                '<option value="Breaking_News_-_Ruffian_Slinkys_At_Block_Park_More_At_11">Breaking News - Ruffian Slinkys At Block Park More At 11</option>' +
+                '<option value="Warehouse_War">Warehouse War</option>' +
+                '<option value="Boxed_In_Boxes">Boxed In Boxes</option>' +
+                '<option value="Punch_Punch">Punch Punch</option>' +
+                '<option value="Magnetbox_Mania">Magnetbox Mania</option>' +
+                '<option value="Crazy_Razys_Blazing_Boxes">Crazy Razys Blazing Boxes</option>' +
+                '<option value="Blockses_World">Blockses World</option>' +
+                '<option value="Boxes_And_Ballkicks">Boxes And Ballkicks</option>' +
+                '<option value="Quackthroom">Quackthroom</option>' +
+                '<option value="Bring_Your_Quackman_To_Work_Day">Bring Your Quackman To Work Day</option>' +
+                '<option value="Join_Forces_With_Quack_Man">Join Forces With Quack Man</option>' +
+                '<option value="Quack_Man_EXE">Quack Man EXE - A NanoSecond Offline</option>' +
+                '<option value="Quacktales_The_Moon">Quacktales - The Moon</option>' +
+                '<option value="Quackification">Quackification</option>' +
+                '<option value="Quack_Maths">Quack Maths</option>' +
+                '<option value="Just_Go_Quack_Man">Just Go Quack Man</option>' +
+                '<option value="The_Formidable_Patent_Pending_Quack_Mech">The Formidable Patent-Pending Quack Mech</option>' +
+                '<option value="The_Unofficial_Quack_Man_Stage">The Unofficial Official Quack Man Stage</option>' +
+                '<option value="Rooftop_Rumble">Rooftop Rumble</option>' +
+                '<option value="Bizarre_Joe_Joe_Adventure">A Bizarre Joe Joe Adventure</option>' +
+                '<option value="Enter_The_Gear_Loop">Enter The Gear Loop</option>' +
+                '<option value="MST_Creators_Are_Underpaid_So_We_Hired_Hummer_Team">MST Creators Are Underpaid So We Hired Hummer Team</option>' +
+                '<option value="Shocking_Bass">Shocking Bass</option>' +
+                '<option value="Conductive_Fists">Conductive Fists</option>' +
+                '<option value="Frog_Sewer">Frog Sewer</option>' +
+                '<option value="Sheepmans_Bom_Baastic_Thunder_Fleece_Factory">Sheepmans Bom-Baastic Thunder Fleece Factory</option>' +
+                '<option value="Less_Is_Moor">Less Is Moor</option>' +
+                '<option value="Laser_Lift_Joyride">Laser Lift Joyride</option>' +
+                '<option value="Neo_Blue_Castle">Neo Blue Castle</option>' +
+                '<option value="Appearance_In_Japan">Appearance In Japan</option>' +
+                '<option value="Kikis_Delivery_Level">Kikis Delivery Level</option>' +
+                '<option value="Mere_Concept_Of_Saw">The Mere Concept Of Saw</option>' +
+                '<option value="Gremlins_2_The_Mega_Batch">Gremlins 2 - The Mega Batch</option>' +
+                '<option value="Protoman_And_The_Raiders_Of_Lost_Buster">Protoman And The Raiders Of The Lost Buster</option>' +
+                '<option value="We_Will_Be_Right_Back">We Will Be Right Back After This Break</option>' +
+                '<option value="Behind_The_Megaman">Behind The Megaman</option>' +
+                '<option value="Goldeneye">Goldeneye</option>' +
+                '<option value="The_Mummy_And_Cursed_Ancient_Key">The Mummy And The Cursed Ancient Key</option>' +
+                '<option value="Free_Willy_The_Fire_At_Seaparks">Free Willy - The Fire At Seaparks</option>' +
+                '<option value="Carpnado">Carpnado</option>' +
+                '<option value="Flying_Airships">Flying Airships</option>' +
+                '<option value="The_Sky_Train">The Sky Train</option>' +
+                '<option value="Spintop_Spire">Spintop Spire</option>' +
+                '<option value="Thundering_Turbulence">Thundering Turbulence</option>' +
+                '<option value="Weathered_Elements">Weathered Elements</option>' +
+                '<option value="Ballad_Of_Stealthy_Eugene">The Ballad Of Stealthy Eugene</option>' +
+                '<option value="Airmania">Airmania</option>' +
+                '<option value="The_Legend_Of_Zelda_Tears_Of_Kamikamin">The Legend Of Zelda - Tears Of The Kamikamin</option>' +
+                '<option value="Skydeck">Skydeck</option>' +
+                '<option value="Suborbital_Bushido_Driving_Licence">Suborbital Bushido Driving Licence</option>' +
+                '<option value="Meteor_Laser">Meteor Laser</option>' +
+                '<option value="Cyberclimb_Castle">Cyberclimb Castle</option>' +
+                '<option value="Space_Site_Investigation">Space Site Investigation</option>' +
+                '<option value="Cosmic_Bird">Cosmic Bird</option>' +
+                '<option value="Moon_Explorer">Moon Explorer</option>' +
+                '<option value="In_A_Galaxy_Far_Far_Away">In A Galaxy Far, Far Away</option>' +
+                '<option value="Cyber_Space_Base">Cyber Space Base</option>' +
+                '<option value="Terra_Stardroid_Travel_Agency">Terra Stardroid Travel Agency</option>' +
+                '<option value="Cosmic_Corrosion">Cosmic Corrosion</option>' +
+                '<option value="Ring_Of_Fire">Ring Of Fire</option>' +
+                '<option value="A_Wave_Of_Water">A Wave Of Water</option>' +
+                '<option value="The_Jade_Dragon">The Jade Dragon</option>' +
+                '<option value="Stone_Break_Prison_Power_Yahoo">Stone Break Prison Power Yahoo</option>' +
+                '<option value="A_Feeber_In_Time">A Feeber In Time</option>' +
+                '<option value="Electric_Junkyard">Electric Junkyard</option>' +
+                '<option value="Sandy_Palace">Sandy Palace</option>' +
+                '<option value="Do_You_Feel_The_Magic">Do You Feel The Magic</option>' +
+                '<option value="Another_One_Bites_The_Dust">Another One Bites The Dust</option>' +
+                '<option value="Sniper_Station">Sniper Station</option>' +
+                '<option value="Iridis_Coherence_Epilepsy_Warning">Iridis Coherence -Epilepsy Warning-</option>' +
+                '<option value="Lovin_Burning_Town">Lovin Burning Town</option>' +
+                '<option value="Downwell">Downwell</option>' +
+                '<option value="A_Crafty_Level">A Crafty Level</option>' +
+                '<option value="Spelunky_HD">Spelunky HD</option>' +
+                '<option value="Crypt_Of_NecroDancer">Crypt Of The NecroDancer</option>' +
+                '<option value="Annalynn">Annalynn</option>' +
+                '<option value="Gravity_Circuit_Power_Plant">Gravity Circuit - Power Plant</option>' +
+                '<option value="Cuphead">Cuphead</option>' +
+                '<option value="Binding_Of_Rock">The Binding Of Rock</option>' +
+                '<option value="Hollow_Brooick">Hollow Brooick</option>' +
+                '<option value="Toxic_Facility">Toxic Facility</option>' +
+                '<option value="Flying_Battery">Flying Battery</option>' +
+                '<option value="Endless_Fortress">Endless Fortress</option>' +
+                '<option value="Mr_X_Fortress">Mr X Fortress</option>' +
+                '<option value="Frantic_Fuse_Fortress">Frantic Fuse Fortress</option>' +
+                '<option value="Castle_Of_Koopa">Castle Of Koopa</option>' +
+                '<option value="Cossacks_Impenetrable_Ice_Cream_Citadel">Cossacks Impenetrable Ice Cream Citadel</option>' +
+                '<option value="Protruding_Palace">Protruding Palace</option>' +
+                '<option value="Wagagoogaly">Wagagoogaly</option>' +
+                '<option value="High_Alert">High Alert</option>' +
+                '<option value="Killers_Crypt">Killers Crypt</option>' +
+                '<option value="Infestation_Prison_Escape_Night">Infestation Prison Escape Night</option>' +
+                '<option value="Giree_Graveyard">Giree Graveyard</option>' +
+                '<option value="The_Knightmare">The Knightmare</option>' +
+                '<option value="One_Night_At_Tellys">One Night At Tellys</option>' +
+                '<option value="Megaman_Exe">Megaman.exe</option>' +
+                '<option value="Robot_Hell">Robot Hell</option>' +
+                '<option value="Frightening_Lightning">Frightening Lightning</option>' +
+                '<option value="Nightmare_Cutter">Nightmare Cutter</option>' +
+                '<option value="Gehenna">Gehenna</option>' +
+                '<option value="Cosmic_Cruiser">Cosmic Cruiser</option>' +
+                '<option value="Toy_Story_2">Toy Story 2</option>' +
+                '<option value="There_Are_Crystals_In_The_Sky_For_Those_Who_Can_See_Them">There Are Crystals In The Sky For Those Who Can See Them</option>' +
+                '<option value="Quack_Dodgers">Quack Dodgers In The 24th And A Half Century</option>' +
+                '<option value="Rapid_Red_Fortress">Rapid Red Fortress</option>' +
+                '<option value="Rocks_Toy_Chest">Rocks Toy Chest</option>' +
+                '<option value="Donker_Conc">Donker Conc</option>' +
+                '<option value="Hi_Tech_High_Noon">Hi-Tech High Noon</option>' +
+                '<option value="Lithosphere_Slag_Digester">Lithosphere Slag Digester</option>' +
+                '<option value="Lava_Block_Aid">Lava Block-Aid</option>' +
+                '<option value="Celeste">Celeste</option>' +
+                '<option value="Napalm_Man_And_Explosives_Facility">Napalm Man And His Explosives Facility</option>' +
+                '<option value="Final_Frontier">The Final Frontier</option>' +
+                '<option value="The_Mysterious_Structure">The Mysterious Structure</option>' +
+                '<option value="Airship_Assault">Airship Assault</option>' +
+                '<option value="Battleships_Crossfire">Battleships Crossfire</option>' +
+                '<option value="Gospel_Of_Memories">Gospel Of Memories</option>' +
+                '<option value="I_Sawed_The_Finals">I Sawed The Finals</option>' +
+                '<option value="End_Of_The_Line">End Of The Line</option>' +
+                '<option value="Red_Mountain_Act2">Red Mountain Act2</option>' +
+                '<option value="Megaspeedrush_Rising_Revengeance">Megaspeedrush Rising Revengeance</option>';        
             }
 
         if (tournamentDropdown.value === 'NCE')
