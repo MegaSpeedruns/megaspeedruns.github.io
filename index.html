@@ -82,7 +82,7 @@
         const cachedUsername = localStorage.getItem("username");
         if (cachedUsername) {
             loginEl.textContent = cachedUsername;
-            loginEl.href = "profile.html";
+            loginEl.href = "Profile.html";
         } else {
             loginEl.textContent = "Login";
             loginEl.href = "Login.html";
@@ -93,7 +93,7 @@
                     const snapshot = await db.ref("users/" + user.uid).once("value");
                     const username = snapshot.val()?.username || "Login";
                     loginEl.textContent = username;
-                    loginEl.href = "profile.html";
+                    loginEl.href = "Profile.html";
                     localStorage.setItem("username", username);
                 } catch (err) {
                     console.error("Failed to fetch username:", err);
