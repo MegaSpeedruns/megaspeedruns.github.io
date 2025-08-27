@@ -1,85 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
 </head>
 <body>
-  <h2>Login</h2>
-  <form id="login-form">
-    <label>Email:</label><br>
-    <input id="login-email" type="email" required><br><br>
-    <label>Password:</label><br>
-    <input id="login-password" type="password" required><br><br>
-    <button type="submit">Login</button>
-  </form>
 
-  <h2>Sign Up</h2>
-  <form id="signup-form">
-    <label>Email:</label><br>
-    <input id="signup-email" type="email" required><br><br>
-    <label>Password:</label><br>
-    <input id="signup-password" type="password" required><br><br>
-    <button type="submit">Sign Up</button>
-  </form>
+<h2>Login</h2>
+<input type="email" id="login-email" placeholder="Email" required><br><br>
+<input type="password" id="login-password" placeholder="Password" required><br><br>
+<button id="login-btn">Login</button>
 
-  <p id="status"></p>
+<h2>Sign Up</h2>
+<input type="email" id="signup-email" placeholder="Email" required><br><br>
+<input type="password" id="signup-password" placeholder="Password" required><br><br>
+<button id="signup-btn">Sign Up</button>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<p id="status"></p>
 
-  <!-- Shared Firebase config -->
-  <script src="auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="./auth.js"></script>
 
-  <script>
-    const statusEl = document.getElementById("status");
-    function setStatus(msg) { statusEl.textContent = msg; }
+<script>
+const statusEl = document.getElementById("status");
 
-    // Ensure persistence is set before login/signup
-    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      .then(() => console.log("Persistence set to LOCAL"))
-      .catch(err => console.error("Error setting persistence:", err));
+function setStatus(msg) { statusEl.textContent = msg; }
 
-    // === LOGIN ===
-    document.getElementById("login-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("login-email").value;
-      const password = document.getElementById("login-password").value;
-      setStatus("Logging in...");
+// === LOGIN ===
+document.getElementById("login-btn").addEventListener("click", async () => {
+  const email = document.getElementById("login-email").value;
+  const password = document.getElementById("login-password").value;
+  setStatus("Logging in...");
 
-      try {
-        const { user } = await auth.signInWithEmailAndPassword(email, password);
-        setStatus(`Welcome ${user.email}`);
-        window.location.href = "index.html"; // Redirect to dashboard
-      } catch (err) {
-        setStatus(err.message);
-      }
-    });
+  try {
+    const { user } = await auth.signInWithEmailAndPassword(email, password);
+    setStatus(`Welcome ${user.email}`);
+    // No redirect, just show user logged in
+    console.log("Logged in:", user);
+  } catch (err) {
+    setStatus(err.message);
+  }
+});
 
-    // === SIGNUP ===
-    document.getElementById("signup-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("signup-email").value;
-      const password = document.getElementById("signup-password").value;
-      setStatus("Creating account...");
+// === SIGNUP ===
+document.getElementById("signup-btn").addEventListener("click", async () => {
+  const email = document.getElementById("signup-email").value;
+  const password = document.getElementById("signup-password").value;
+  setStatus("Creating account...");
 
-      try {
-        const { user } = await auth.createUserWithEmailAndPassword(email, password);
-        setStatus(`Account created: ${user.email}`);
-        window.location.href = "index.html"; // Redirect after signup
-      } catch (err) {
-        setStatus(err.message);
-      }
-    });
+  try {
+    const { user } = await auth.createUserWithEmailAndPassword(email, password);
+    setStatus(`Account created: ${user.email}`);
+    console.log("Signed up:", user);
+  } catch (err) {
+    setStatus(err.message);
+  }
+});
 
-    // === AUTO-REDIRECT IF LOGGED IN ===
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        window.location.href = "index.html";
-      }
-    });
-  </script>
+// === CHECK LOGIN STATE (popup style) ===
+auth.onAuthStateChanged(user => {
+  if (user) {
+    console.log("Current logged-in user:", user.email);
+    setStatus(`Logged in as: ${user.email}`);
+  } else {
+    console.log("No user logged in");
+    setStatus("Not logged in");
+  }
+});
+</script>
+
 </body>
 </html>
