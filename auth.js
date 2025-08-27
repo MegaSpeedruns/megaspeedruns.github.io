@@ -1,5 +1,3 @@
-// scripts/auth.js
-
 // Initialize Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyC2pHhSThFkKhN-c1sdhUATt1-zmNLV9sw",
@@ -13,16 +11,7 @@ firebase.initializeApp({
 
 const auth = firebase.auth();
 
-// Set persistence to LOCAL so login state survives page reloads & navigation
+// Ensure login state persists
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-  .then(() => {
-    console.log("Firebase Auth persistence set to LOCAL");
-  })
-  .catch((error) => {
-    console.error("Error setting Firebase Auth persistence:", error);
-  });
-
-// Optional: helper function to get current user immediately
-function getCurrentUser() {
-  return auth.currentUser;
-}
+  .then(() => console.log("Persistence set to LOCAL"))
+  .catch(err => console.error("Persistence error:", err));
