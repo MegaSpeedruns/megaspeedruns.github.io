@@ -91,7 +91,7 @@
       try {
         const snapshot = await get(ref(db, "users/" + user.uid));
         const username = snapshot.val()?.username || "Profile";
-        loginEl.textContent = username;
+        loginEl.textContent = "Profile";
         loginEl.href = "Profile.html";
         localStorage.setItem("username", username);
       } catch (err) {
@@ -133,6 +133,39 @@
   }
 
   loadUsers();
+</script>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+    const loginEl = document.getElementById("login");
+    const cachedUsername = localStorage.getItem("username");
+    if (cachedUsername) {
+        loginEl.textContent = `Profile`;
+        loginEl.href = "Profile.html";
+    } else {
+        loginEl.textContent = "Login";
+        loginEl.href = "Login.html";
+    }
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            try {
+                const snapshot = await db.ref("users/" + user.uid).once("value");
+                const username = snapshot.val()?.username || "Login";
+                loginEl.textContent = `Profile`;
+                loginEl.href = "Profile.html";
+                localStorage.setItem("username", username);
+            } catch (err) {
+                console.error("Failed to fetch username:", err);
+                loginEl.textContent = "Login";
+                loginEl.href = "Login.html";
+            }
+        } else {
+            loginEl.textContent = "Login";
+            loginEl.href = "Login.html";
+            localStorage.removeItem("username");
+        }
+    });
+});
 </script>
 </body>
 </html>

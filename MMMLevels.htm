@@ -12,12 +12,12 @@
                 background-size: cover;
             }
         </style>
+        <link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
     </head>
 
 <body id="flex-container">
     <header>
         <div class="logo">
-            <link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
         </div>
         <nav class="nav-wrapper">
             <ul>
@@ -25,6 +25,9 @@
                 <li><a href="MSTLP.htm">Level Packs</a></li>
                 <li><a href="MMMLevels.htm">MMM Levels</a></li>
                 <li><a href="Speedruns.htm">Speedruns</a></li>
+                <li><a id="Forums" href="Forum.html">Forums</a></ali>
+                <li><a id="login" href="Login.html">Login</a></li>
+                <li><a href="Users.html">Users</a></li>
             </ul>
         </nav>
     </header>
@@ -5753,6 +5756,39 @@
 
 <script>
 //<div class="footerC">Mega Speedruns</div>
+</script>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+    const loginEl = document.getElementById("login");
+    const cachedUsername = localStorage.getItem("username");
+    if (cachedUsername) {
+        loginEl.textContent = `Profile`;
+        loginEl.href = "Profile.html";
+    } else {
+        loginEl.textContent = "Login";
+        loginEl.href = "Login.html";
+    }
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            try {
+                const snapshot = await db.ref("users/" + user.uid).once("value");
+                const username = snapshot.val()?.username || "Login";
+                loginEl.textContent = `Profile`;
+                loginEl.href = "Profile.html";
+                localStorage.setItem("username", username);
+            } catch (err) {
+                console.error("Failed to fetch username:", err);
+                loginEl.textContent = "Login";
+                loginEl.href = "Login.html";
+            }
+        } else {
+            loginEl.textContent = "Login";
+            loginEl.href = "Login.html";
+            localStorage.removeItem("username");
+        }
+    });
+});
 </script>
 
 </html>

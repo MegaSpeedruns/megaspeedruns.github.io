@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mega Speedruns Forum</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />   
+<style>
+    body {
+        background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
+        background-size: cover;
+        font-family: Arial, sans-serif;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+
+    main {
+        max-width: 900px;
+        margin: 40px auto;
+        background-color: rgba(0, 0, 0, 0.65);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    }
+
+    h1 {
+        text-align: center;
+        color: #ffcc00;
+        margin-bottom: 15px;
+    }
+
+    .forum-categories {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .category {
+        background-color: rgba(20, 20, 20, 0.8);
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #333;
+    }
+
+    .category h2 {
+        margin: 0;
+        font-size: 1.3em;
+        color: #00e6ff;
+    }
+
+    .category p {
+        margin: 6px 0 10px;
+        font-size: 0.95em;
+        color: #ccc;
+    }
+
+    .thread-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .thread-list li {
+        padding: 10px;
+        margin-bottom: 8px;
+        background-color: rgba(40, 40, 40, 0.8);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .thread-list li:hover {
+        background-color: rgba(80, 80, 80, 0.8);
+    }
+
+    .new-thread {
+        margin-top: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    /* Shared styling for all inputs and textareas */
+    .input {
+        padding: 10px;
+        border-radius: 6px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        background-color: #222;
+        color: #fff;
+        transition: border 0.2s;
+    }
+
+    .input:focus {
+        border: 2px solid blue;
+    }
+
+    .new-thread button {
+        padding: 10px;
+        border: none;
+        background-color: blue;
+        color: #fff; /* White text */
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .new-thread button:hover {
+        background-color: blue;
+        color: #fff; /* Keep text white on hover */
+    }
+
+    .auth-warning {
+        text-align: center;
+        margin-top: 20px;
+        color: #ff5555;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+    <header>
+        <nav class="nav-wrapper">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="MSTLP.htm">Level Packs</a></li>
+                <li><a href="MMMLevels.htm">MMM Levels</a></li>
+                <li><a href="Speedruns.htm">Speedruns</a></li>
+                <li><a id="Forums" href="Forum.html">Forums</a></ali>
+                <li><a id="login" href="Login.html">Login</a></li>
+                <li><a href="Users.html">Users</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Mega Speedruns Forum</h1>
+        <div class="forum-categories">
+
+            <!-- Example Category -->
+            <div class="category">
+                <h2>General Discussion</h2>
+                <p>Talk about anything Mega Speedruns-related.</p>
+                <ul class="thread-list" id="general-threads"></ul>
+                
+                <div class="new-thread" id="general-thread-form" style="display: none;">
+                    <input class="input" type="text" id="general-title" placeholder="Thread Title">
+                    <textarea class="input" id="general-content" rows="3" placeholder="Write your post..."></textarea>
+                    <button onclick="createThread('general')">Create Thread</button>
+                </div>
+            </div>
+
+            <!-- Example Category -->
+            <div class="category">
+                <h2>Speedrun Strategies</h2>
+                <p>Share tips, tricks, and guides to improve your runs.</p>
+                <ul class="thread-list" id="strategy-threads"></ul>
+                
+                <div class="new-thread" id="strategy-thread-form" style="display: none;">
+                    <input class="input" type="text" id="strategy-title" placeholder="Thread Title">
+                    <textarea class="input" id="strategy-content" rows="3" placeholder="Write your post..."></textarea>
+                    <button onclick="createThread('strategy')">Create Thread</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="auth-warning" class="auth-warning" style="display: none;">
+            Please log in to create threads and reply.
+        </div>
+    </main>
+
+    <!-- Firebase Setup -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="auth.js"></script>
+
+    <script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const loginEl = document.getElementById("login");
+        const authWarning = document.getElementById("auth-warning");
+        const generalForm = document.getElementById("general-thread-form");
+        const strategyForm = document.getElementById("strategy-thread-form");
+        const cachedUsername = localStorage.getItem("username");
+
+        if (cachedUsername) {
+            loginEl.textContent = `Profile`;
+            loginEl.href = "Profile.html";
+        } else {
+            loginEl.textContent = "Login";
+            loginEl.href = "Login.html";
+        }
+
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                try {
+                    const snapshot = await db.ref("users/" + user.uid).once("value");
+                    const username = snapshot.val()?.username || "User";
+                    loginEl.textContent = `Profile`;
+                    loginEl.href = "Profile.html";
+                    localStorage.setItem("username", username);
+                    authWarning.style.display = "none";
+                    generalForm.style.display = "flex";
+                    strategyForm.style.display = "flex";
+                } catch (err) {
+                    console.error("Failed to fetch username:", err);
+                }
+            } else {
+                generalForm.style.display = "none";
+                strategyForm.style.display = "none";
+                authWarning.style.display = "block";
+            }
+        });
+    });
+
+    async function createThread(category) {
+        const titleInput = document.getElementById(`${category}-title`);
+        const contentInput = document.getElementById(`${category}-content`);
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const newThreadRef = db.ref(`forum/${category}`).push();
+        await newThreadRef.set({
+            title: titleInput.value,
+            content: contentInput.value,
+            author: localStorage.getItem("username"),
+            timestamp: Date.now()
+        });
+
+        titleInput.value = "";
+        contentInput.value = "";
+        loadThreads(category);
+    }
+
+    async function loadThreads(category) {
+        const listEl = document.getElementById(`${category}-threads`);
+        listEl.innerHTML = "";
+        const snapshot = await db.ref(`forum/${category}`).once("value");
+        snapshot.forEach((child) => {
+            const data = child.val();
+            const li = document.createElement("li");
+            li.innerHTML = `<strong>${data.title}</strong> — by ${data.author}`;
+            li.style.cursor = "pointer";
+            li.addEventListener("click", () => {
+                window.location.href = `thread.html?category=${category}&id=${child.key}`;
+            });
+            listEl.appendChild(li);
+        });
+    }
+
+    ["general", "strategy"].forEach(loadThreads);
+    </script>
+</body>
+</html>

@@ -10,11 +10,6 @@
       background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
       background-size: cover;
   }
-
-  #url-input, #url-btn {
-      display: block;
-      margin: 10px auto;
-  }
 </style>
 <link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
 </head>
@@ -31,141 +26,335 @@
             <li><a href="MMMLevels.htm">MMM Levels</a></li>
             <li><a href="Speedruns.htm">Speedruns</a></li>
             <li><a id="login" href="Login.html">Login</a></li>
-            <li><a id="login" href="Users.html">Users</a></li>
+            <li><a href="Users.html">Users</a></li>
         </ul>
     </nav>
 </header>
 
-<div class="shadow-box">
-  <h1 id="profile">User Profile</h1>
+<div class="shadow">
+  <div class="profile-left">
+    <img id="profile-img" src="Mega%20Speedruns_files/Default_Avatar.png" alt="Profile Image">
+    <input type="text" class = "img-input" id="url-input" placeholder="Paste image URL here">
+    <button class = "button" id="url-btn">Set Image</button>
+  </div>
 
-  <img id="profile-img" src="Mega%20Speedruns_files/Default_Avatar.png" alt="Profile Image" width="150" height="150"><br><br>
-
-  <input type="text" id="url-input" placeholder="Paste image URL here">
-  <button id="url-btn">Set Image</button>
-
-  <div id="user-info"></div><br>
-
-  <button id="logout-btn" style="margin:auto;">Logout</button>
+  <div class="profile-right">
+    <div class="profile-header">
+      <h1 id="profile">User Profile</h1>
+      <div id="color-picker-container" style="margin-top: 10px; display: none;">
+      <label for="username-color" style="font-weight: bold;">Username Color:</label>
+      <input type="color" id="username-color" value="#FFFFFF"; cursor: pointer;>
+      <button class="button" id="save-color-btn">Save</button>
+      <button class= "button" id="logout-btn"  style="height: 35px;">Logout</button>
+    </div>
+    </div>
+    <div id="user-info"></div>
+    <div id="user-runs"></div>
+  </div>
 </div>
 
+  <div class="shadow-box">
+  <div class="Spacing">
+      <ul id="userSpeedruns"></ul>
+  </div>
+  </div>
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { 
-    getAuth, 
-    onAuthStateChanged, 
-    signOut 
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { 
-    getDatabase, 
-    ref, 
-    get, 
-    set 
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getDatabase,
+  ref,
+  get,
+  set,
+  child
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyC2pHhSThFkKhN-c1sdhUATt1-zmNLV9sw",
-    authDomain: "megaspeedrunsdatabase.firebaseapp.com",
-    databaseURL: "https://megaspeedrunsdatabase-default-rtdb.firebaseio.com",
-    projectId: "megaspeedrunsdatabase",
-    storageBucket: "megaspeedrunsdatabase.appspot.com",
-    messagingSenderId: "545413984550",
-    appId: "1:545413984550:web:79c899026a21f6343091e7"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyC2pHhSThFkKhN-c1sdhUATt1-zmNLV9sw",
+  authDomain: "megaspeedrunsdatabase.firebaseapp.com",
+  databaseURL: "https://megaspeedrunsdatabase-default-rtdb.firebaseio.com",
+  projectId: "megaspeedrunsdatabase",
+  storageBucket: "megaspeedrunsdatabase.appspot.com",
+  messagingSenderId: "545413984550",
+  appId: "1:545413984550:web:79c899026a21f6343091e7"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getDatabase(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
 
-  const userProfile = document.getElementById("profile");
-  const profileImg = document.getElementById("profile-img");
-  const userInfoDiv = document.getElementById("user-info");
-  const urlInput = document.getElementById("url-input");
-  const urlBtn = document.getElementById("url-btn");
-  const loginLink = document.getElementById("login");
-  const logoutBtn = document.getElementById("logout-btn");
+const userProfile = document.getElementById("profile");
+const profileImg = document.getElementById("profile-img");
+const userInfoDiv = document.getElementById("user-info");
+const urlInput = document.getElementById("url-input");
+const urlBtn = document.getElementById("url-btn");
+const loginLink = document.getElementById("login");
+const logoutBtn = document.getElementById("logout-btn");
 
-  const urlSetImage = (url) => {
-    if (!url) return alert("Enter a valid image URL!");
-    profileImg.src = url;
-    const user = auth.currentUser;
-    if (user) {
-      const uidToView = new URLSearchParams(window.location.search).get('uid') || user.uid;
-      if (uidToView === user.uid) {
-        set(ref(db, 'users/' + user.uid + '/profileImageURL'), url)
-          .then(() => console.log("URL saved to database"))
-          .catch(err => console.error("Failed to save URL:", err));
-      }
+const runsContainer = document.createElement("div");
+const runCountEl = document.createElement("h3");
+runCountEl.className = "outline";
+const userRunsList = document.createElement("ul");
+runsContainer.appendChild(runCountEl);
+runsContainer.appendChild(userRunsList);
+document.querySelector(".shadow-box").appendChild(runsContainer);
+
+const urlSetImage = (url) => {
+  if (!url) return alert("Enter a valid image URL!");
+  profileImg.src = url;
+  const user = auth.currentUser;
+  if (user) {
+    const uidToView = new URLSearchParams(window.location.search).get("uid") || user.uid;
+    if (uidToView === user.uid) {
+      set(ref(db, "users/" + user.uid + "/profileImageURL"), url)
+        .then(() => console.log("URL saved to database"))
+        .catch(err => console.error("Failed to save URL:", err));
     }
-  };
+  }
+};
 
-  urlBtn.addEventListener('click', () => urlSetImage(urlInput.value.trim()));
-  urlInput.addEventListener('keypress', (e) => {
-    if (e.key === "Enter") urlSetImage(urlInput.value.trim());
-  });
+urlBtn.addEventListener("click", () => urlSetImage(urlInput.value.trim()));
+urlInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") urlSetImage(urlInput.value.trim());
+});
+
+function linkify(text) {
+  const urlPattern = /(\bhttps?:\/\/[^\s]+)/gi;
+  return text.replace(urlPattern, '<a href="$1" target="_blank">$1</a>');
+}
+
+const urlParams = new URLSearchParams(window.location.search);
+const profileUidFromUrl = urlParams.get("uid");
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    loginLink.innerText = "Login";
+    loginLink.href = "Login.html";
+    logoutBtn.style.display = "none";
+    return;
+  }
 
   const urlParams = new URLSearchParams(window.location.search);
-  const profileUidFromUrl = urlParams.get('uid');
+  if (!urlParams.get("uid")) {
+    const newUrl = `${window.location.pathname}?uid=${user.uid}`;
+    window.history.replaceState({}, "", newUrl);
+    urlParams.set("uid", user.uid);
+  }
 
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      loginLink.innerText = "Login";
-      loginLink.href = "Login.html";
-      logoutBtn.style.display = "none";
+  const uidToView = urlParams.get("uid");
+
+  loginLink.innerText = "Profile";
+  loginLink.href = `Profile.html?uid=${user.uid}`;
+  logoutBtn.style.display = "inline-block";
+
+  try {
+    const snapshot = await get(ref(db, "users/" + uidToView));
+    const userData = snapshot.val();
+
+    if (!userData) {
+      userProfile.innerText = "User not found";
+      userInfoDiv.innerHTML = "";
+      urlInput.style.display = "none";
+      urlBtn.style.display = "none";
       return;
     }
 
-    const uidToView = profileUidFromUrl || user.uid;
+    const usernameColor = userData.usernameColor || "#FFFFFF";
+    userProfile.innerHTML = `<p style="color:${usernameColor}">${userData.username}'s Profile</p><br>`;
 
-    try {
-      const snapshot = await get(ref(db, 'users/' + uidToView));
-      const userData = snapshot.val();
+    if (uidToView === user.uid) {
+      colorPickerContainer.style.display = "block";
+      usernameColorInput.value = usernameColor;
 
-      if (!userData) {
-        userProfile.innerText = "User not found";
-        userInfoDiv.innerHTML = "";
-        urlInput.style.display = "none";
-        urlBtn.style.display = "none";
-        return;
-      }
+      saveColorBtn.addEventListener("click", async () => {
+        try {
+          await set(ref(db, "users/" + user.uid + "/usernameColor"), usernameColorInput.value);
 
-      userProfile.innerText = `${userData.username}'s Profile`;
-
-      userInfoDiv.innerHTML = `
-        <p>Username: ${userData.username}</p>
-      `;
-
-      if (userData.profileImageURL) {
-        profileImg.src = userData.profileImageURL + "?t=" + new Date().getTime();
-      }
-
-      if (uidToView === user.uid) {
-        urlInput.style.display = "block";
-        urlBtn.style.display = "block";
-        logoutBtn.style.display = "block";
-      } else {
-        urlInput.style.display = "none";
-        urlBtn.style.display = "none";
-        logoutBtn.style.display = "none";
-      }
-
-      loginLink.innerText = userData.username;
-      loginLink.href = `Profile.html?uid=${user.uid}`;
-
-    } catch (err) {
-      console.error('Failed to load user data:', err);
+          // Update instantly
+          userProfile.innerHTML = `<p style="color:${usernameColorInput.value}">${userData.username}'s Profile</p><br>`;
+        } catch (err) {
+          console.error("Failed to save username color:", err);
+          alert("Failed to save color. Try again.");
+        }
+      });
+    } else {
+      colorPickerContainer.style.display = "none";
     }
-  });
 
-  logoutBtn.addEventListener("click", async () => {
-    try {
-      await signOut(auth);
-      window.location.href = "Login.html";
-    } catch (err) {
-      console.error("Logout failed:", err);
-      alert("Failed to log out. Try again.");
+
+    userInfoDiv.innerHTML = `
+      <p id="bio-text">${userData.bio ? userData.bio.replace(/\n/g, "<br>") : ""}</p><br>
+    `;
+
+
+    if (userData.profileImageURL) {
+      profileImg.src = userData.profileImageURL + "?t=" + new Date().getTime();
     }
-  });
+
+if (uidToView === user.uid) {
+  // Create the textarea but hide initially
+  const bioInput = document.createElement("textarea");
+  bioInput.id = "bio-input";
+  bioInput.style.width = "100%";
+  bioInput.style.height = "60px";
+  bioInput.style.display = "none";
+  bioInput.value = userData.bio || "";
+  bioInput.className = "bio-input";
+  userInfoDiv.appendChild(bioInput);
+
+  // Create the toggle button
+  const bioBtn = document.createElement("button");
+  bioBtn.className = "button";
+  bioBtn.id = "bio-btn";
+  bioBtn.innerText = "Edit Profile";
+  userInfoDiv.appendChild(bioBtn);
+
+const bioText = document.getElementById("bio-text"); // Make sure to get the element
+
+bioBtn.addEventListener("click", async () => {
+  if (bioBtn.innerText === "Edit Profile") {
+    bioInput.style.display = "block";
+    bioBtn.innerText = "Save";
+  } else {
+    const newBio = bioInput.value.trim();
+    try {
+      await set(ref(db, "users/" + user.uid + "/bio"), newBio);
+
+      // Update displayed bio with line breaks
+      bioText.innerHTML = newBio ? newBio.replace(/\n/g, "<br>") : "No bio set.";
+
+      bioInput.style.display = "none";
+      bioBtn.innerText = "Edit Profile";
+    } catch (err) {
+      alert("Refresh to see update.");
+    }
+  }
+});
+    } else {
+      urlInput.style.display = "none";
+      urlBtn.style.display = "none";
+      logoutBtn.style.display = "none";
+    }
+
+    loginLink.innerText = `Profile`;
+    loginLink.href = `Profile.html?uid=${user.uid}`;
+
+    // === FETCH USER RUNS ===
+    const dbRef = ref(db);
+    const speedrunSnapshot = await get(child(dbRef, "SpeedRunner/"));
+
+if (speedrunSnapshot.exists()) {
+  const data = speedrunSnapshot.val();
+  const totalRuns = Number(data.RunNum) || 0;
+
+  let i = 1;
+  let matchCount = 0;
+  const loggedInUser = (userData.username || "").replace(/_/g, " ").trim().toLowerCase();
+
+  userRunsList.innerHTML = ""; // Clear before appending
+
+  while (i <= totalRuns) {
+    const runData = data[i];
+    if (runData) {
+      const runnerName = (runData.Runner || "").replace(/_/g, " ").trim().toLowerCase();
+
+      if (runnerName === loggedInUser) {
+        matchCount++;
+
+        // Collect all runs for the same level
+        const relevantRuns = [];
+        for (let j = 1; j <= totalRuns; j++) {
+          const otherRun = data[j];
+          if (otherRun && otherRun.Run === runData.Run && otherRun.Time) {
+            const timeParts = otherRun.Time.split(":").map(Number);
+            let seconds = 0;
+            if (timeParts.length === 3) seconds = timeParts[0] * 3600 + timeParts[1] * 60 + timeParts[2];
+            else if (timeParts.length === 2) seconds = timeParts[0] * 60 + timeParts[1];
+            else seconds = timeParts[0];
+            relevantRuns.push({ runner: otherRun.Runner, time: seconds });
+          }
+        }
+
+        // Sort ascending by time
+        relevantRuns.sort((a, b) => a.time - b.time);
+
+        // User time in seconds
+        const userTimeParts = runData.Time.split(":").map(Number);
+        let userSeconds = 0;
+        if (userTimeParts.length === 3) userSeconds = userTimeParts[0] * 3600 + userTimeParts[1] * 60 + userTimeParts[2];
+        else if (userTimeParts.length === 2) userSeconds = userTimeParts[0] * 60 + userTimeParts[1];
+        else userSeconds = userTimeParts[0];
+
+        // Find position (first occurrence)
+        const position = relevantRuns.findIndex(r => r.time === userSeconds) + 1;
+
+        const list = document.createElement("li");
+        list.setAttribute("class", "spacing");
+
+        const level = runData.Run.replace(/_/g, " ");
+        const time = runData.Time.replace(/^0+:?/, "").replace(/^0+/, "");
+        const link = runData.Link;
+        const tournament = runData.Tournament;
+        const levelLabel = level.includes("Week") ? "LevelPack" : "Level";
+
+        list.innerHTML = `
+          <img src="Mega%20Speedruns_files/${tournament}SS/${runData.Run}.png" alt="${level}" class="imgResize">
+          <span>${levelLabel}: ${level}</span>
+          <span>Position: ${position}${position === 1 ? "st" : position === 2 ? "nd" : position === 3 ? "rd" : "th"}</span>
+          <span>Time: ${time}</span>
+          <span><a href="${link}" target="_blank">Watch Run</a></span>
+        `;
+
+        userRunsList.appendChild(list);
+      }
+    }
+    i++;
+  }
+
+  // Update run counter
+  runCountEl.innerText = `Speedruns - Runs Submitted: ${matchCount}`;
+} else {
+  console.warn("⚠️ No SpeedRunner data found in Firebase!");
+  runCountEl.innerText = "Speedruns - Runs Submitted: 0";
+}
+
+  } catch (err) {
+    console.error("Failed to load user data:", err);
+  }
+});
+
+logoutBtn.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    window.location.href = "Login.html";
+  } catch (err) {
+    console.error("Logout failed:", err);
+    alert("Failed to log out. Try again.");
+  }
+});
 </script>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+    const loginEl = document.getElementById("login");
+    const cachedUsername = localStorage.getItem("username");
+    if (cachedUsername) {
+        loginEl.textContent = `Profile`;
+        loginEl.href = "Profile.html";
+    } else {
+        loginEl.textContent = "Login";
+        loginEl.href = "Login.html";
+    }
+});
+
+const usernameColorInput = document.getElementById("username-color");
+const saveColorBtn = document.getElementById("save-color-btn");
+const colorPickerContainer = document.getElementById("color-picker-container");
+</script>
+
 </body>
 </html>

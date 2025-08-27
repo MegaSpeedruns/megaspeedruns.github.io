@@ -194,12 +194,12 @@ select {
     max-width: 300px;
 }
 
-input[type="submit"] {
+.input[type="submit"] {
     font-size: 1.1em;
     padding: 10px 20px;
 }
 
-input {
+.input {
     position: relative;
     margin-left: 20px;
     padding: 10px;
@@ -295,20 +295,13 @@ form {
     top: 40px;
     left: 50%;
     transform: translate(-50%, 0px);
-    width: 60%;
+    width: 95%;
     text-align: center;
     background: rgba(0, 0, 0, 0.7);
     padding: 20px 20px 20px 20px;
     border-radius: 0px;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
-}
-
-.shadow {
-    position: relative;
-    background: rgba(0, 0, 0, 0.5);
-    height: 0px; 
-    top: 0px;
 }
 
 .visual {
@@ -518,4 +511,140 @@ footer {
     position: relative;
     top: 20vh;
     left: 0;
+}
+
+.shadow {
+    position: relative;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.profile-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-left img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.profile-left input,
+.profile-left button {
+    width: 150px;
+}
+
+.profile-right {
+    flex: 1;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+#logout-btn {
+    height: fit-content;
+    padding: 5px 10px;
+}
+
+.outline {
+    border-top: 1px solid #bbb;
+    border-bottom: 1px solid #bbb;
+    padding: 10px 0; /* space above and below text */
+    text-align: center; /* optional, center the text */
+    margin: 0px 0; /* space around the element */
+}
+
+.outlineb {
+    border-top: 1px solid #bbb;
+    border-bottom: 1px solid #bbb;
+    padding: 10px 0; /* space above and below text */
+    text-align: center; /* optional, center the text */
+    margin: 20px 0; /* space around the element */
+}
+
+.button {
+    width: 80px;
+    height: 35px;
+    border-style: none;
+    border-radius: 5px;
+    background-color: #333;
+    outline: none; /* Remove outline */
+    border: 1px solid #777; /* Default border color */
+    cursor: pointer; /* Ensure the button has a pointer cursor */
+    transition: all 0.2s ease; /* Optional: Smooth transition */
+}
+
+.button:hover {
+    border: 1px solid orange; /* Change border to orange on hover */
+    box-shadow: 0 0 5px orange; /* Optional: Add glow effect */
+}
+
+.bio-input {
+    font-size: 1.1em;
+    background-color: #11111175; 
+    color: white; 
+    border: 1px solid #575757; 
+    border-radius: 5px;
+    outline: none; 
+    transition: all 0.2s ease;
+}
+
+.img-input {
+    background-color: #11111175; 
+    color: white; 
+    border: 1px solid #575757; 
+    border-radius: 5px;
+    outline: none; 
+    transition: all 0.2s ease;
+}
+
+.layout {
+    position: relative;
+    top: 0px;
+    left: 201px;
+    width: calc(100% - 203px);
+    text-align: center;
+    height: 1019px;
+    border-radius: 0px;
+    flex-wrap: wrap;
+}
+
+.spacing {
+  display: flex;
+  align-items: center;    /* Vertically centers content */
+  gap: 10px;              /* Optional spacing between items */
+}
+
+.spacing span {
+  flex: 0 0 15%;          /* Each span takes exactly 25% */
+  text-align: center;     /* Center text horizontally */
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+.imgResize {
+    width: 90px;
+    height: 72px;
+    margin-right: 5px;
+    border-radius: 5px;
 }

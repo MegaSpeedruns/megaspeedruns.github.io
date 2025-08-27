@@ -24,7 +24,9 @@
                 <li><a href="MSTLP.htm">Level Packs</a></li>
                 <li><a href="MMMLevels.htm">MMM Levels</a></li>
                 <li><a href="Speedruns.htm">Speedruns</a></li>
+                <li><a id="Forums" href="Forum.html">Forums</a></ali>
                 <li><a id="login" href="Login.html">Login</a></li>
+                <li><a href="Users.html">Users</a></li>
             </ul>
         </nav>
     </header>
@@ -81,7 +83,7 @@
         const loginEl = document.getElementById("login");
         const cachedUsername = localStorage.getItem("username");
         if (cachedUsername) {
-            loginEl.textContent = cachedUsername;
+            loginEl.textContent = `Profile`;
             loginEl.href = "Profile.html";
         } else {
             loginEl.textContent = "Login";
@@ -92,7 +94,7 @@
                 try {
                     const snapshot = await db.ref("users/" + user.uid).once("value");
                     const username = snapshot.val()?.username || "Login";
-                    loginEl.textContent = username;
+                    loginEl.textContent = `Profile`;
                     loginEl.href = "Profile.html";
                     localStorage.setItem("username", username);
                 } catch (err) {

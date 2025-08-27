@@ -27,6 +27,8 @@
                 <li><a href="MSTLP.htm">Level Packs</a></li>
                 <li><a href="MMMLevels.htm">MMM Levels</a></li>
                 <li><a href="Speedruns.htm">Speedruns</a></li>
+                <li><a id="login" href="Login.html">Login</a></li>
+                <li><a href="Users.html">Users</a></li>
             </ul>
         </nav>
     </header>
@@ -101,26 +103,6 @@
                 <div class="menu-item" class="expandable" onclick="showhide('levelPacksNRS1'); moveFooter(); extendMenuContainer();">
                     <button class="menu-btn" onclick="toggleMenuItem(this)">NRS1 Levelpacks</button>
                 </div>
-                <script>
-                /*<div class="menu-item">
-                    <button class="menu-btn">NRS2 Levels</button>
-                    <div class="submenu">
-                        <button type="button" class="expandable" onclick="javascript:showhide('NRS2W1')">Week 1 - Intro</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('NRS2W2')">Week 2 - Ice</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('NRS2W3')">Week 3 - Color</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('NRS2W4')">Week 4 - "RE"</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('NRS2W5')">Week 5 - Big Chungus</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('NRS2W6')">Week 6 - Speed</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('NRS2W7')">Week 7 - Buddy</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('NRS2W8')">Week 8 - Retro</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('NRS2W9')">Week 9 - Free For All A</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('NRS2W10')">Week 10 - Free For All B</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('NRS2W11')">Week 11 - Luigi's Secret</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('NRS2W12')">Week 12 - No Floors</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('NRS2W13')">Week 13 - S1 Buffed Levels</button>
-                    </div>
-                </div>
-                </script>
                 <div class="menu-item">
                     <button class="menu-btn">NCR Levels</button>
                     <div class="submenu">
@@ -141,25 +123,6 @@
                 <div class="menu-item" class="expandable" onclick="showhide('MSSSPacks')">
                     <button class="menu-btn" onclick="toggleMenuItem(this)">MSSS Levelpacks</button>
                 </div>
-                <script>
-                /*
-                <div class="menu-item">
-                    <button class="menu-btn">Leaderboards MSBR</button>
-                    <div class="submenu">
-                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR1')">MSBR1</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR2')">MSBR2</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR3')">MSBR3</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR4')">MSBR4</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR5')">MSBR5</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR6')">MSBR6</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR7')">MSBR7</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR8')">MSBR8</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR9')">MSBR9</button>
-                        <button type="button" class="expandable" onclick="javascript:showhide('MSBR10')">MSBR10</button>
-                    </div>
-                </div>
-                */
-                </script>
                 <div class="menu-item" class="expandable" onclick="javascript:showhide('submitRun')">
                     <button class="menu-btn" onclick="toggleMenuItem(this)">Submit A Run</button>
                 </div>
@@ -4782,50 +4745,6 @@ function parseTime(timeString) {
 </script>
 
 <script>
-    /*
-    function openPopoutPlayer(videoUrl) {
-        // Define the size of the pop-out window
-        const width = 800;
-        const height = 450;
-        const left = (window.screen.width / 2) - (width / 2);
-        const top = (window.screen.height / 2) - (height / 2);
-
-        // Create a new window and write the video embed HTML inside it
-        const playerWindow = window.open(
-            '',
-            'VideoPlayer',
-            `width=${width},height=${height},top=${top},left=${left}`
-        );
-
-        // HTML content for the pop-out window
-        playerWindow.document.write(`
-            <html>
-            <head>
-                <title>Video Player</title>
-                <style>
-                    body {
-                        margin: 0;
-                        overflow: hidden;
-                    }
-                    iframe {
-                        width: 100%;
-                        height: 100%;
-                        border: none;
-                    }
-                </style>
-            </head>
-            <body>
-                <iframe src="${videoUrl}" allowfullscreen></iframe>
-            </body>
-            </html>
-        `);
-
-        playerWindow.document.close();
-    }
-    */
-</script>
-
-<script>
 let defaultOrder = []; // To store the original order of speedruns
 
 // Populate the defaultOrder array when the page loads
@@ -5019,6 +4938,37 @@ function sortSpeedruns() {
     window.onload = function() {
         updateTitleBasedOnAllSpeedruns();
     };
+
+window.addEventListener("DOMContentLoaded", () => {
+    const loginEl = document.getElementById("login");
+    const cachedUsername = localStorage.getItem("username");
+    if (cachedUsername) {
+        loginEl.textContent = `Profile`;
+        loginEl.href = "Profile.html";
+    } else {
+        loginEl.textContent = "Login";
+        loginEl.href = "Login.html";
+    }
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            try {
+                const snapshot = await db.ref("users/" + user.uid).once("value");
+                const username = snapshot.val()?.username || "Login";
+                loginEl.textContent = `Profile`;
+                loginEl.href = "Profile.html";
+                localStorage.setItem("username", username);
+            } catch (err) {
+                console.error("Failed to fetch username:", err);
+                loginEl.textContent = "Login";
+                loginEl.href = "Login.html";
+            }
+        } else {
+            loginEl.textContent = "Login";
+            loginEl.href = "Login.html";
+            localStorage.removeItem("username");
+        }
+    });
+});
 </script>
 
 </body>

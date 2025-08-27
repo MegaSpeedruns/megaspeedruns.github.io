@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View Thread</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+    body {
+        background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
+        background-size: cover;
+        font-family: Arial, sans-serif;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+
+    main {
+        max-width: 60%;
+        margin: 40px auto;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    }
+
+    h1 {
+        color: #ffcc00;
+        margin-bottom: 10px;
+    }
+
+    .post {
+        background-color: rgba(40, 40, 40, 0.8);
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .post-author {
+        font-weight: bold;
+        color: #00e6ff;
+    }
+
+    .replies {
+        margin-top: 20px;
+    }
+
+    .reply {
+        background-color: rgba(30, 30, 30, 0.8);
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 6px;
+    }
+
+    .reply-box {
+        display: none;
+        margin-top: 15px;
+    }
+
+    .input {
+        width: 95%;
+        padding: 10px;
+        border-radius: 6px;
+        border: none;
+        background-color: #222;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+    button {
+        padding: 10px 15px;
+        background-color: blue;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        background-color: #00b8d9;
+    }
+
+    #login-warning {
+        color: #ff5555;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+    <main>
+        <h1 id="thread-title">Loading...</h1>
+        <div class="post">
+            <div class="post-author" id="thread-author"></div>
+            <p id="thread-content"></p>
+        </div>
+
+        <div class="replies" id="replies"></div>
+
+        <div id="reply-box" class="reply-box">
+            <textarea id="reply-input" class="input" rows="3" placeholder="Write your reply..."></textarea>
+            <button onclick="postReply()">Post Reply</button>
+        </div>
+
+        <div id="login-warning" style="display: none;">
+            Please log in to reply to this thread.
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="auth.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const category = params.get("category");
+const threadId = params.get("id");
+const titleEl = document.getElementById("thread-title");
+const authorEl = document.getElementById("thread-author");
+const contentEl = document.getElementById("thread-content");
+const repliesEl = document.getElementById("replies");
+const replyBox = document.getElementById("reply-box");
+const loginWarning = document.getElementById("login-warning");
+
+let currentUser = null;
+
+auth.onAuthStateChanged((user) => {
+    currentUser = user;
+    if (user) {
+        replyBox.style.display = "block";
+        loginWarning.style.display = "none";
+    } else {
+        replyBox.style.display = "none";
+        loginWarning.style.display = "block";
+    }
+});
+
+async function getUsernameColor(uid) {
+    const snapshot = await db.ref(`users/${uid}`).once("value");
+    const data = snapshot.val();
+    return data?.usernameColor || "#00e6ff";
+}
+
+async function loadThread() {
+    const snapshot = await db.ref(`forum/${category}/${threadId}`).once("value");
+    const data = snapshot.val();
+    titleEl.textContent = data.title;
+
+    const color = await getUsernameColor(data.authorUID);
+    authorEl.innerHTML = `Posted by <span style="color:${color}">${data.author}</span>`;
+    contentEl.textContent = data.content;
+
+    loadReplies();
+}
+
+async function loadReplies() {
+    repliesEl.innerHTML = "<h2>Replies</h2>";
+    const snapshot = await db.ref(`forum/${category}/${threadId}/replies`).once("value");
+    snapshot.forEach(async (child) => {
+        const reply = child.val();
+        const color = await getUsernameColor(reply.authorUID);
+
+        const div = document.createElement("div");
+        div.classList.add("reply");
+        div.innerHTML = `<strong style="color:${color}">${reply.author}</strong>: ${reply.content}`;
+        repliesEl.appendChild(div);
+    });
+}
+
+async function postReply() {
+    if (!currentUser) return;
+
+    const input = document.getElementById("reply-input");
+    const content = input.value.trim();
+    if (!content) return;
+
+    const replyRef = db.ref(`forum/${category}/${threadId}/replies`).push();
+    await replyRef.set({
+        author: localStorage.getItem("username"),
+        authorUID: currentUser.uid,
+        content,
+        timestamp: Date.now()
+    });
+
+    input.value = "";
+    loadReplies();
+}
+
+loadThread();
+</script>
+
+
+</body>
+</html>

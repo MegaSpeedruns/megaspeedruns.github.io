@@ -24,9 +24,11 @@
                 <li><a href="MSTLP.htm">Level Packs</a></li>
                 <li><a href="MMMLevels.htm">MMM Levels</a></li>
                 <li><a href="Speedruns.htm">Speedruns</a></li>
+                <li><a id="Forums" href="Forum.html">Forums</a></ali>
                 <li><a id="login" href="Login.html">Login</a></li>
+                <li><a href="Users.html">Users</a></li>
             </ul>
-        </nav>
+        </nav>>
     </header>
 
 <div class = shadow-box>
@@ -141,7 +143,7 @@ window.addEventListener("DOMContentLoaded", () => {
     // Show cached username instantly if available
     const cachedUsername = localStorage.getItem("username");
     if (cachedUsername) {
-        loginEl.textContent = cachedUsername;
+        loginEl.textContent = "Profile";
     } else {
         loginEl.textContent = "Login";
     }
@@ -153,7 +155,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 const snapshot = await db.ref("users/" + user.uid).once("value");
                 const username = snapshot.val()?.username || "Login";
 
-                loginEl.textContent = username;
+                loginEl.textContent = "Profile";
                 localStorage.setItem("username", username);
             } catch (err) {
                 console.error("Failed to fetch username:", err);
