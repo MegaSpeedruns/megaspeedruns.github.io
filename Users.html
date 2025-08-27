@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User List</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  body {
+    background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
+    background-size: cover;
+  }
+
+  .user-list {
+    max-width: 600px;
+    margin: 50px auto;
+    background: rgba(0,0,0,0.6);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+  }
+
+  .user-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .user-item:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .user-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+</style>
+<link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img src="Mega%20Speedruns_files/logo.png" alt="Logo">
+    </div>
+    <nav class="nav-wrapper">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="MSTLP.htm">Level Packs</a></li>
+            <li><a href="MMMLevels.htm">MMM Levels</a></li>
+            <li><a href="Speedruns.htm">Speedruns</a></li>
+            <li><a id="login" href="Login.html">Login</a></li>
+            <li><a id="Users" href="Users.html">Users</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="user-list" id="user-list">
+  <h1>User List</h1>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC2pHhSThFkKhN-c1sdhUATt1-zmNLV9sw",
+    authDomain: "megaspeedrunsdatabase.firebaseapp.com",
+    databaseURL: "https://megaspeedrunsdatabase-default-rtdb.firebaseio.com",
+    projectId: "megaspeedrunsdatabase",
+    storageBucket: "megaspeedrunsdatabase.appspot.com",
+    messagingSenderId: "545413984550",
+    appId: "1:545413984550:web:79c899026a21f6343091e7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+  const loginEl = document.getElementById("login");
+  const userListDiv = document.getElementById("user-list");
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      try {
+        const snapshot = await get(ref(db, "users/" + user.uid));
+        const username = snapshot.val()?.username || "Profile";
+        loginEl.textContent = username;
+        loginEl.href = "Profile.html";
+        localStorage.setItem("username", username);
+      } catch (err) {
+        console.error("Failed to fetch username:", err);
+        loginEl.textContent = "Login";
+        loginEl.href = "Login.html";
+      }
+    } else {
+      loginEl.textContent = "Login";
+      loginEl.href = "Login.html";
+      localStorage.removeItem("username");
+    }
+  });
+
+  async function loadUsers() {
+    try {
+      const snapshot = await get(ref(db, 'users'));
+      const users = snapshot.val();
+      if (!users) {
+        userListDiv.innerHTML += "<p>No users found.</p>";
+        return;
+      }
+      Object.keys(users).forEach(uid => {
+        const user = users[uid];
+        const userItem = document.createElement("div");
+        userItem.className = "user-item";
+        userItem.innerHTML = `
+          <img src="${user.profileImageURL || 'Mega%20Speedruns_files/Default_Avatar.png'}?t=${new Date().getTime()}" alt="${user.username}">
+          <span>${user.username}</span>
+        `;
+        userItem.addEventListener('click', () => {
+          window.location.href = `Profile.html?uid=${uid}`;
+        });
+        userListDiv.appendChild(userItem);
+      });
+    } catch (err) {
+      console.error("Failed to load users:", err);
+    }
+  }
+
+  loadUsers();
+</script>
+</body>
+</html>

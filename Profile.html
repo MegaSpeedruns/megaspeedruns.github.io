@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  body {
+      background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
+      background-size: cover;
+  }
+
+  #url-input, #url-btn {
+      display: block;
+      margin: 10px auto;
+  }
+</style>
+<link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
+</head>
+
+<body>
+<header>
+    <div class="logo">
+        <img src="Mega%20Speedruns_files/logo.png" alt="Logo">
+    </div>
+    <nav class="nav-wrapper">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="MSTLP.htm">Level Packs</a></li>
+            <li><a href="MMMLevels.htm">MMM Levels</a></li>
+            <li><a href="Speedruns.htm">Speedruns</a></li>
+            <li><a id="login" href="Login.html">Login</a></li>
+            <li><a id="login" href="Users.html">Users</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="shadow-box">
+  <h1 id="profile">User Profile</h1>
+
+  <img id="profile-img" src="Mega%20Speedruns_files/Default_Avatar.png" alt="Profile Image" width="150" height="150"><br><br>
+
+  <input type="text" id="url-input" placeholder="Paste image URL here">
+  <button id="url-btn">Set Image</button>
+
+  <div id="user-info"></div><br>
+
+  <button id="logout-btn" style="margin:auto;">Logout</button>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { 
+    getAuth, 
+    onAuthStateChanged, 
+    signOut 
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { 
+    getDatabase, 
+    ref, 
+    get, 
+    set 
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC2pHhSThFkKhN-c1sdhUATt1-zmNLV9sw",
+    authDomain: "megaspeedrunsdatabase.firebaseapp.com",
+    databaseURL: "https://megaspeedrunsdatabase-default-rtdb.firebaseio.com",
+    projectId: "megaspeedrunsdatabase",
+    storageBucket: "megaspeedrunsdatabase.appspot.com",
+    messagingSenderId: "545413984550",
+    appId: "1:545413984550:web:79c899026a21f6343091e7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+  const userProfile = document.getElementById("profile");
+  const profileImg = document.getElementById("profile-img");
+  const userInfoDiv = document.getElementById("user-info");
+  const urlInput = document.getElementById("url-input");
+  const urlBtn = document.getElementById("url-btn");
+  const loginLink = document.getElementById("login");
+  const logoutBtn = document.getElementById("logout-btn");
+
+  const urlSetImage = (url) => {
+    if (!url) return alert("Enter a valid image URL!");
+    profileImg.src = url;
+    const user = auth.currentUser;
+    if (user) {
+      const uidToView = new URLSearchParams(window.location.search).get('uid') || user.uid;
+      if (uidToView === user.uid) {
+        set(ref(db, 'users/' + user.uid + '/profileImageURL'), url)
+          .then(() => console.log("URL saved to database"))
+          .catch(err => console.error("Failed to save URL:", err));
+      }
+    }
+  };
+
+  urlBtn.addEventListener('click', () => urlSetImage(urlInput.value.trim()));
+  urlInput.addEventListener('keypress', (e) => {
+    if (e.key === "Enter") urlSetImage(urlInput.value.trim());
+  });
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const profileUidFromUrl = urlParams.get('uid');
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      loginLink.innerText = "Login";
+      loginLink.href = "Login.html";
+      logoutBtn.style.display = "none";
+      return;
+    }
+
+    const uidToView = profileUidFromUrl || user.uid;
+
+    try {
+      const snapshot = await get(ref(db, 'users/' + uidToView));
+      const userData = snapshot.val();
+
+      if (!userData) {
+        userProfile.innerText = "User not found";
+        userInfoDiv.innerHTML = "";
+        urlInput.style.display = "none";
+        urlBtn.style.display = "none";
+        return;
+      }
+
+      userProfile.innerText = `${userData.username}'s Profile`;
+
+      userInfoDiv.innerHTML = `
+        <p>Username: ${userData.username}</p>
+      `;
+
+      if (userData.profileImageURL) {
+        profileImg.src = userData.profileImageURL + "?t=" + new Date().getTime();
+      }
+
+      if (uidToView === user.uid) {
+        urlInput.style.display = "block";
+        urlBtn.style.display = "block";
+        logoutBtn.style.display = "block";
+      } else {
+        urlInput.style.display = "none";
+        urlBtn.style.display = "none";
+        logoutBtn.style.display = "none";
+      }
+
+      loginLink.innerText = userData.username;
+      loginLink.href = `Profile.html?uid=${user.uid}`;
+
+    } catch (err) {
+      console.error('Failed to load user data:', err);
+    }
+  });
+
+  logoutBtn.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "Login.html";
+    } catch (err) {
+      console.error("Logout failed:", err);
+      alert("Failed to log out. Try again.");
+    }
+  });
+</script>
+</body>
+</html>

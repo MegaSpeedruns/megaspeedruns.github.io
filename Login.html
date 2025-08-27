@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
-  <link rel="stylesheet" href="Mega%20Speedruns_files/styles.css">
+  <link rel="stylesheet" href="styles.css">
   <style>
     body {
         background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
@@ -24,29 +24,33 @@
                 <li><a href="MSTLP.htm">Level Packs</a></li>
                 <li><a href="MMMLevels.htm">MMM Levels</a></li>
                 <li><a href="Speedruns.htm">Speedruns</a></li>
+                <li><a id="login" href="Login.html">Login</a></li>
             </ul>
         </nav>
     </header>
 
+<div class = shadow-box>
 <h2>Login</h2>
+<br>
 <input type="email" id="login-email" placeholder="Email" required><br><br>
 <input type="password" id="login-password" placeholder="Password" required><br><br>
-<button id="login-btn">Login</button>
-
+<button id="login-btn">Login</button><br><br>
 <h2>Sign Up</h2>
+<br>
+<input type="text" id="signup-username" placeholder="Username" required><br><br>
 <input type="email" id="signup-email" placeholder="Email" required><br><br>
 <input type="password" id="signup-password" placeholder="Password" required><br><br>
-<button id="signup-btn">Sign Up</button>
-
+<button id="signup-btn">Sign Up</button><br><br>
 <p id="status"></p>
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script src="auth.js"></script>
 
 <script>
 const statusEl = document.getElementById("status");
-
 function setStatus(msg) { statusEl.textContent = msg; }
 
 // === LOGIN ===
@@ -57,38 +61,120 @@ document.getElementById("login-btn").addEventListener("click", async () => {
 
   try {
     const { user } = await auth.signInWithEmailAndPassword(email, password);
-    setStatus(`Welcome ${user.email}`);
-    // No redirect, just show user logged in
-    console.log("Logged in:", user);
+
+    const snapshot = await db.ref("users/" + user.uid).once("value");
+    const username = snapshot.val()?.username || "Unknown";
+
+    setStatus(`Welcome ${username}`);
+    console.log("Logged in:", user.email, "Username:", username);
+
+    // Redirect to Profile.html
+    window.location.href = "Profile.html";
   } catch (err) {
     setStatus(err.message);
   }
 });
 
-// === SIGNUP ===
+// === SIGN UP ===
 document.getElementById("signup-btn").addEventListener("click", async () => {
+  const username = document.getElementById("signup-username").value.trim();
   const email = document.getElementById("signup-email").value;
   const password = document.getElementById("signup-password").value;
-  setStatus("Creating account...");
+  setStatus("Checking username...");
+
+  if (!username) {
+    setStatus("Please enter a username!");
+    return;
+  }
 
   try {
+    const usernameLower = username.toLowerCase();
+
+    const snapshot = await db.ref("users")
+      .orderByChild("username_lower")
+      .equalTo(usernameLower)
+      .once("value");
+
+    if (snapshot.exists()) {
+      setStatus("⚠️ Username already taken. Please choose another.");
+      return;
+    }
+
+    setStatus("Creating account...");
+
     const { user } = await auth.createUserWithEmailAndPassword(email, password);
-    setStatus(`Account created: ${user.email}`);
-    console.log("Signed up:", user);
+
+    await db.ref("users/" + user.uid).set({
+      username: username,
+      username_lower: usernameLower,
+      email: user.email
+    });
+
+    setStatus(`Account created! Welcome ${username}`);
+    console.log("Signed up:", user.email, "Username:", username);
+
+    // Redirect to Profile.html
+    window.location.href = "Profile.html";
   } catch (err) {
     setStatus(err.message);
   }
 });
 
-// === CHECK LOGIN STATE (popup style) ===
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async user => {
   if (user) {
+    const snapshot = await db.ref("users/" + user.uid).once("value");
+    const username = snapshot.val()?.username || "Unknown";
+
     console.log("Current logged-in user:", user.email);
-    setStatus(`Logged in as: ${user.email}`);
+    setStatus(`Logged in as: ${username} (${user.email})`);
   } else {
     console.log("No user logged in");
     setStatus("Not logged in");
   }
+});
+</script>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+    const loginEl = document.getElementById("login");
+
+    // Show cached username instantly if available
+    const cachedUsername = localStorage.getItem("username");
+    if (cachedUsername) {
+        loginEl.textContent = cachedUsername;
+    } else {
+        loginEl.textContent = "Login";
+    }
+
+    // Update username from Firebase Auth + Database
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            try {
+                const snapshot = await db.ref("users/" + user.uid).once("value");
+                const username = snapshot.val()?.username || "Login";
+
+                loginEl.textContent = username;
+                localStorage.setItem("username", username);
+            } catch (err) {
+                console.error("Failed to fetch username:", err);
+                loginEl.textContent = "Login";
+            }
+        } else {
+            loginEl.textContent = "Login";
+            localStorage.removeItem("username");
+        }
+    });
+
+    // Redirect to Profile.html if logged in when clicking header login
+    loginEl.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const user = auth.currentUser;
+        if (user) {
+            window.location.href = "Profile.html";
+        } else {
+            window.location.href = "Login.html";
+        }
+    });
 });
 </script>
 

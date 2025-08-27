@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mega Speedruns Website</title>
-<link rel="stylesheet" href="Mega%20Speedruns_files/styles.css">
+<link rel="stylesheet" href="styles.css">
 <style>
     body {
         background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
         background-size: cover;
     }
 </style>
+<link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />   
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="Mega%20Speedruns_files/logo.png" alt="Logo">
-            <link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />              
+            <img src="Mega%20Speedruns_files/logo.png" alt="Logo">           
         </div>
         <nav class="nav-wrapper">
             <ul>
@@ -71,31 +71,43 @@
         MegaSpeedruns
     </footer>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-    <script src="./scripts/auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="auth.js"></script>
 
     <script>
-
     window.addEventListener("DOMContentLoaded", () => {
         const loginEl = document.getElementById("login");
-
-        auth.onAuthStateChanged((user) => {
-            if (!user) {
-                window.location.href = "Login.html";
+        const cachedUsername = localStorage.getItem("username");
+        if (cachedUsername) {
+            loginEl.textContent = cachedUsername;
+            loginEl.href = "profile.html";
+        } else {
+            loginEl.textContent = "Login";
+            loginEl.href = "Login.html";
+        }
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                try {
+                    const snapshot = await db.ref("users/" + user.uid).once("value");
+                    const username = snapshot.val()?.username || "Login";
+                    loginEl.textContent = username;
+                    loginEl.href = "profile.html";
+                    localStorage.setItem("username", username);
+                } catch (err) {
+                    console.error("Failed to fetch username:", err);
+                    loginEl.textContent = "Login";
+                    loginEl.href = "Login.html";
+                }
             } else {
-                loginEl.textContent = user.email;
-                loginEl.removeAttribute("href"); 
-
-                loginEl.style.cursor = "pointer";
-                loginEl.addEventListener("click", async () => {
-                    await auth.signOut();
-                    window.location.href = "Login.html";
-                });
+                loginEl.textContent = "Login";
+                loginEl.href = "Login.html";
+                localStorage.removeItem("username");
             }
         });
     });
     </script>
+
 </body>
 </html>
