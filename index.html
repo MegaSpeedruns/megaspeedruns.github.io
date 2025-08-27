@@ -24,7 +24,7 @@
                 <li><a href="MSTLP.htm">Level Packs</a></li>
                 <li><a href="MMMLevels.htm">MMM Levels</a></li>
                 <li><a href="Speedruns.htm">Speedruns</a></li>
-                <li><a id="login" href="login.html">Login</a></li>
+                <li><a id="login" href="Login.html">Login</a></li>
             </ul>
         </nav>
     </header>
@@ -77,23 +77,21 @@
     <script src="./scripts/auth.js"></script>
 
     <script>
-    // Ensure DOM is loaded before running
+
     window.addEventListener("DOMContentLoaded", () => {
         const loginEl = document.getElementById("login");
 
         auth.onAuthStateChanged((user) => {
             if (!user) {
-                // Not logged in → redirect to login page
-                window.location.href = "login.html";
+                window.location.href = "Login.html";
             } else {
-                // Logged in → update login element to show email and act as logout
                 loginEl.textContent = user.email;
-                loginEl.removeAttribute("href"); // disable default login link
+                loginEl.removeAttribute("href"); 
 
-                loginEl.style.cursor = "pointer"; // indicate clickable
+                loginEl.style.cursor = "pointer";
                 loginEl.addEventListener("click", async () => {
                     await auth.signOut();
-                    window.location.href = "login.html";
+                    window.location.href = "Login.html";
                 });
             }
         });
