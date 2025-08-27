@@ -245,7 +245,7 @@
             li.innerHTML = `<strong>${data.title}</strong> — by ${data.author}`;
             li.style.cursor = "pointer";
             li.addEventListener("click", () => {
-                window.location.href = `thread.html?category=${category}&id=${child.key}`;
+                window.location.href = `Thread.html?category=${category}&id=${child.key}`;
             });
             listEl.appendChild(li);
         });
