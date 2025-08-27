@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega Speedruns</title>
-    <link rel="stylesheet" href="Mega%20Speedruns_files/styles.css">
-	<style>
-        body {
-            background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
-            background-size: cover;
-        }
-    </style>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mega Speedruns Dashboard</title>
+<link rel="stylesheet" href="Mega%20Speedruns_files/styles.css">
+<style>
+    body {
+        background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
 </head>
 <body>
     <header>
@@ -21,9 +21,10 @@
         <nav class="nav-wrapper">
             <ul>
                 <li><a href="index.html">Home</a></li>
-				<li><a href="MSTLP.htm">Level Packs</a></li>
-				<li><a href="MMMLevels.htm">MMM Levels</a></li>
-				<li><a href="Speedruns.htm">Speedruns</a></li>
+                <li><a href="MSTLP.htm">Level Packs</a></li>
+                <li><a href="MMMLevels.htm">MMM Levels</a></li>
+                <li><a href="Speedruns.htm">Speedruns</a></li>
+                <li><a id="login" href="login.html">Login</a></li>
             </ul>
         </nav>
     </header>
@@ -31,7 +32,7 @@
     <main>
         <section id="home" class="title">
             <div class="title-text">
-                <h1>Welcome to The Mega Speedruns Website</h1>
+                <h1>Welcome to The Mega Speedruns Dashboard</h1>
             </div>
         </section>
 
@@ -54,22 +55,49 @@
                 <div class="link-item">
                     <a href="https://www.youtube.com/@megaspeedruns8305" target="_blank">
                         <img src="Mega%20Speedruns_files/youtube.png" alt="YouTube">
-                        <h3>Youtube</h3>
+                        <h3>YouTube</h3>
                         <p>Check out our YouTube here</p>
                     </a>
                 </div>
             </div>
         </section>
     </main>
-	
-	<div class="about">
-	<img src="Mega%20Speedruns_files/about.png" alt="MS Logo">
-	</div>
+    
+    <div class="about">
+        <img src="Mega%20Speedruns_files/about.png" alt="MS Logo">
+    </div>
 
-</body>
-
-<footer>
+    <footer>
         MegaSpeedruns
-</footer>
+    </footer>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="./scripts/auth.js"></script>
+
+    <script>
+    // Ensure DOM is loaded before running
+    window.addEventListener("DOMContentLoaded", () => {
+        const loginEl = document.getElementById("login");
+
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                // Not logged in → redirect to login page
+                window.location.href = "login.html";
+            } else {
+                // Logged in → update login element to show email and act as logout
+                loginEl.textContent = user.email;
+                loginEl.removeAttribute("href"); // disable default login link
+
+                loginEl.style.cursor = "pointer"; // indicate clickable
+                loginEl.addEventListener("click", async () => {
+                    await auth.signOut();
+                    window.location.href = "login.html";
+                });
+            }
+        });
+    });
+    </script>
+</body>
 </html>
