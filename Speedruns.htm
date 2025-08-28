@@ -3714,6 +3714,33 @@ function showhide(elementId) {
             appId: "1:545413984550:web:79c899026a21f6343091e7"
         };
 
+        async function getUIDByRunner(runnerName) {
+        if (!runnerName) return null;
+
+        try {
+            const snapshot = await get(ref(db, 'users'));
+            if (!snapshot.exists()) return null;
+
+            let uid = null;
+
+            snapshot.forEach(child => {
+                const data = child.val();
+                const username = data.username || "";
+                const nickname = data.nickname || "";
+
+                if (runnerName === username || runnerName === nickname) {
+                    uid = child.key; // Firebase UID
+                }
+            });
+
+            return uid; // null if not found
+        } catch (error) {
+            console.error("Error fetching UID by runner:", error);
+            return null;
+        }
+    }
+
+
         const app = initializeApp(firebaseConfig);
 
         import { getDatabase, ref, child, get, set, update, remove } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
@@ -3849,77 +3876,71 @@ function showhide(elementId) {
     RetData();
     }
 
-        function RetData() {
-            const dbRef = ref(db);
+async function RetData() {
+    const dbRef = ref(db);
 
-            get(child(dbRef, 'SpeedRunner/' + Number(i))).then((snapshot) => {
-                if (snapshot.exists()) {
-
-                    const info1 = document.createElement("span");
-                    const info2 = document.createElement("span");
-                    const info3 = document.createElement("span");
-                    const info4 = document.createElement("span");
-                    const info5 = document.createElement("span");
-
-                    const list = document.createElement("li");
-                    list.setAttribute("class", "spacing");
-
-                    var lvlSnap = snapshot.val().Run;
-                    var runnerSnap = snapshot.val().Runner;
-
-                    var timeSnap = snapshot.val().Time;
-                    let result = timeSnap.replace(/^0+:?/, "");
-                    result = result.replace(/^0+/, "")
-                    timeSnap = result;
-
-                    var catSnap = snapshot.val().category;
-                    var linkSnap = snapshot.val().Link;
-
-                    var level = lvlSnap.replace(/_/g, " ");
-                    var runner = runnerSnap.replace(/_/g, " ");
-                    var time = timeSnap.replace(/_/g, " ");
-                    //time = time.replace(/^0+/, "");
-                    //var category = catSnap.replace(/_/g, " ");
-                    var link = linkSnap.replace(/_/g, " ");
-
-                    let word = "Week";
-
-                    if (level.indexOf(word) !== -1) {
-                        list.innerHTML = '<img src="Mega%20Speedruns_files/' + snapshot.val().Tournament + 'SS/' + snapshot.val().Run + '.png"' + snapshot.val().Run + ' alt="' + level + '" class="imgResize">' +
-                        '<span>LevelPack: ' + level + '</span>' + '<span>Category: ' + snapshot.val().Category + '</span>' +
-                        '<span>Runner: ' + snapshot.val().Runner + '</span>' + '<span>Time: ' + timeSnap + '</span>' +
-                        '<span><a href="' + snapshot.val().Link + '" target="_blank">Watch Run</a></span>';
-                    } else {
-                        list.innerHTML = '<img src="Mega%20Speedruns_files/' + snapshot.val().Tournament + 'SS/' + snapshot.val().Run + '.png"' + snapshot.val().Run + ' alt="' + level + '" class="imgResize">' +
-                        '<span>Level: ' + level + '</span>' + '<span>Category: ' + snapshot.val().Category + '</span>' +
-                        '<span>Runner: ' + snapshot.val().Runner + '</span>' + '<span>Time: ' + timeSnap + '</span>' +
-                        '<span><a href="' + snapshot.val().Link + '" target="_blank">Watch Run</a></span>';
-                    }
-
-                    if(Number(y) == "0") document.getElementById("allSpeedruns").prepend(list);
-                    else document.getElementById("allSpeedruns").append(list);
-
-                    console.log(level);
-                    console.log(runner);
-                    console.log(time);
-                    //console.log(category);
-                    console.log(link);
-
-                const additionalData = {
-                    category: snapshot.val().Category,
-                    link: snapshot.val().Link
-                };
-
-                updateLeaderboard(level, snapshot.val().Runner, time, { link: snapshot.val().Link, category: snapshot.val().Category });
-				populateDefaultOrder();
-                }
-                else
-                {
-                    alert("Error");
-                    console.log(error);
-                }
-            })
+    try {
+        const snapshot = await get(child(dbRef, 'SpeedRunner/' + Number(i)));
+        if (!snapshot.exists()) {
+            console.log("No data found for run", i);
+            return;
         }
+
+        // Extract data
+        const runData = snapshot.val();
+        let level = runData.Run.replace(/_/g, " ");
+        let runnerName = runData.Runner.replace(/_/g, " ");
+        let timeSnap = runData.Time.replace(/^0+:?/, "").replace(/^0+/, "");
+        let category = runData.Category;
+        let link = runData.Link;
+        let tournament = runData.Tournament;
+
+        // Get UID for runner
+        const uid = await getUIDByRunner(runnerName);
+        const runnerLink = uid
+            ? `<a href="Profile.html?uid=${uid}" class="runner-link">${runnerName}</a>`
+            : runnerName;
+
+        // Create list item
+        const list = document.createElement("li");
+        list.setAttribute("class", "spacing");
+
+        const word = "Week";
+
+        if (level.includes(word)) {
+            list.innerHTML = `
+                <img src="Mega%20Speedruns_files/${tournament}SS/${runData.Run}.png" alt="${level}" class="imgResize">
+                <span>LevelPack: ${level}</span>
+                <span>Category: ${category}</span>
+                <span>Runner: ${runnerLink}</span>
+                <span>Time: ${timeSnap}</span>
+                <span><a href="${link}" target="_blank">Watch Run</a></span>
+            `;
+        } else {
+            list.innerHTML = `
+                <img src="Mega%20Speedruns_files/${tournament}SS/${runData.Run}.png" alt="${level}" class="imgResize">
+                <span>Level: ${level}</span>
+                <span>Category: ${category}</span>
+                <span>Runner: ${runnerLink}</span>
+                <span>Time: ${timeSnap}</span>
+                <span><a href="${link}" target="_blank">Watch Run</a></span>
+            `;
+        }
+
+        // Prepend or append based on y
+        if (Number(y) == 0) document.getElementById("allSpeedruns").prepend(list);
+        else document.getElementById("allSpeedruns").append(list);
+
+        console.log(level, runnerName, timeSnap, link);
+
+        // Update leaderboard
+        updateLeaderboard(level, runnerName, timeSnap, { link, category });
+        populateDefaultOrder();
+
+    } catch (error) {
+        console.error("Error retrieving run data:", error);
+    }
+}
 
         document.getElementById("clickable-text").addEventListener("click", () => {
                 //getID();

@@ -188,16 +188,65 @@ async function getUsernameColor(username) {
     }
 }
 
+async function getUserProfile(username) {
+    if (!username) {
+        console.warn("No username provided to getUserProfile");
+        return { profileImage: "Default_Avatar.png", uid: null };
+    }
+
+    try {
+        // Search for a user where username matches
+        const snapshot = await db.ref("users")
+            .orderByChild("username")
+            .equalTo(username)
+            .once("value");
+
+        if (!snapshot.exists()) {
+            console.warn(`No user found for: ${username}`);
+            return { profileImage: "Default_Avatar.png", uid: null };
+        }
+
+        let profileImage = "Default_Avatar.png";
+        let uid = null;
+
+        snapshot.forEach(child => {
+            const data = child.val();
+            uid = child.key; // Get UID from the directory name
+
+            // Use profileImageURL instead of profileImage
+            if (data.profileImageURL && data.profileImageURL.trim() !== "") {
+                profileImage = data.profileImageURL;
+            }
+        });
+
+        return { profileImage, uid };
+
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+        return { profileImage: "Default_Avatar.png", uid: null };
+    }
+}
+
 async function loadThread() {
     const snapshot = await db.ref(`forum/${category}/${threadId}`).once("value");
     const data = snapshot.val();
     titleEl.textContent = data.title;
 
-    // Get the author's chosen username color
     const color = await getUsernameColor(data.author);
-    console.log("Author:", data.author);
-    console.log("Fetched color:", color);
-    authorEl.innerHTML = `Posted by <span style="color:${color}; font-weight:bold;">${data.author}</span>`;
+    const { profileImage, uid } = await getUserProfile(data.author);
+
+    authorEl.innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;">
+            <a href="Profile.html?uid=${uid || ''}" style="text-decoration:none;">
+                <img src="${profileImage}" alt="${data.author}" 
+                    style="width:40px;height:40px;border-radius:50%;border:2px solid ${color};object-fit:cover;cursor:pointer;">
+            </a>
+            <a href="Profile.html?uid=${uid || ''}" 
+                style="color:${color};font-weight:bold;text-decoration:none;cursor:pointer;">
+                ${data.author}
+            </a>
+        </div>
+    `;
 
     // Show delete button if current user's username matches thread author
     const currentUsername = localStorage.getItem("username");
@@ -240,6 +289,7 @@ if (currentUsername && currentUsername === data.author) {
     loadReplies();
 }
 
+
 async function loadReplies() {
     repliesEl.innerHTML = "<h2>Replies</h2>";
 
@@ -247,19 +297,48 @@ async function loadReplies() {
     const replies = [];
 
     snapshot.forEach(child => {
-        replies.push({ ...child.val(), key: child.key }); // Keep Firebase key for deletion
+        replies.push({ ...child.val(), key: child.key });
     });
 
     // Sort replies by timestamp
     replies.sort((a, b) => a.timestamp - b.timestamp);
 
+    // Cache to avoid fetching the same user multiple times
+    const profileCache = {};
+
     for (const reply of replies) {
+        let profileData;
+
+        if (profileCache[reply.author]) {
+            profileData = profileCache[reply.author];
+        } else {
+            profileData = await getUserProfile(reply.author);
+            profileCache[reply.author] = profileData; // Save to cache
+        }
+
+        const { profileImage, uid } = profileData;
         const color = await getUsernameColor(reply.author);
 
         const div = document.createElement("div");
         div.classList.add("reply");
-        div.style.position = "relative"; // Needed for absolute positioning if desired
-        div.innerHTML = `<strong style="color:${color}">${reply.author}</strong>: ${reply.content}`;
+
+        div.innerHTML = `
+            <div style="display:flex;align-items:center;gap:10px;">
+                <a href="Profile.html?uid=${uid || ''}" style="text-decoration:none;">
+                    <img src="${profileImage}" 
+                         alt="${reply.author}" 
+                         style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid ${color};"
+                         onerror="this.onerror=null;this.src='Default_Avatar.png';">
+                </a>
+                <a href="Profile.html?uid=${uid || ''}" 
+                   style="color:${color};font-weight:bold;text-decoration:none;">
+                    ${reply.author}
+                </a>
+            </div>
+            <div style="margin-left:42px;color:#ccc;">
+                ${reply.content}
+            </div>
+        `;
 
         // Show delete button if current user's username matches reply author
         const currentUsername = localStorage.getItem("username");
@@ -267,7 +346,6 @@ async function loadReplies() {
             const delBtn = document.createElement("button");
             delBtn.textContent = "x";
 
-            // Small dark grey style
             delBtn.style.float = "right";
             delBtn.style.backgroundColor = "#444";
             delBtn.style.color = "#fff";
@@ -278,13 +356,11 @@ async function loadReplies() {
             delBtn.style.border = "none";
             delBtn.style.cursor = "pointer";
 
-            // Hover effect
             delBtn.onmouseover = () => delBtn.style.backgroundColor = "#666";
             delBtn.onmouseout = () => delBtn.style.backgroundColor = "#444";
 
             delBtn.onclick = async () => {
-                const confirmDelete = confirm("Are you sure you want to delete this reply?");
-                if (!confirmDelete) return;
+                if (!confirm("Are you sure you want to delete this reply?")) return;
                 try {
                     await db.ref(`forum/${category}/${threadId}/replies/${reply.key}`).remove();
                     loadReplies(); // Refresh replies
@@ -300,6 +376,7 @@ async function loadReplies() {
         repliesEl.appendChild(div);
     }
 }
+
 
 async function postReply() {
     if (!currentUser) return;
