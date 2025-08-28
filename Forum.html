@@ -222,12 +222,15 @@
         const user = auth.currentUser;
         if (!user) return;
 
+        const threadTitle = titleInput.value;
+        const threadContent = contentInput.value;
+
         const newThreadRef = db.ref(`forum/${category}`).push();
         await newThreadRef.set({
             title: threadTitle,
             content: threadContent,
             author: localStorage.getItem("username"),
-            authorUID: auth.currentUser.uid,
+            authorUID: user.uid,
             timestamp: Date.now()
         });
 
