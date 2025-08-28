@@ -38,7 +38,6 @@
 
     .post-author {
         font-weight: bold;
-        color: #00e6ff;
     }
 
     .replies {
@@ -152,10 +151,41 @@ auth.onAuthStateChanged((user) => {
     }
 });
 
-async function getUsernameColor(uid) {
-    const snapshot = await db.ref(`users/${uid}`).once("value");
-    const data = snapshot.val();
-    return data?.usernameColor || "#00e6ff";
+async function getUsernameColor(username) {
+    if (!username) {
+        console.warn("No username provided to getUsernameColor");
+        return "#00e6ff"; // Fallback color
+    }
+
+    try {
+        // Search for a user where username matches
+        const snapshot = await db.ref("users")
+            .orderByChild("username")
+            .equalTo(username)
+            .once("value");
+
+        if (!snapshot.exists()) {
+            console.warn(`No user found with username: ${username}`);
+            return "#00e6ff"; // Default fallback
+        }
+
+        let color = "#00e6ff"; // Default if missing
+
+        snapshot.forEach(child => {
+            const data = child.val();
+            if (data.usernameColor) {
+                color = data.usernameColor.startsWith("#") 
+                    ? data.usernameColor 
+                    : `#${data.usernameColor}`;
+            }
+        });
+
+        return color;
+
+    } catch (error) {
+        console.error("Error fetching username color:", error);
+        return "#00e6ff"; // Fallback on error
+    }
 }
 
 async function loadThread() {
@@ -164,10 +194,49 @@ async function loadThread() {
     titleEl.textContent = data.title;
 
     // Get the author's chosen username color
-    const color = await getUsernameColor(data.authorUID);
+    const color = await getUsernameColor(data.author);
+    console.log("Author:", data.author);
+    console.log("Fetched color:", color);
     authorEl.innerHTML = `Posted by <span style="color:${color}; font-weight:bold;">${data.author}</span>`;
-    contentEl.textContent = data.content;
 
+    // Show delete button if current user's username matches thread author
+    const currentUsername = localStorage.getItem("username");
+if (currentUsername && currentUsername === data.author) {
+    const deleteThreadBtn = document.createElement("button");
+    deleteThreadBtn.textContent = "x";
+
+    // Style as small dark grey button
+    deleteThreadBtn.style.float = "right";           // Push to the right
+    deleteThreadBtn.style.backgroundColor = "#444";  // Dark grey
+    deleteThreadBtn.style.color = "#fff";            // White text
+    deleteThreadBtn.style.padding = "5px 10px";      // Compact padding
+    deleteThreadBtn.style.fontSize = "0.85rem";      // Small text
+    deleteThreadBtn.style.height = "28px";           // Short height
+    deleteThreadBtn.style.borderRadius = "4px";      // Rounded corners
+    deleteThreadBtn.style.border = "none";           // Remove border
+    deleteThreadBtn.style.cursor = "pointer";        // Pointer on hover
+
+    // Optional hover effect
+    deleteThreadBtn.onmouseover = () => deleteThreadBtn.style.backgroundColor = "#666";
+    deleteThreadBtn.onmouseout = () => deleteThreadBtn.style.backgroundColor = "#444";
+
+    deleteThreadBtn.onclick = async () => {
+        const confirmDelete = confirm("Are you sure you want to delete this thread?");
+        if (!confirmDelete) return;
+        try {
+            await db.ref(`forum/${category}/${threadId}`).remove();
+            alert("Thread deleted successfully.");
+            window.location.href = "Forum.html"; // Redirect back to forum
+        } catch (err) {
+            console.error("Failed to delete thread:", err);
+            alert("Failed to delete thread. Try again.");
+        }
+    };
+
+    authorEl.appendChild(deleteThreadBtn);
+}
+
+    contentEl.textContent = data.content;
     loadReplies();
 }
 
@@ -178,18 +247,56 @@ async function loadReplies() {
     const replies = [];
 
     snapshot.forEach(child => {
-        replies.push(child.val());
+        replies.push({ ...child.val(), key: child.key }); // Keep Firebase key for deletion
     });
 
-    // Sort replies by timestamp so they're displayed in correct order
+    // Sort replies by timestamp
     replies.sort((a, b) => a.timestamp - b.timestamp);
 
     for (const reply of replies) {
-        const color = await getUsernameColor(reply.authorUID);
+        const color = await getUsernameColor(reply.author);
 
         const div = document.createElement("div");
         div.classList.add("reply");
+        div.style.position = "relative"; // Needed for absolute positioning if desired
         div.innerHTML = `<strong style="color:${color}">${reply.author}</strong>: ${reply.content}`;
+
+        // Show delete button if current user's username matches reply author
+        const currentUsername = localStorage.getItem("username");
+        if (currentUsername && currentUsername === reply.author) {
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "x";
+
+            // Small dark grey style
+            delBtn.style.float = "right";
+            delBtn.style.backgroundColor = "#444";
+            delBtn.style.color = "#fff";
+            delBtn.style.padding = "3px 8px";
+            delBtn.style.fontSize = "0.75rem";
+            delBtn.style.height = "24px";
+            delBtn.style.borderRadius = "4px";
+            delBtn.style.border = "none";
+            delBtn.style.cursor = "pointer";
+
+            // Hover effect
+            delBtn.onmouseover = () => delBtn.style.backgroundColor = "#666";
+            delBtn.onmouseout = () => delBtn.style.backgroundColor = "#444";
+
+            delBtn.onclick = async () => {
+                const confirmDelete = confirm("Are you sure you want to delete this reply?");
+                if (!confirmDelete) return;
+                try {
+                    await db.ref(`forum/${category}/${threadId}/replies/${reply.key}`).remove();
+                    loadReplies(); // Refresh replies
+                } catch (err) {
+                    console.error("Failed to delete reply:", err);
+                    alert("Failed to delete reply. Try again.");
+                }
+            };
+
+            div.appendChild(delBtn);
+        }
+
         repliesEl.appendChild(div);
     }
 }

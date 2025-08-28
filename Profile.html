@@ -255,6 +255,7 @@ if (speedrunSnapshot.exists()) {
   let i = 1;
   let matchCount = 0;
   const loggedInUser = (userData.username || "").replace(/_/g, " ").trim().toLowerCase();
+  const userNickname = (userData.nickname || "").replace(/_/g, " ").trim().toLowerCase();
 
   userRunsList.innerHTML = ""; // Clear before appending
 
@@ -263,7 +264,7 @@ if (speedrunSnapshot.exists()) {
     if (runData) {
       const runnerName = (runData.Runner || "").replace(/_/g, " ").trim().toLowerCase();
 
-      if (runnerName === loggedInUser) {
+      if (runnerName === loggedInUser || runnerName === userNickname) {
         matchCount++;
 
         // Collect all runs for the same level

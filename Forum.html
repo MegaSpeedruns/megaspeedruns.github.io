@@ -224,9 +224,10 @@
 
         const newThreadRef = db.ref(`forum/${category}`).push();
         await newThreadRef.set({
-            title: titleInput.value,
-            content: contentInput.value,
+            title: threadTitle,
+            content: threadContent,
             author: localStorage.getItem("username"),
+            authorUID: auth.currentUser.uid,
             timestamp: Date.now()
         });
 
