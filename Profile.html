@@ -104,17 +104,31 @@ runsContainer.appendChild(runCountEl);
 runsContainer.appendChild(userRunsList);
 document.querySelector(".shadow-box").appendChild(runsContainer);
 
-const urlSetImage = (url) => {
+const urlSetImage = async (url) => {
   if (!url) return alert("Enter a valid image URL!");
-  profileImg.src = url;
-  const user = auth.currentUser;
-  if (user) {
-    const uidToView = new URLSearchParams(window.location.search).get("uid") || user.uid;
-    if (uidToView === user.uid) {
-      set(ref(db, "users/" + user.uid + "/profileImageURL"), url)
-        .then(() => console.log("URL saved to database"))
-        .catch(err => console.error("Failed to save URL:", err));
+
+  try {
+    const response = await fetch(url, { method: "HEAD" });
+    const contentType = response.headers.get("Content-Type");
+
+    if (!contentType || !contentType.startsWith("image/")) {
+      alert("This URL does not point to a valid image.");
+      return;
     }
+
+    profileImg.src = url + "?t=" + new Date().getTime();
+
+    const user = auth.currentUser;
+    if (user) {
+      const uidToView = new URLSearchParams(window.location.search).get("uid") || user.uid;
+      if (uidToView === user.uid) {
+        await set(ref(db, "users/" + user.uid + "/profileImageURL"), url);
+        console.log("Profile image URL saved successfully.");
+      }
+    }
+  } catch (err) {
+    console.error("Failed to load image:", err);
+    alert("Invalid or unsupported image URL!");
   }
 };
 
