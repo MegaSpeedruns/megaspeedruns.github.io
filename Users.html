@@ -119,10 +119,22 @@
         const user = users[uid];
         const userItem = document.createElement("div");
         userItem.className = "user-item";
+
+        // Set username color and profile border color
+        const usernameColor = user.usernameColor || "#ffffff"; // fallback to white
+
         userItem.innerHTML = `
           <img src="${user.profileImageURL || 'Mega%20Speedruns_files/Default_Avatar.png'}?t=${new Date().getTime()}" alt="${user.username}">
-          <span>${user.username}</span>
+          <span style="color: ${usernameColor};">${user.username}</span>
         `;
+
+        const img = userItem.querySelector("img");
+        img.style.border = `3px solid ${usernameColor}`;
+        img.style.objectFit = "cover";
+        img.onerror = () => {
+          img.src = 'Mega%20Speedruns_files/Default_Avatar.png';
+        };
+
         userItem.addEventListener('click', () => {
           window.location.href = `Profile.html?uid=${uid}`;
         });
@@ -135,6 +147,7 @@
 
   loadUsers();
 </script>
+
 
 <script>
 window.addEventListener("DOMContentLoaded", () => {
