@@ -4589,13 +4589,13 @@ function showhide(elementId) {
             if (Minute.value.length == 1) addZero = "0";
             if (Second.value.length == 1) addZero2 = "0";
             if (Millisecond.value.length == 1) addZero3 = "0";
-            if (Millisecond.value.length == 0) addZero4 = "00";
+            if (Millisecond.value.length == 0) addZero4 = "0";
 
             set(ref(db, 'SpeedRunner/' + x), {
                 Runner: Runner.value,
                 Link: Link.value,
                 Tournament: Tournament.value,
-                Time: Hour.value + ":" + addZero + Minute.value + ":" + addZero2 + Second.value + "." + Millisecond.value,
+                Time: Hour.value + ":" + addZero + Minute.value + ":" + addZero2 + Second.value + "." + Millisecond.value + addZero3 + addZero4,
                 Run: Run.value,
                 Category: Category.value,
                 ID: Number(x)
