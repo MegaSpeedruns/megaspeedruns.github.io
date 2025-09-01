@@ -4683,25 +4683,34 @@ async function RetData() {
 
         const word = "Week";
 
-        if (level.includes(word)) {
-            list.innerHTML = `
-                <img src="Mega%20Speedruns_files/${tournament}SS/${runData.Run}.png" alt="${level}" class="imgResize">
-                <span>LevelPack: ${level}</span>
-                <span>Category: ${category}</span>
-                <span>Runner: ${runnerLink}</span>
-                <span>Time: ${timeSnap}</span>
-                <span><a href="${link}" target="_blank">Watch Run</a></span>
-            `;
+        let imgPath;
+        let label;
+
+        // Determine image path
+        if (tournament === "MML") {
+            // If tournament is MML, use folder without "SS"
+            imgPath = `Mega%20Speedruns_files/${tournament}/${runData.Run}.png`;
         } else {
-            list.innerHTML = `
-                <img src="Mega%20Speedruns_files/${tournament}SS/${runData.Run}.png" alt="${level}" class="imgResize">
-                <span>Level: ${level}</span>
-                <span>Category: ${category}</span>
-                <span>Runner: ${runnerLink}</span>
-                <span>Time: ${timeSnap}</span>
-                <span><a href="${link}" target="_blank">Watch Run</a></span>
-            `;
+            // All other tournaments use "SS" folder
+            imgPath = `Mega%20Speedruns_files/${tournament}SS/${runData.Run}.png`;
         }
+
+        // Determine label
+        if (level.includes(word)) {
+            label = "LevelPack";
+        } else {
+            label = "Level";
+        }
+
+        // Set the inner HTML
+        list.innerHTML = `
+            <img src="${imgPath}" alt="${level}" class="imgResize">
+            <span>${label}: ${level}</span>
+            <span>Category: ${category}</span>
+            <span>Runner: ${runnerLink}</span>
+            <span>Time: ${timeSnap}</span>
+            <span><a href="${link}" target="_blank">Watch Run</a></span>
+        `;
 
         // Prepend or append based on y
         if (Number(y) == 0) document.getElementById("allSpeedruns").prepend(list);
