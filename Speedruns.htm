@@ -4583,9 +4583,13 @@ function showhide(elementId) {
         function AddData() {
             var addZero = "";
             var addZero2 = "";
+            var addZero3 = "";
+            var addZero4 = "";
 
             if (Minute.value.length == 1) addZero = "0";
             if (Second.value.length == 1) addZero2 = "0";
+            if (Millisecond.value.length == 1) addZero3 = "0";
+            if (Millisecond.value.length == 0) addZero4 = "00";
 
             set(ref(db, 'SpeedRunner/' + x), {
                 Runner: Runner.value,
