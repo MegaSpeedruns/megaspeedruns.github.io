@@ -5898,4 +5898,20 @@ window.addEventListener("DOMContentLoaded", () => {
 // <div id="footerC" class="footerC">Mega Speedruns</div>
 </script>
 
+<script>
+  // Default image path
+  const defaultImage = "Mega%20Speedruns_files/placeholder.png";
+
+  // Select all images in the document
+  const images = document.querySelectorAll("img");
+
+  // Add an error handler to each image
+  images.forEach(img => {
+    img.onerror = () => {
+      img.src = defaultImage;
+    };
+  });
+</script>
+
+
 </html>
