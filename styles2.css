@@ -227,9 +227,9 @@ label {
     outline: 1px white;
 }
 
-.menu-item:focus-within .menu-btn {
+/*.menu-item:focus-within .menu-btn {
     back0ground-color: #3117BB; 
-}
+}*/
 
 .submenu .expandable:focus-within {
     background-color: #3117BB; 
@@ -475,8 +475,8 @@ a:hover {
 }
 
 .list-item img {
-    width: 90px;
-    height: 72px;
+    width: 64;
+    height: 56px;
     margin-right: 20px;
     border-radius: 5px;
     margin-left: 5px;
@@ -496,8 +496,8 @@ a:hover {
 }
 
 .imgResize {
-    width: 90px;
-    height: 72px;
+    width: 64px;
+    height: 56px;
     margin-right: 5px;
     border-radius: 5px;
 }
