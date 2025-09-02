@@ -82,7 +82,7 @@ body {
     width: 200px;
     position: absolute;
     left: 0;
-    top: 48px;
+    top: 49px;
     height: 1062px;
     background-color: #222;
     padding-top: 0px;
@@ -125,6 +125,16 @@ body {
 }
 
 .menu-btn:active {
+    background-color: #3117BB;
+    box-shadow: 0 0 5px #3117BB;
+}
+
+.menu-btn-b:hover {
+    background-color: #3117BB;
+    box-shadow: 0 0 5px #3117BB;
+}
+
+.menu-btn-b:active {
     background-color: #3117BB;
     box-shadow: 0 0 5px #3117BB;
 }
@@ -193,7 +203,18 @@ label {
     font-size: 1.1em;
 }
 
-/* Default submenu button style */
+.menu-btn-b {
+    background-color: #222;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    display: block;
+    border: none;
+    text-align: left;
+    width: 100%;
+    outline: 1px white;
+}
+
 .submenu .expandable {
     background-color: #222;
     color: white;
@@ -203,19 +224,17 @@ label {
     border: none;
     text-align: left;
     width: 100%;
-    outline: none;
+    outline: 1px white;
 }
 
-/* When the main menu or submenu is focused */
 .menu-item:focus-within .menu-btn {
-    back0ground-color: #3117BB; /* Active color for main menu button */
+    back0ground-color: #3117BB; 
 }
 
 .submenu .expandable:focus-within {
-    background-color: #3117BB; /* Active color for submenu button */
+    background-color: #3117BB; 
 }
 
-/* Submenu is hidden by default */
 .submenu {
     display: none;
 }
@@ -621,4 +640,13 @@ footer {
 .sendButton:hover {
     border: 1px solid orange; /* Change border to orange on hover */
     box-shadow: 0 0 5px orange; /* Optional: Add glow effect */
+}
+
+.runner-link { 
+    text-decoration: none;
+}
+
+.runner-link:hover {
+    text-decoration: underline;
+    text-decoration-color: #ff9900; /* Orange underline on hover */
 }
