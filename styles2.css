@@ -34,7 +34,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 0px;
-    background-color: #333;
+    background-color: #014;
 }
 
 header .logo img {
@@ -83,8 +83,8 @@ body {
     position: absolute;
     left: 0;
     top: 49px;
-    height: 1062px;
-    background-color: #222;
+    height: 888px;
+    background-color: #002;
     padding-top: 0px;
     border-left: 1px solid #555;
     border-bottom: 1px solid #555;
@@ -108,7 +108,7 @@ body {
 }
 
 .menu-btn {
-    background-color: #333;
+    background-color: #555;
     color: white;
     padding: 10px;
     border: none;
@@ -120,23 +120,23 @@ body {
 }
 
 .menu-btn:hover {
-    background-color: #3117BB;
-    box-shadow: 0 0 5px #3117BB;
+    background-color: #30B;
+    box-shadow: 0 0 5px #30B;
 }
 
 .menu-btn:active {
-    background-color: #3117BB;
-    box-shadow: 0 0 5px #3117BB;
+    background-color: #30B;
+    box-shadow: 0 0 5px #30B;
 }
 
 .menu-btn-b:hover {
-    background-color: #3117BB;
-    box-shadow: 0 0 5px #3117BB;
+    background-color: #30B;
+    box-shadow: 0 0 5px #30B;
 }
 
 .menu-btn-b:active {
-    background-color: #3117BB;
-    box-shadow: 0 0 5px #3117BB;
+    background-color: #30B;
+    box-shadow: 0 0 5px #30B;
 }
 
 .submenu {
@@ -192,7 +192,7 @@ label {
 
 /* Default main menu button style */
 .menu-btn {
-    background-color: #333;
+    background-color: #014;
     color: white;
     padding: 10px;
     border: none;
@@ -204,7 +204,7 @@ label {
 }
 
 .menu-btn-b {
-    background-color: #222;
+    background-color: #014;
     color: white;
     padding: 10px;
     cursor: pointer;
@@ -216,7 +216,7 @@ label {
 }
 
 .submenu .expandable {
-    background-color: #222;
+    background-color: #002;
     color: white;
     padding: 10px;
     cursor: pointer;
@@ -228,11 +228,11 @@ label {
 }
 
 /*.menu-item:focus-within .menu-btn {
-    back0ground-color: #3117BB; 
+    back0ground-color: #30B; 
 }*/
 
 .submenu .expandable:focus-within {
-    background-color: #3117BB; 
+    background-color: #30B; 
 }
 
 .submenu {
@@ -246,7 +246,7 @@ label {
 
 /* Hover effect for submenu buttons */
 .submenu .expandable:hover {
-    background-color: #3117BB; /* Optional hover effect */
+    background-color: #30B; /* Optional hover effect */
 }
 
 .input[type="submit"] {
@@ -354,7 +354,7 @@ form {
     left: 201px;
     width: calc(100% - 203px);
     text-align: center;
-    height: 1019px;
+    height: 820px;
     border-radius: 0px;
     flex-wrap: wrap;
 }
@@ -374,7 +374,7 @@ form {
 }
 
 .collapsible {
-    background-color: #333;
+    background-color: #555;
     color: white;
     cursor: pointer;
     padding: 18px;
@@ -386,7 +386,7 @@ form {
 }
 
 .collapsible.active, .collapsible:hover {
-    background-color: #3117BB;
+    background-color: #30B;
 }
 
 .collapsible-inner {
@@ -574,7 +574,7 @@ footer {
 
 .footer {
     border-top: 1px solid #555;
-    background-color: #333;
+    background-color: #004;
     color: white;
     text-align: center;
     padding: 10px 0;
@@ -622,7 +622,7 @@ footer {
 }
 
 .buttonStyle:hover {
-    background-color: #3117BB; /* Darker green on hover */
+    background-color: #30B; /* Darker green on hover */
 }
 
 .sendButton {
@@ -632,7 +632,7 @@ footer {
     border-radius: 5px;
     background-color: #333;
     outline: none; /* Remove outline */
-    border: 1px solid #777; /* Default border color */
+    border: 1px solid #555; /* Default border color */
     cursor: pointer; /* Ensure the button has a pointer cursor */
     transition: all 0.2s ease; /* Optional: Smooth transition */
 }

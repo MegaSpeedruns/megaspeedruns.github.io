@@ -31,7 +31,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 0px;
-    background-color: #333;
+    background-color: #014;
 }
 
 header .logo img {
@@ -75,7 +75,7 @@ body {
     left: 0;
     top: 0;
     height: 100%;
-    background-color: #333;
+    background-color: #014;
     padding-top: 20px;
 }
 
@@ -90,7 +90,7 @@ body {
 }
 
 .menu-btn {
-    background-color: #333;
+    background-color: #555;
     color: white;
     padding: 15px;
     border: none;
@@ -334,7 +334,7 @@ form {
 }
 
 .collapsible {
-    background-color: #333;
+    background-color: #555;
     color: white;
     cursor: pointer;
     padding: 15px;
@@ -428,7 +428,7 @@ a:hover {
     flex-wrap: wrap;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #555;
     font-size: 1.20em;
 }
 
@@ -438,7 +438,7 @@ a:hover {
     flex-wrap: wrap;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #555;
     font-size: 1.20em;
 }
 
@@ -475,7 +475,7 @@ a:hover {
 
 footer {
     border-top: 1px solid #555;
-    background-color: #333;
+    background-color: #014;
     color: white;
     text-align: center;
     padding: 10px 0;
@@ -495,7 +495,7 @@ footer {
 
 #footer {
     border-top: 1px solid #555;
-    background-color: #333;
+    background-color: #014;
     color: white;
     text-align: center;
     position: absolute;
@@ -506,7 +506,7 @@ footer {
 
 #footerB {
     border-top: 1px solid #555;
-    background-color: #333;
+    background-color: #014;
     color: white;
     text-align: center;
     position: relative;
@@ -517,7 +517,7 @@ footer {
 
 .footer {
     border-top: 1px solid #555;
-    background-color: #333;
+    background-color: #014;
     color: white;
     text-align: center;
     padding: 10px 0;
@@ -582,16 +582,16 @@ footer {
 }
 
 .outline {
-    border-top: 1px solid #bbb;
-    border-bottom: 1px solid #bbb;
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #555;
     padding: 10px 0; /* space above and below text */
     text-align: center; /* optional, center the text */
     margin: 0px 0; /* space around the element */
 }
 
 .outlineb {
-    border-top: 1px solid #bbb;
-    border-bottom: 1px solid #bbb;
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #555;
     padding: 10px 0; /* space above and below text */
     text-align: center; /* optional, center the text */
     margin: 20px 0; /* space around the element */
@@ -604,7 +604,7 @@ footer {
     border-radius: 5px;
     background-color: #333;
     outline: none; /* Remove outline */
-    border: 1px solid #777; /* Default border color */
+    border: 1px solid #555; /* Default border color */
     cursor: pointer; /* Ensure the button has a pointer cursor */
     transition: all 0.2s ease; /* Optional: Smooth transition */
 }
@@ -657,8 +657,8 @@ footer {
 }
 
 .imgResize {
-    width: 90px;
-    height: 72px;
+    width: 64px;
+    height: 56px;
     margin-right: 5px;
     border-radius: 5px;
 }
