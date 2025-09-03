@@ -68,7 +68,7 @@
 
     button {
         padding: 10px 15px;
-        background-color: blue;
+        background-color: darkblue;
         color: #fff;
         border: none;
         border-radius: 6px;
@@ -78,7 +78,7 @@
     }
 
     button:hover {
-        background-color: #00b8d9;
+        background-color: #55F;
     }
 
     #login-warning {
@@ -377,7 +377,6 @@ async function loadReplies() {
     }
 }
 
-
 async function postReply() {
     if (!currentUser) return;
 
@@ -400,39 +399,38 @@ async function postReply() {
 loadThread();
 </script>
 
-
-    <script>
-    window.addEventListener("DOMContentLoaded", () => {
-        const loginEl = document.getElementById("login");
-        const cachedUsername = localStorage.getItem("username");
-        if (cachedUsername) {
-            loginEl.textContent = `Profile`;
-            loginEl.href = "Profile.html";
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+    const loginEl = document.getElementById("login");
+    const cachedUsername = localStorage.getItem("username");
+    if (cachedUsername) {
+        loginEl.textContent = `Profile`;
+        loginEl.href = "Profile.html";
+    } else {
+        loginEl.textContent = "Login";
+        loginEl.href = "Login.html";
+    }
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            try {
+                const snapshot = await db.ref("users/" + user.uid).once("value");
+                const username = snapshot.val()?.username || "Login";
+                loginEl.textContent = `Profile`;
+                loginEl.href = "Profile.html";
+                localStorage.setItem("username", username);
+            } catch (err) {
+                console.error("Failed to fetch username:", err);
+                loginEl.textContent = "Login";
+                loginEl.href = "Login.html";
+            }
         } else {
             loginEl.textContent = "Login";
             loginEl.href = "Login.html";
+            localStorage.removeItem("username");
         }
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                try {
-                    const snapshot = await db.ref("users/" + user.uid).once("value");
-                    const username = snapshot.val()?.username || "Login";
-                    loginEl.textContent = `Profile`;
-                    loginEl.href = "Profile.html";
-                    localStorage.setItem("username", username);
-                } catch (err) {
-                    console.error("Failed to fetch username:", err);
-                    loginEl.textContent = "Login";
-                    loginEl.href = "Login.html";
-                }
-            } else {
-                loginEl.textContent = "Login";
-                loginEl.href = "Login.html";
-                localStorage.removeItem("username");
-            }
-        });
     });
-    </script>
+});
+</script>
 
 </body>
 </html>
