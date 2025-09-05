@@ -87,6 +87,7 @@
   const loginEl = document.getElementById("login");
   const userListDiv = document.getElementById("user-list");
 
+  // Handle login/profile button
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       try {
@@ -107,6 +108,7 @@
     }
   });
 
+  // Load and sort users alphabetically
   async function loadUsers() {
     try {
       const snapshot = await get(ref(db, 'users'));
@@ -115,13 +117,20 @@
         userListDiv.innerHTML += "<p>No users found.</p>";
         return;
       }
-      Object.keys(users).forEach(uid => {
-        const user = users[uid];
+
+      // Sort users alphabetically by username
+      const sortedUsers = Object.entries(users).sort((a, b) => {
+        const usernameA = (a[1].username || "").toLowerCase();
+        const usernameB = (b[1].username || "").toLowerCase();
+        return usernameA.localeCompare(usernameB);
+      });
+
+      // Render sorted user list
+      sortedUsers.forEach(([uid, user]) => {
         const userItem = document.createElement("div");
         userItem.className = "user-item";
 
-        // Set username color and profile border color
-        const usernameColor = user.usernameColor || "#ffffff"; // fallback to white
+        const usernameColor = user.usernameColor || "#ffffff";
 
         userItem.innerHTML = `
           <img src="${user.profileImageURL || 'Mega%20Speedruns_files/Default_Avatar.png'}?t=${new Date().getTime()}" alt="${user.username}">
@@ -138,6 +147,7 @@
         userItem.addEventListener('click', () => {
           window.location.href = `Profile.html?uid=${uid}`;
         });
+
         userListDiv.appendChild(userItem);
       });
     } catch (err) {
@@ -147,7 +157,6 @@
 
   loadUsers();
 </script>
-
 
 <script>
 window.addEventListener("DOMContentLoaded", () => {
