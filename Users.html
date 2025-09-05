@@ -63,7 +63,42 @@
 </header>
 <div class="user-list" id="user-list">
   <h1>User List</h1>
+  <input 
+    type="text" 
+    id="search-bar" 
+    placeholder="Search for a user..." 
+  >
 </div>
+
+<style>
+  /* Search bar styling */
+  #search-bar {
+    width: 95%;
+    padding: 8px;
+    margin: 10px 0 15px 0;
+    border-radius: 5px;
+    border: 2px solid #444;
+    background-color: #222;
+    color: #fff;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Hover & focus effect */
+  #search-bar:focus {
+    border-color: orange;
+    box-shadow: 0 0 6px orange;
+  }
+
+  /* Placeholder color */
+  #search-bar::placeholder {
+    color: #aaa;
+  }
+</style>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -86,8 +121,8 @@
 
   const loginEl = document.getElementById("login");
   const userListDiv = document.getElementById("user-list");
+  const searchInput = document.getElementById("search-bar");
 
-  // Handle login/profile button
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       try {
@@ -108,7 +143,6 @@
     }
   });
 
-  // Load and sort users alphabetically
   async function loadUsers() {
     try {
       const snapshot = await get(ref(db, 'users'));
@@ -118,20 +152,19 @@
         return;
       }
 
-      // Sort users alphabetically by username
+      // Sort alphabetically
       const sortedUsers = Object.entries(users).sort((a, b) => {
         const usernameA = (a[1].username || "").toLowerCase();
         const usernameB = (b[1].username || "").toLowerCase();
         return usernameA.localeCompare(usernameB);
       });
 
-      // Render sorted user list
+      // Render users
       sortedUsers.forEach(([uid, user]) => {
         const userItem = document.createElement("div");
         userItem.className = "user-item";
 
         const usernameColor = user.usernameColor || "#ffffff";
-
         userItem.innerHTML = `
           <img src="${user.profileImageURL || 'Mega%20Speedruns_files/Default_Avatar.png'}?t=${new Date().getTime()}" alt="${user.username}">
           <span style="color: ${usernameColor};">${user.username}</span>
@@ -149,6 +182,17 @@
         });
 
         userListDiv.appendChild(userItem);
+      });
+
+      // Enable search filtering
+      searchInput.addEventListener("input", () => {
+        const query = searchInput.value.toLowerCase();
+        const userItems = document.querySelectorAll(".user-item");
+
+        userItems.forEach(item => {
+          const username = item.querySelector("span").textContent.toLowerCase();
+          item.style.display = username.includes(query) ? "flex" : "none";
+        });
       });
     } catch (err) {
       console.error("Failed to load users:", err);
