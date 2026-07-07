@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MST3 - Mega Speedruns</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
+<style>
+    body {
+        background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .state-message {
+        max-width: 500px;
+        margin: 60px auto;
+        text-align: center;
+        padding: 30px;
+        font-size: 1.05em;
+        line-height: 1.6;
+        background-color: rgba(18, 18, 26, 0.6);
+        border-radius: 16px;
+    }
+
+    .state-message a {
+        color: #8fb2ff;
+    }
+
+    #mst3-app {
+        display: none;
+        max-width: 1100px;
+        margin: 30px auto;
+        padding: 0 20px;
+        gap: 20px;
+    }
+
+    .mst3-layout {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+    }
+
+    .mst3-sidebar {
+        flex: 0 0 220px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        background-color: rgba(18, 18, 26, 0.6);
+        border-radius: 14px;
+        padding: 10px;
+    }
+
+    .mst3-nav-btn {
+        background-color: #333;
+        color: white;
+        border: none;
+        text-align: left;
+        padding: 12px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.2s ease;
+    }
+
+    .mst3-nav-btn:hover {
+        background-color: #3117BB;
+    }
+
+    .mst3-nav-btn.active {
+        background-color: #3117BB;
+    }
+
+    .mst3-nav-divider {
+        border-top: 1px solid #555;
+        margin: 6px 4px;
+    }
+
+    .mst3-content {
+        flex: 1;
+        background-color: rgba(18, 18, 26, 0.6);
+        border-radius: 14px;
+        padding: 24px;
+        min-height: 300px;
+    }
+
+    .mst3-section {
+        display: none;
+    }
+
+    .mst3-section.active {
+        display: block;
+    }
+
+    .mst3-content h2 {
+        margin-bottom: 16px;
+    }
+
+    #upload-form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 480px;
+    }
+
+    #upload-form label {
+        margin-left: 0;
+        margin-bottom: -6px;
+        font-size: 0.95em;
+    }
+
+    #upload-form input,
+    #upload-form select,
+    #upload-form textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        font-size: 1em;
+        outline: none;
+        transition: border 0.2s ease, box-shadow 0.2s ease;
+        box-sizing: border-box;
+    }
+
+    #upload-form input[type="file"] {
+        padding: 8px;
+    }
+
+    #upload-form input:focus,
+    #upload-form select:focus,
+    #upload-form textarea:focus {
+        border-color: #5b6ee1;
+        box-shadow: 0 0 6px rgba(91, 110, 225, 0.5);
+    }
+
+    #upload-form textarea {
+        resize: vertical;
+        min-height: 90px;
+    }
+
+    #upload-form select option {
+        background-color: #222;
+    }
+
+    .field-hint {
+        font-size: 0.8em;
+        color: #aaa;
+        margin-top: -8px;
+    }
+
+    #upload-btn {
+        margin-top: 6px;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background-color: #5b6ee1;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.25s ease;
+    }
+
+    #upload-btn:hover {
+        background-color: #4b5bc9;
+    }
+
+    #upload-btn:disabled {
+        opacity: 0.6;
+        cursor: default;
+    }
+
+    #upload-status {
+        min-height: 1.2em;
+        font-size: 0.95em;
+    }
+
+    .week-empty {
+        color: #bbb;
+        font-style: italic;
+    }
+
+    .level-item {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+    }
+
+    .level-item .title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .level-item .title-row strong {
+        font-size: 1.05em;
+    }
+
+    .status-pill {
+        font-size: 0.8em;
+        padding: 3px 10px;
+        border-radius: 999px;
+        white-space: nowrap;
+    }
+
+    .status-testbuild {
+        background-color: rgba(255, 193, 7, 0.25);
+        color: #ffd873;
+    }
+
+    .status-unfinished {
+        background-color: rgba(255, 112, 67, 0.25);
+        color: #ffab91;
+    }
+
+    .status-finished {
+        background-color: rgba(76, 175, 80, 0.25);
+        color: #8de892;
+    }
+
+    .level-item p {
+        margin: 6px 0 0;
+        color: #ddd;
+        font-size: 0.9em;
+    }
+
+    .level-item .links a {
+        margin-right: 10px;
+    }
+
+    .remove-btn {
+        background-color: rgba(244, 67, 54, 0.25);
+        color: #ff9d94;
+        border: 1px solid rgba(244, 67, 54, 0.4);
+        border-radius: 6px;
+        padding: 4px 10px;
+        cursor: pointer;
+        font-size: 0.85em;
+        transition: background-color 0.2s ease;
+    }
+
+    .remove-btn:hover {
+        background-color: rgba(244, 67, 54, 0.4);
+    }
+
+    .zip-btn {
+        background-color: rgba(91, 110, 225, 0.25);
+        color: #b7c2ff;
+        border: 1px solid rgba(91, 110, 225, 0.5);
+        border-radius: 6px;
+        padding: 4px 10px;
+        cursor: pointer;
+        font-size: 0.85em;
+        transition: background-color 0.2s ease;
+    }
+
+    .zip-btn:hover {
+        background-color: rgba(91, 110, 225, 0.4);
+    }
+
+    .zip-btn:disabled {
+        opacity: 0.6;
+        cursor: default;
+    }
+
+    .music-file-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 8px 10px;
+        margin-top: 6px;
+    }
+
+    .music-file-row .music-file-name {
+        flex: 1;
+        font-size: 0.9em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .music-file-row select {
+        width: auto;
+        flex: 0 0 130px;
+        padding: 6px;
+        font-size: 0.9em;
+    }
+
+    .music-file-row .remove-btn {
+        flex: 0 0 auto;
+    }
+
+    #music-files-list:empty {
+        display: none;
+    }
+
+    @media (max-width: 720px) {
+        .mst3-layout {
+            flex-direction: column;
+        }
+        .mst3-sidebar {
+            flex-direction: row;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+    }
+</style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="Mega%20Speedruns_files/logo.png" alt="Logo">
+        </div>
+        <nav class="nav-wrapper">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="MSTLP.htm">Level Packs</a></li>
+                <li><a href="MMMLevels.htm">MMM Levels</a></li>
+                <li><a href="Speedruns.htm">Speedruns</a></li>
+                <li><a id="Forums" href="Forum.html">Forums</a></ali>
+                <li><a id="login" href="Login.html">Login</a></li>
+                <li><a href="Creator.html">Creator</a></li>
+                <li><a href="Users.html">Users</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="state-logged-out" class="state-message" style="display:none;">
+        Please <a href="Login.html">log in</a> to view MST3.
+    </div>
+
+    <div id="state-checking" class="state-message">
+        Checking your account&hellip;
+    </div>
+
+    <div id="state-no-access" class="state-message" style="display:none;">
+        This is a page for MST Tournament creators.<br><br>
+
+        Your account doesn't have Creator clearance.<br><br>
+        
+        Reach out to SkyPilotSamurai on Discord if you are a creator and would like access.
+    </div>
+
+    <div id="mst3-app">
+        <div class="mst3-layout">
+            <aside class="mst3-sidebar" id="mst3-sidebar">
+                <button type="button" class="mst3-nav-btn active" data-section="upload">Upload a Level</button>
+                <div class="mst3-nav-divider"></div>
+                <button type="button" class="mst3-nav-btn" data-section="week-1">Week 1 - Journey</button>
+                <button type="button" class="mst3-nav-btn" data-section="week-2">Week 2 - Target</button>
+                <button type="button" class="mst3-nav-btn" data-section="week-3">Week 3 - Food</button>
+                <button type="button" class="mst3-nav-btn" data-section="week-4">Week 4 - World Tour</button>
+                <button type="button" class="mst3-nav-btn" data-section="week-5">Week 5 - Fish</button>
+                <button type="button" class="mst3-nav-btn" data-section="week-6">Week 6 - Indie</button>
+                <button type="button" class="mst3-nav-btn" data-section="week-7">Week 7 - Hoot Hoot</button>
+                <button type="button" class="mst3-nav-btn" data-section="week-8">Week 8 - Dejavu</button>
+                <button type="button" class="mst3-nav-btn" data-section="week-9">Week 9 - Hazard</button>
+                <button type="button" class="mst3-nav-btn" data-section="week-10">Week 10 - No Mercy</button>
+            </aside>
+
+            <div class="mst3-content">
+                <section id="section-upload" class="mst3-section active">
+                    <h2>Upload a Level</h2>
+                    <form id="upload-form">
+                        <label for="level-title">Level Title</label>
+                        <input type="text" id="level-title" placeholder="e.g. Frantic Fuse Fortress" required>
+                        <p class="field-hint">Uploading with a title you've already used replaces it with a new version.</p>
+
+                        <label for="level-week">Week</label>
+                        <select id="level-week">
+                            <option value="1">Week 1 - Journey</option>
+                            <option value="2">Week 2 - Target</option>
+                            <option value="3">Week 3 - Food</option>
+                            <option value="4">Week 4 - World Tour</option>
+                            <option value="5">Week 5 - Fish</option>
+                            <option value="6">Week 6 - Indie</option>
+                            <option value="7">Week 7 - Hoot Hoot</option>
+                            <option value="8">Week 8 - Dejavu</option>
+                            <option value="9">Week 9 - Hazard</option>
+                            <option value="10">Week 10 - No Mercy</option>
+                        </select>
+
+                        <label for="level-status">Status</label>
+                        <select id="level-status">
+                            <option value="Unfinished">Unfinished</option>
+                            <option value="Test Build">Test Build</option>
+                            <option value="Finished">Finished</option>
+                        </select>
+
+                        <label for="level-notes">Notes (optional)</label>
+                        <textarea id="level-notes" placeholder="Anything testers/players should know."></textarea>
+
+                        <label for="level-main-file">Level File (.mmlv, required)</label>
+                        <input type="file" id="level-main-file" accept=".mmlv">
+
+                        <label for="music-file-input">Music Files (.nsf, optional)</label>
+                        <input type="file" id="music-file-input" accept=".nsf" multiple>
+                        <div id="music-files-list"></div>
+                        <p class="field-hint">Pick a folder after a NSF file is added. Leave this empty when re-uploading to keep your existing NSFs — adding files here replaces your previous set.</p>
+
+                        <button type="button" id="upload-btn">Submit Level</button>
+                        <p id="upload-status"></p>
+                    </form>
+                </section>
+
+                <section id="section-week-1" class="mst3-section">
+                    <h2>Week 1 - Journey</h2>
+                    <div class="week-list" id="week-list-1"></div>
+                </section>
+                <section id="section-week-2" class="mst3-section">
+                    <h2>Week 2 - Target</h2>
+                    <div class="week-list" id="week-list-2"></div>
+                </section>
+                <section id="section-week-3" class="mst3-section">
+                    <h2>Week 3 - Food</h2>
+                    <div class="week-list" id="week-list-3"></div>
+                </section>
+                <section id="section-week-4" class="mst3-section">
+                    <h2>Week 4 - World Tour</h2>
+                    <div class="week-list" id="week-list-4"></div>
+                </section>
+                <section id="section-week-5" class="mst3-section">
+                    <h2>Week 5 - Fish</h2>
+                    <div class="week-list" id="week-list-5"></div>
+                </section>
+                <section id="section-week-6" class="mst3-section">
+                    <h2>Week 6 - Indie</h2>
+                    <div class="week-list" id="week-list-6"></div>
+                </section>
+                <section id="section-week-7" class="mst3-section">
+                    <h2>Week 7 - Hoot Hoot</h2>
+                    <div class="week-list" id="week-list-7"></div>
+                </section>
+                <section id="section-week-8" class="mst3-section">
+                    <h2>Week 8 - Dejavu</h2>
+                    <div class="week-list" id="week-list-8"></div>
+                </section>
+                <section id="section-week-9" class="mst3-section">
+                    <h2>Week 9 - Hazard</h2>
+                    <div class="week-list" id="week-list-9"></div>
+                </section>
+                <section id="section-week-10" class="mst3-section">
+                    <h2>Week 10 - No Mercy</h2>
+                    <div class="week-list" id="week-list-10"></div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="auth.js"></script>
+
+    <script>
+    const loginEl = document.getElementById("login");
+    const stateLoggedOut = document.getElementById("state-logged-out");
+    const stateChecking = document.getElementById("state-checking");
+    const stateNoAccess = document.getElementById("state-no-access");
+    const mst3App = document.getElementById("mst3-app");
+    const uploadBtn = document.getElementById("upload-btn");
+    const uploadStatus = document.getElementById("upload-status");
+    const sidebar = document.getElementById("mst3-sidebar");
+
+    const weekThemes = {
+        1: "Journey", 2: "Target", 3: "Food", 4: "World Tour", 5: "Fish",
+        6: "Indie", 7: "Hoot Hoot", 8: "Dejavu", 9: "Hazard", 10: "No Mercy"
+    };
+
+    let currentUid = null;
+
+    const musicCategories = [
+        "Boss", "Misc", "MiscCat", "MM&B", "MM1", "MM2", "MM3", "MM4", "MM5",
+        "MM6", "MM7", "MM8", "MM9", "MM10", "MM11", "MMGB", "MMWW", "MMX", "MMZX", "Other"
+    ];
+    let pendingMusicFiles = []; // { file, category }
+
+    // === Sidebar navigation ===
+    sidebar.addEventListener("click", (e) => {
+        const btn = e.target.closest(".mst3-nav-btn");
+        if (!btn) return;
+        const section = btn.getAttribute("data-section");
+
+        sidebar.querySelectorAll(".mst3-nav-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        document.querySelectorAll(".mst3-section").forEach(s => s.classList.remove("active"));
+        const target = document.getElementById(
+            section === "upload" ? "section-upload" : "section-" + section
+        );
+        if (target) target.classList.add("active");
+    });
+
+    function showGate(el) {
+        [stateLoggedOut, stateChecking, stateNoAccess].forEach(e => e.style.display = "none");
+        mst3App.style.display = "none";
+        if (el) el.style.display = "block";
+    }
+
+    function slugify(str) {
+        return str.toLowerCase().trim().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
+    }
+
+    function isNsfFile(file) {
+        return !!file && file.name.toLowerCase().endsWith(".nsf");
+    }
+
+    function isMmlvFile(file) {
+        return !!file && file.name.toLowerCase().endsWith(".mmlv");
+    }
+
+    function formatDate(timestamp) {
+        return new Date(timestamp).toLocaleDateString(undefined, {
+            year: "numeric", month: "short", day: "numeric"
+        });
+    }
+
+    const musicFileInput = document.getElementById("music-file-input");
+    const musicFilesList = document.getElementById("music-files-list");
+
+    function renderPendingMusicFiles() {
+        musicFilesList.innerHTML = "";
+        pendingMusicFiles.forEach((entry, idx) => {
+            const row = document.createElement("div");
+            row.className = "music-file-row";
+
+            const nameSpan = document.createElement("span");
+            nameSpan.className = "music-file-name";
+            nameSpan.textContent = entry.file.name;
+
+            const select = document.createElement("select");
+            musicCategories.forEach(cat => {
+                const opt = document.createElement("option");
+                opt.value = cat;
+                opt.textContent = cat;
+                if (cat === entry.category) opt.selected = true;
+                select.appendChild(opt);
+            });
+            select.addEventListener("change", () => {
+                pendingMusicFiles[idx].category = select.value;
+            });
+
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "remove-btn";
+            removeBtn.textContent = "Remove";
+            removeBtn.addEventListener("click", () => {
+                pendingMusicFiles.splice(idx, 1);
+                renderPendingMusicFiles();
+            });
+
+            row.appendChild(nameSpan);
+            row.appendChild(select);
+            row.appendChild(removeBtn);
+            musicFilesList.appendChild(row);
+        });
+    }
+
+    musicFileInput.addEventListener("change", () => {
+        const newFiles = Array.from(musicFileInput.files || []);
+        const invalid = newFiles.filter(f => !isNsfFile(f));
+        if (invalid.length > 0) {
+            uploadStatus.textContent = "Music files must be .nsf files (skipped invalid ones).";
+        }
+        newFiles.filter(f => isNsfFile(f)).forEach(f => {
+            pendingMusicFiles.push({ file: f, category: "Other" });
+        });
+        musicFileInput.value = "";
+        renderPendingMusicFiles();
+    });
+
+    function renderWeeks(allLevels) {
+        for (let w = 1; w <= 10; w++) {
+            document.getElementById("week-list-" + w).innerHTML = "";
+        }
+
+        const levels = Object.entries(allLevels || {}).map(([key, val]) => ({ key, ...val }));
+        levels.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+
+        const byWeek = {};
+        levels.forEach(level => {
+            byWeek[level.week] = byWeek[level.week] || [];
+            byWeek[level.week].push(level);
+        });
+
+        for (let w = 1; w <= 10; w++) {
+            const container = document.getElementById("week-list-" + w);
+            const weekLevels = byWeek[w] || [];
+
+            if (weekLevels.length === 0) {
+                container.innerHTML = `<p class="week-empty">No levels uploaded for this week yet.</p>`;
+                continue;
+            }
+
+            weekLevels.forEach(level => {
+                const item = document.createElement("div");
+                item.className = "level-item";
+
+                const statusClass = level.status === "Finished" ? "status-finished"
+                    : level.status === "Unfinished" ? "status-unfinished"
+                    : "status-testbuild";
+                const hasMusic = (level.musicFiles || []).length > 0;
+                const lastModified = level.updatedAt ? formatDate(level.updatedAt) : "Unknown";
+
+                item.innerHTML = `
+                    <div class="title-row">
+                        <strong>${level.title}</strong>
+                        <span class="status-pill ${statusClass}">${level.status || "Test Build"}</span>
+                    </div>
+                    <p>Creator: ${level.uploadedBy || "Unknown"} &nbsp;|&nbsp; Version ${level.version || 1} &nbsp;|&nbsp; Last modified: ${lastModified}</p>
+                    ${level.notes ? `<p>${level.notes}</p>` : ""}
+                    <p class="links">
+                        ${level.mainFileURL ? `<a href="${level.mainFileURL}" target="_blank">Download .mmlv</a>` : ""}
+                        ${hasMusic ? `<button type="button" class="zip-btn" data-zip-title="${level.title.replace(/"/g, "&quot;")}">Download NSFs</button>` : ""}
+                    </p>
+                `;
+
+                if (hasMusic) {
+                    const zipBtn = item.querySelector(".zip-btn");
+                    zipBtn.addEventListener("click", () => downloadMusicZip(level, zipBtn));
+                }
+
+                if (currentUid && level.uploadedByUID === currentUid) {
+                    const removeBtn = document.createElement("button");
+                    removeBtn.type = "button";
+                    removeBtn.className = "remove-btn";
+                    removeBtn.textContent = "Remove";
+                    removeBtn.addEventListener("click", async () => {
+                        if (!confirm(`Remove "${level.title}"? This can't be undone.`)) return;
+                        removeBtn.disabled = true;
+                        removeBtn.textContent = "Removing...";
+                        try {
+                            await db.ref("mst3Levels/" + level.key).remove();
+                            const fileUrls = [level.mainFileURL, ...(level.musicFiles || []).map(f => f.url)].filter(Boolean);
+                            for (const url of fileUrls) {
+                                try {
+                                    await firebase.storage().refFromURL(url).delete();
+                                } catch (e) {
+                                    console.warn("Could not delete storage file:", e);
+                                }
+                            }
+                            item.remove();
+                        } catch (err) {
+                            console.error("Failed to remove level:", err);
+                            alert("Failed to remove level. Please try again.");
+                            removeBtn.disabled = false;
+                            removeBtn.textContent = "Remove";
+                        }
+                    });
+                    item.querySelector(".title-row").appendChild(removeBtn);
+                }
+
+                container.appendChild(item);
+            });
+        }
+    }
+
+    async function downloadMusicZip(level, btn) {
+        const originalLabel = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = "Zipping...";
+
+        try {
+            const zip = new JSZip();
+            const musicFolder = zip.folder("Music");
+
+            for (const f of (level.musicFiles || [])) {
+                const category = f.category || "Other";
+                const response = await fetch(f.url);
+                if (!response.ok) throw new Error("Failed to fetch " + f.name);
+                const blob = await response.blob();
+                musicFolder.folder(category).file(f.name, blob);
+            }
+
+            const zipBlob = await zip.generateAsync({ type: "blob" });
+            const url = URL.createObjectURL(zipBlob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = level.title.replace(/[^a-z0-9]+/gi, "_") + "_Music.zip";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error("Failed to build music zip:", err);
+            alert("Couldn't build the zip. Please try again.");
+        } finally {
+            btn.disabled = false;
+            btn.textContent = originalLabel;
+        }
+    }
+
+    async function loadAllLevels() {
+        try {
+            const snapshot = await db.ref("mst3Levels").once("value");
+            renderWeeks(snapshot.val() || {});
+        } catch (err) {
+            console.error("Failed to load MST3 levels:", err);
+        }
+    }
+
+    async function clearMusicFolder(musicFolderRef) {
+        try {
+            const list = await musicFolderRef.listAll();
+            await Promise.all(list.items.map(item => item.delete().catch(() => {})));
+            for (const prefixRef of list.prefixes) {
+                const subList = await prefixRef.listAll();
+                await Promise.all(subList.items.map(item => item.delete().catch(() => {})));
+            }
+        } catch (e) {
+            console.warn("Could not clear old music files:", e);
+        }
+    }
+
+    uploadBtn.addEventListener("click", async () => {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const title = document.getElementById("level-title").value.trim();
+        const week = parseInt(document.getElementById("level-week").value, 10);
+        const status = document.getElementById("level-status").value;
+        const notes = document.getElementById("level-notes").value.trim();
+        const mainFileInput = document.getElementById("level-main-file");
+        const mainFile = mainFileInput.files[0];
+
+        if (!title) {
+            uploadStatus.textContent = "Level title is required.";
+            return;
+        }
+        if (!mainFile) {
+            uploadStatus.textContent = "A .mmlv level file is required.";
+            return;
+        }
+        if (!isMmlvFile(mainFile)) {
+            uploadStatus.textContent = "Level file must be a .mmlv file.";
+            return;
+        }
+
+        uploadBtn.disabled = true;
+        uploadStatus.textContent = "Uploading...";
+
+        try {
+            const username = localStorage.getItem("username") || "Unknown";
+            const key = user.uid + "_" + slugify(title);
+            const levelRef = db.ref("mst3Levels/" + key);
+            const existingSnap = await levelRef.once("value");
+            const existing = existingSnap.val();
+
+            const baseFolder = firebase.storage().ref("mst3Levels/" + key);
+
+            uploadStatus.textContent = "Uploading level file...";
+            const mainFileRef = baseFolder.child("main_" + mainFile.name);
+            await mainFileRef.put(mainFile);
+            const mainFileURL = await mainFileRef.getDownloadURL();
+
+            let musicFileData = existing ? (existing.musicFiles || []) : [];
+            if (pendingMusicFiles.length > 0) {
+                uploadStatus.textContent = "Uploading music files...";
+                const musicFolder = baseFolder.child("Music");
+                await clearMusicFolder(musicFolder);
+                musicFileData = [];
+                for (const entry of pendingMusicFiles) {
+                    const ref = musicFolder.child(entry.category).child(entry.file.name);
+                    await ref.put(entry.file);
+                    const url = await ref.getDownloadURL();
+                    musicFileData.push({ name: entry.file.name, category: entry.category, url });
+                }
+            }
+
+            await levelRef.set({
+                title,
+                titleLower: title.toLowerCase(),
+                week,
+                status,
+                notes,
+                mainFileURL,
+                mainFileName: mainFile.name,
+                musicFiles: musicFileData,
+                uploadedBy: username,
+                uploadedByUID: user.uid,
+                version: existing ? (existing.version || 1) + 1 : 1,
+                createdAt: existing ? existing.createdAt : Date.now(),
+                updatedAt: Date.now()
+            });
+
+            uploadStatus.textContent = existing ? "Level updated to a new version!" : "Level submitted!";
+            document.getElementById("level-title").value = "";
+            document.getElementById("level-notes").value = "";
+            mainFileInput.value = "";
+            pendingMusicFiles = [];
+            renderPendingMusicFiles();
+
+            loadAllLevels();
+        } catch (err) {
+            console.error("Upload failed:", err);
+            uploadStatus.textContent = "Something went wrong. Please try again.";
+        } finally {
+            uploadBtn.disabled = false;
+        }
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const cachedUsername = localStorage.getItem("username");
+        if (cachedUsername) {
+            loginEl.textContent = "Profile";
+            loginEl.href = "Profile.html";
+        } else {
+            loginEl.textContent = "Login";
+            loginEl.href = "Login.html";
+        }
+
+        showGate(stateChecking);
+
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                loginEl.textContent = "Login";
+                loginEl.href = "Login.html";
+                localStorage.removeItem("username");
+                showGate(stateLoggedOut);
+                return;
+            }
+
+            loginEl.textContent = "Profile";
+            loginEl.href = "Profile.html";
+            currentUid = user.uid;
+
+            try {
+                const snapshot = await db.ref("users/" + user.uid).once("value");
+                const userData = snapshot.val() || {};
+                if (userData.username) localStorage.setItem("username", userData.username);
+
+                if (userData.canUpload === true) {
+                    showGate(null);
+                    mst3App.style.display = "block";
+                    loadAllLevels();
+                } else {
+                    showGate(stateNoAccess);
+                }
+            } catch (err) {
+                console.error("Failed to check upload access:", err);
+                showGate(stateNoAccess);
+            }
+        });
+    });
+    </script>
+</body>
+</html>
