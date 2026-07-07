@@ -267,6 +267,7 @@
     }
 
     .zip-btn {
+        display: inline-block;
         background-color: rgba(91, 110, 225, 0.25);
         color: #b7c2ff;
         border: 1px solid rgba(91, 110, 225, 0.5);
@@ -274,6 +275,7 @@
         padding: 4px 10px;
         cursor: pointer;
         font-size: 0.85em;
+        text-decoration: none;
         transition: background-color 0.2s ease;
     }
 
@@ -411,9 +413,8 @@
 
                         <label for="level-status">Status</label>
                         <select id="level-status">
-                            <option value="Unfinished">Unfinished</option>
-                            <option value="Test Build">Test Build</option>
-                            <option value="Finished">Finished</option>
+                            <option value="Unfinished / Test Build">Unfinished / Test Build</option>
+                            <option value="Full Level">Full Level</option>
                         </select>
 
                         <label for="level-notes">Notes (optional)</label>
@@ -636,9 +637,7 @@
                 const item = document.createElement("div");
                 item.className = "level-item";
 
-                const statusClass = level.status === "Finished" ? "status-finished"
-                    : level.status === "Unfinished" ? "status-unfinished"
-                    : "status-testbuild";
+                const statusClass = level.status === "Full Level" ? "status-finished" : "status-testbuild";
                 const hasMusic = (level.musicFiles || []).length > 0;
                 const lastModified = level.updatedAt ? formatDate(level.updatedAt) : "Unknown";
 
@@ -653,7 +652,7 @@
                             <p>Creator: ${level.uploadedBy || "Unknown"} &nbsp;|&nbsp; Version ${level.version || 1} &nbsp;|&nbsp; Last modified: ${lastModified}</p>
                             ${level.notes ? `<p>${level.notes}</p>` : ""}
                             <p class="level-links">
-                                ${level.mainFileURL ? `<a href="${level.mainFileURL}" target="_blank">Download .mmlv</a>` : ""}
+                                ${level.mainFileURL ? `<a href="${level.mainFileURL}" target="_blank" class="zip-btn">Download Level</a>` : ""}
                                 ${hasMusic ? `<button type="button" class="zip-btn" data-zip-title="${level.title.replace(/"/g, "&quot;")}">Download NSFs</button>` : ""}
                             </p>
                         </div>
