@@ -188,6 +188,25 @@
         margin-bottom: 10px;
     }
 
+    .level-item-body {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .level-thumb {
+        width: 64px;
+        height: 56px;
+        object-fit: cover;
+        border-radius: 5px;
+        flex-shrink: 0;
+    }
+
+    .level-item-info {
+        flex: 1;
+        min-width: 0;
+    }
+
     .level-item .title-row {
         display: flex;
         justify-content: space-between;
@@ -228,7 +247,7 @@
         font-size: 0.9em;
     }
 
-    .level-item .links a {
+    .level-item .level-links a {
         margin-right: 10px;
     }
 
@@ -369,8 +388,12 @@
                     <h2>Upload a Level</h2>
                     <form id="upload-form">
                         <label for="level-title">Level Title</label>
-                        <input type="text" id="level-title" placeholder="e.g. Frantic Fuse Fortress" required>
-                        <p class="field-hint">Uploading with a title you've already used replaces it with a new version.</p>
+                        <input type="text" id="level-title" placeholder="e.g. Frantic Fuse Fortress">
+                        <p class="field-hint">Leave empty to auto-fill from your .mmlv file name. Uploading with a title you've already used replaces it with a new version.</p>
+
+                        <label for="level-thumbnail">Thumbnail (optional)</label>
+                        <input type="file" id="level-thumbnail" accept="image/*">
+                        <p class="field-hint">Leave empty when re-uploading to keep the existing thumbnail.</p>
 
                         <label for="level-week">Week</label>
                         <select id="level-week">
@@ -577,6 +600,15 @@
         renderPendingMusicFiles();
     });
 
+    // Auto-fill the title from the .mmlv file name if the creator hasn't typed one
+    document.getElementById("level-main-file").addEventListener("change", (e) => {
+        const titleInput = document.getElementById("level-title");
+        const file = e.target.files[0];
+        if (file && !titleInput.value.trim()) {
+            titleInput.value = file.name.replace(/\.mmlv$/i, "");
+        }
+    });
+
     function renderWeeks(allLevels) {
         for (let w = 1; w <= 10; w++) {
             document.getElementById("week-list-" + w).innerHTML = "";
@@ -611,16 +643,21 @@
                 const lastModified = level.updatedAt ? formatDate(level.updatedAt) : "Unknown";
 
                 item.innerHTML = `
-                    <div class="title-row">
-                        <strong>${level.title}</strong>
-                        <span class="status-pill ${statusClass}">${level.status || "Test Build"}</span>
+                    <div class="level-item-body">
+                        ${level.thumbnailURL ? `<img class="level-thumb" src="${level.thumbnailURL}" alt="${level.title}">` : ""}
+                        <div class="level-item-info">
+                            <div class="title-row">
+                                <strong>${level.title}</strong>
+                                <span class="status-pill ${statusClass}">${level.status || "Test Build"}</span>
+                            </div>
+                            <p>Creator: ${level.uploadedBy || "Unknown"} &nbsp;|&nbsp; Version ${level.version || 1} &nbsp;|&nbsp; Last modified: ${lastModified}</p>
+                            ${level.notes ? `<p>${level.notes}</p>` : ""}
+                            <p class="level-links">
+                                ${level.mainFileURL ? `<a href="${level.mainFileURL}" target="_blank">Download .mmlv</a>` : ""}
+                                ${hasMusic ? `<button type="button" class="zip-btn" data-zip-title="${level.title.replace(/"/g, "&quot;")}">Download NSFs</button>` : ""}
+                            </p>
+                        </div>
                     </div>
-                    <p>Creator: ${level.uploadedBy || "Unknown"} &nbsp;|&nbsp; Version ${level.version || 1} &nbsp;|&nbsp; Last modified: ${lastModified}</p>
-                    ${level.notes ? `<p>${level.notes}</p>` : ""}
-                    <p class="links">
-                        ${level.mainFileURL ? `<a href="${level.mainFileURL}" target="_blank">Download .mmlv</a>` : ""}
-                        ${hasMusic ? `<button type="button" class="zip-btn" data-zip-title="${level.title.replace(/"/g, "&quot;")}">Download NSFs</button>` : ""}
-                    </p>
                 `;
 
                 if (hasMusic) {
@@ -639,7 +676,7 @@
                         removeBtn.textContent = "Removing...";
                         try {
                             await db.ref("mst3Levels/" + level.key).remove();
-                            const fileUrls = [level.mainFileURL, ...(level.musicFiles || []).map(f => f.url)].filter(Boolean);
+                            const fileUrls = [level.mainFileURL, level.thumbnailURL, ...(level.musicFiles || []).map(f => f.url)].filter(Boolean);
                             for (const url of fileUrls) {
                                 try {
                                     await firebase.storage().refFromURL(url).delete();
@@ -761,6 +798,17 @@
             await mainFileRef.put(mainFile);
             const mainFileURL = await mainFileRef.getDownloadURL();
 
+            let thumbnailURL = existing ? (existing.thumbnailURL || null) : null;
+            const thumbnailInput = document.getElementById("level-thumbnail");
+            const thumbnailFile = thumbnailInput.files[0];
+            if (thumbnailFile) {
+                uploadStatus.textContent = "Uploading thumbnail...";
+                const ext = thumbnailFile.name.split(".").pop();
+                const thumbRef = baseFolder.child("thumbnail." + ext);
+                await thumbRef.put(thumbnailFile);
+                thumbnailURL = await thumbRef.getDownloadURL();
+            }
+
             let musicFileData = existing ? (existing.musicFiles || []) : [];
             if (pendingMusicFiles.length > 0) {
                 uploadStatus.textContent = "Uploading music files...";
@@ -783,6 +831,7 @@
                 notes,
                 mainFileURL,
                 mainFileName: mainFile.name,
+                thumbnailURL,
                 musicFiles: musicFileData,
                 uploadedBy: username,
                 uploadedByUID: user.uid,
@@ -795,6 +844,7 @@
             document.getElementById("level-title").value = "";
             document.getElementById("level-notes").value = "";
             mainFileInput.value = "";
+            thumbnailInput.value = "";
             pendingMusicFiles = [];
             renderPendingMusicFiles();
 
