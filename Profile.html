@@ -38,6 +38,9 @@
     <img id="profile-img" src="Mega%20Speedruns_files/Default_Avatar.png" alt="Profile Image">
     <input type="text" class = "img-input" id="url-input" placeholder="Paste image URL here">
     <button class = "button" id="url-btn">Set Image</button>
+    <input type="file" id="image-file-input" accept="image/*" style="display:none;">
+    <button class="button" id="upload-image-btn">Upload Image</button>
+    <p id="image-upload-status" style="font-size:0.8em; margin-top:4px;"></p>
   </div>
 
   <div class="profile-right">
@@ -74,6 +77,12 @@ import {
   set,
   child
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC2pHhSThFkKhN-c1sdhUATt1-zmNLV9sw",
@@ -88,12 +97,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
+const storage = getStorage(app);
 
 const userProfile = document.getElementById("profile");
 const profileImg = document.getElementById("profile-img");
 const userInfoDiv = document.getElementById("user-info");
 const urlInput = document.getElementById("url-input");
 const urlBtn = document.getElementById("url-btn");
+const imageFileInput = document.getElementById("image-file-input");
+const uploadImageBtn = document.getElementById("upload-image-btn");
+const imageUploadStatus = document.getElementById("image-upload-status");
 const loginLink = document.getElementById("login");
 const logoutBtn = document.getElementById("logout-btn");
 
@@ -122,6 +135,37 @@ const urlSetImage = (url) => {
 urlBtn.addEventListener("click", () => urlSetImage(urlInput.value.trim()));
 urlInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") urlSetImage(urlInput.value.trim());
+});
+
+uploadImageBtn.addEventListener("click", () => imageFileInput.click());
+
+imageFileInput.addEventListener("change", async () => {
+  const file = imageFileInput.files[0];
+  if (!file) return;
+
+  const user = auth.currentUser;
+  if (!user) {
+    alert("You need to be logged in to upload a profile image.");
+    return;
+  }
+
+  uploadImageBtn.disabled = true;
+  imageUploadStatus.textContent = "Uploading...";
+
+  try {
+    const ext = file.name.split(".").pop();
+    const fileRef = storageRef(storage, "profileImages/" + user.uid + "/avatar." + ext);
+    await uploadBytes(fileRef, file);
+    const url = await getDownloadURL(fileRef);
+    urlSetImage(url);
+    imageUploadStatus.textContent = "Uploaded!";
+  } catch (err) {
+    console.error("Failed to upload image:", err);
+    imageUploadStatus.textContent = "Upload failed. Please try again.";
+  } finally {
+    uploadImageBtn.disabled = false;
+    imageFileInput.value = "";
+  }
 });
 
 function linkify(text) {
@@ -226,6 +270,8 @@ onAuthStateChanged(auth, async (user) => {
       colorPickerContainer.style.display = "none";
       urlInput.style.display = "none";
       urlBtn.style.display = "none";
+      uploadImageBtn.style.display = "none";
+      imageUploadStatus.style.display = "none";
     }
 
     // === FETCH USER SPEEDRUNS ===
