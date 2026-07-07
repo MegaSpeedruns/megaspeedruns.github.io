@@ -166,8 +166,12 @@
         userItem.className = "user-item";
 
         const usernameColor = user.usernameColor || "#ffffff";
+        const imgSrc = user.profileImageURL
+          ? user.profileImageURL + (user.profileImageURL.includes("?") ? "&" : "?") + "t=" + new Date().getTime()
+          : "Mega%20Speedruns_files/Default_Avatar.png";
+
         userItem.innerHTML = `
-          <img src="${user.profileImageURL || 'Mega%20Speedruns_files/Default_Avatar.png'}?t=${new Date().getTime()}" alt="${user.username}">
+          <img src="${imgSrc}" alt="${user.username}">
           <span style="color: ${usernameColor};">${user.username}</span>
         `;
 

@@ -221,7 +221,8 @@ onAuthStateChanged(auth, async (user) => {
 
     // === UPDATE PROFILE IMAGE ===
     if (userData.profileImageURL) {
-      profileImg.src = userData.profileImageURL + "?t=" + new Date().getTime();
+      const sep = userData.profileImageURL.includes("?") ? "&" : "?";
+      profileImg.src = userData.profileImageURL + sep + "t=" + new Date().getTime();
     }
 
     // === DISPLAY BIO ===
