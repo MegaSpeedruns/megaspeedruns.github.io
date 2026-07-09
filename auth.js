@@ -1,4 +1,3 @@
-// Initialize Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyC2pHhSThFkKhN-c1sdhUATt1-zmNLV9sw",
   authDomain: "megaspeedrunsdatabase.firebaseapp.com",
@@ -12,6 +11,5 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const db = firebase.database();
 
-// Enable login persistence across the entire domain
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
     .catch(err => console.error("Persistence error:", err));

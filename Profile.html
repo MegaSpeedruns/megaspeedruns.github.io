@@ -7,8 +7,163 @@
 <link rel="stylesheet" href="styles.css">
 <style>
   body {
-      background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
-      background-size: cover;
+    background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
+    min-height: 100vh;
+  }
+
+  main {
+    padding: 2rem 1rem;
+    flex: 1;
+  }
+
+  .profile-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+  }
+
+  .profile-header-title {
+    color: #f4511e;
+    font-size: 2.5em;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 8px rgba(244, 81, 30, 0.3);
+  }
+
+  .shadow {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .profile-left {
+    background: linear-gradient(135deg, #1a2436 0%, #131d2f 100%);
+    border: 1px solid #5d322f;
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid #f4511e;
+    margin-bottom: 1.5rem;
+    object-fit: cover;
+  }
+
+
+  .button {
+    background: linear-gradient(135deg, #f4511e 0%, #d84315 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 0.5rem 0;
+    width: 100%;
+    font-weight: 600;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .button:hover {
+    box-shadow: 0 4px 12px rgba(244, 81, 30, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .profile-right {
+    background: linear-gradient(135deg, #1a2436 0%, #131d2f 100%);
+    border: 1px solid #5d322f;
+    border-radius: 12px;
+    padding: 2rem;
+  }
+
+  .profile-header {
+    border-bottom: 2px solid #f4511e;
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .profile-header h1 {
+    color: #60a5fa;
+    font-size: 2em;
+    margin: 0;
+  }
+
+  .profile-header h1 p {
+    margin: 0;
+  }
+
+  #color-picker-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  #color-picker-container label {
+    color: #cbd5e1;
+    font-weight: 600;
+  }
+
+  #username-color {
+    cursor: pointer;
+    border: 2px solid #f4511e;
+    border-radius: 6px;
+    width: 100%;
+    height: 40px;
+  }
+
+  #user-info {
+    color: #cbd5e1;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+  }
+
+  #user-info p {
+    margin: 0;
+  }
+
+  .shadow-box {
+    background: linear-gradient(135deg, #1a2436 0%, #131d2f 100%);
+    border: 1px solid #5d322f;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .shadow-box h2 {
+    color: #f4511e;
+    margin-top: 0;
+  }
+
+  #userSpeedruns {
+    list-style: none;
+    padding: 0;
+  }
+
+  #userSpeedruns li {
+    background: #162032;
+    border-left: 3px solid #f4511e;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    color: #cbd5e1;
+  }
+
+  @media (max-width: 768px) {
+    .shadow {
+      grid-template-columns: 1fr;
+    }
+
+    .profile-header-title {
+      font-size: 2em;
+    }
   }
 </style>
 <link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
@@ -16,53 +171,57 @@
 
 <body>
 <header>
-    <div class="logo">
-        <img src="Mega%20Speedruns_files/logo.png" alt="Logo">
-    </div>
+    <div class="header-container">
+        <div class="logo">
+            <img src="Mega%20Speedruns_files/logo.png" alt="Mega Speedruns Logo">
+            <span class="logo-text">Mega Speedruns</span>
+        </div>
         <nav class="nav-wrapper">
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="MSTLP.htm">Level Packs</a></li>
-                <li><a href="MMMLevels.htm">MMM Levels</a></li>
-                <li><a href="Speedruns.htm">Speedruns</a></li>
-                <li><a id="Forums" href="Forum.html">Forums</a></ali>
-                <li><a id="login" href="Login.html">Login</a></li>
-                <li><a href="Creator.html">Creator</a></li>
-                <li><a href="Users.html">Users</a></li>
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="MSTLP.htm" class="nav-link">Level Packs</a></li>
+                <li><a href="MMMLevels.htm" class="nav-link">MMM Levels</a></li>
+                <li><a href="Speedruns.htm" class="nav-link">Speedruns</a></li>
+                <li><a href="Forum.html" class="nav-link">Forums</a></li>
+                <li><a href="Creator.html" class="nav-link">Creator</a></li>
+                <li><a href="Users.html" class="nav-link">Users</a></li>
+                <li><a id="login" href="Login.html" class="nav-link">Profile</a></li>
             </ul>
         </nav>
+    </div>
 </header>
 
-<div class="shadow">
-  <div class="profile-left">
-    <img id="profile-img" src="Mega%20Speedruns_files/Default_Avatar.png" alt="Profile Image">
-    <input type="text" class = "img-input" id="url-input" placeholder="Paste image URL here">
-    <button class = "button" id="url-btn">Set Image</button>
-    <input type="file" id="image-file-input" accept="image/*" style="display:none;">
-    <button class="button" id="upload-image-btn">Upload Image</button>
-    <p id="image-upload-status" style="font-size:0.8em; margin-top:4px;"></p>
-  </div>
+<main>
+  <div class="profile-container">
+    <div class="shadow">
+      <div class="profile-left">
+        <img id="profile-img" src="Mega%20Speedruns_files/Default_Avatar.png" alt="Profile Image">
+        <input type="file" id="image-file-input" accept="image/*" style="display:none;">
+        <button class="button" id="upload-image-btn">Upload Image</button>
+        <p id="image-upload-status" style="font-size:0.8em; margin-top:4px; color: #cbd5e1;"></p>
 
-  <div class="profile-right">
-    <div class="profile-header">
-      <h1 id="profile">User Profile</h1>
-      <div id="color-picker-container" style="margin-top: 10px; display: none;">
-      <label for="username-color" style="font-weight: bold;">Username Color:</label>
-      <input type="color" id="username-color" value="#FFFFFF"; cursor: pointer;>
-      <button class="button" id="save-color-btn">Save</button>
-      <button class= "button" id="logout-btn"  style="height: 35px;">Logout</button>
-    </div>
-    </div>
-    <div id="user-info"></div>
-    <div id="user-runs"></div>
-  </div>
-</div>
+        <div id="color-picker-container" style="display: none; margin-top: 0.5rem; flex-direction: column; gap: 0.75rem; width: 100%;">
+          <label for="username-color" style="color: #cbd5e1; font-weight: 600;">Username Color:</label>
+          <input type="color" id="username-color" value="#FFFFFF" style="width: 100%; height: 40px; cursor: pointer; border: 2px solid #f4511e; border-radius: 6px;">
+          <button class="button" id="save-color-btn">Save Color</button>
+          <button class="button" id="logout-btn" style="background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);">Logout</button>
+        </div>
+      </div>
 
-  <div class="shadow-box">
-  <div class="Spacing">
+      <div class="profile-right">
+        <div class="profile-header">
+          <h1 id="profile">Profile Details</h1>
+        </div>
+        <div id="user-info"></div>
+        <div id="user-runs"></div>
+      </div>
+    </div>
+
+    <div class="shadow-box">
       <ul id="userSpeedruns"></ul>
+    </div>
   </div>
-  </div>
+</main>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
@@ -102,8 +261,6 @@ const storage = getStorage(app);
 const userProfile = document.getElementById("profile");
 const profileImg = document.getElementById("profile-img");
 const userInfoDiv = document.getElementById("user-info");
-const urlInput = document.getElementById("url-input");
-const urlBtn = document.getElementById("url-btn");
 const imageFileInput = document.getElementById("image-file-input");
 const uploadImageBtn = document.getElementById("upload-image-btn");
 const imageUploadStatus = document.getElementById("image-upload-status");
@@ -118,26 +275,24 @@ runsContainer.appendChild(runCountEl);
 runsContainer.appendChild(userRunsList);
 document.querySelector(".shadow-box").appendChild(runsContainer);
 
-const urlSetImage = (url) => {
-  if (!url) return alert("Enter a valid image URL!");
-  profileImg.src = url;
-  const user = auth.currentUser;
-  if (user) {
-    const uidToView = new URLSearchParams(window.location.search).get("uid") || user.uid;
-    if (uidToView === user.uid) {
-      set(ref(db, "users/" + user.uid + "/profileImageURL"), url)
-        .then(() => console.log("URL saved to database"))
-        .catch(err => console.error("Failed to save URL:", err));
-    }
-  }
-};
-
-urlBtn.addEventListener("click", () => urlSetImage(urlInput.value.trim()));
-urlInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") urlSetImage(urlInput.value.trim());
-});
-
 uploadImageBtn.addEventListener("click", () => imageFileInput.click());
+
+async function urlSetImage(url) {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  try {
+    // Update the image display
+    const sep = url.includes("?") ? "&" : "?";
+    profileImg.src = url + sep + "t=" + new Date().getTime();
+
+    // Save the URL to the database
+    await set(ref(db, "users/" + user.uid + "/profileImageURL"), url);
+  } catch (err) {
+    console.error("Failed to save image URL:", err);
+    imageUploadStatus.textContent = "Upload failed. Please try again.";
+  }
+}
 
 imageFileInput.addEventListener("change", async () => {
   const file = imageFileInput.files[0];
@@ -217,7 +372,51 @@ onAuthStateChanged(auth, async (user) => {
 
     // === DISPLAY PROFILE HEADER ===
     const usernameColor = userData.usernameColor || "#FFFFFF";
-    userProfile.innerHTML = `<p style="color:${usernameColor}">${userData.username}'s Profile</p><br>`;
+    userProfile.innerHTML = `<p style="color:${usernameColor}">${userData.username}'s Profile</p>`;
+
+    // Apply username color everywhere orange appears on the profile
+    const profileLeft = document.querySelector(".profile-left");
+    const profileRight = document.querySelector(".profile-right");
+    const profileImg = document.getElementById("profile-img");
+    const profileHeader = document.querySelector(".profile-header");
+    const profileTitle = document.querySelector(".profile-header-title");
+
+    profileImg.style.borderColor = usernameColor;
+    profileLeft.style.borderColor = usernameColor;
+    profileRight.style.borderColor = usernameColor;
+    profileHeader.style.borderBottomColor = usernameColor;
+    if (profileTitle) profileTitle.style.color = usernameColor;
+
+    // Apply to buttons
+    document.getElementById("upload-image-btn").style.background = `linear-gradient(135deg, ${usernameColor} 0%, ${adjustBrightness(usernameColor, -20)} 100%)`;
+
+    // Apply to shadow boxes and their headings
+    document.querySelectorAll(".shadow-box").forEach(box => {
+      box.style.borderColor = `rgba(${hexToRgb(usernameColor).join(', ')}, 0.3)`;
+      const h2 = box.querySelector("h2");
+      if (h2) h2.style.color = usernameColor;
+    });
+
+    // Apply to input focus states via inline style addition
+    const style = document.createElement("style");
+    style.textContent = `
+      .img-input:focus { border-color: ${usernameColor} !important; box-shadow: 0 0 8px ${usernameColor}33 !important; }
+      .button { background: linear-gradient(135deg, ${usernameColor} 0%, ${adjustBrightness(usernameColor, -20)} 100%) !important; }
+      .button:hover { box-shadow: 0 4px 12px ${usernameColor}66 !important; }
+      #username-color { border-color: ${usernameColor} !important; }
+    `;
+    document.head.appendChild(style);
+
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [255, 255, 255];
+    }
+
+    function adjustBrightness(hex, percent) {
+      const rgb = hexToRgb(hex);
+      const adjusted = rgb.map(val => Math.max(0, Math.min(255, val + percent)));
+      return "#" + adjusted.map(x => x.toString(16).padStart(2, '0')).join('');
+    }
 
     // === UPDATE PROFILE IMAGE ===
     if (userData.profileImageURL) {
@@ -226,7 +425,7 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     // === DISPLAY BIO ===
-    userInfoDiv.innerHTML = `<p id="bio-text">${userData.bio ? userData.bio.replace(/\n/g, "<br>") : ""}</p><br>`;
+    userInfoDiv.innerHTML = `<p id="bio-text">${userData.bio ? userData.bio.replace(/\n/g, "<br>") : ""}</p>`;
 
     // === SHOW EDIT OPTIONS ONLY IF VIEWING OWN PROFILE ===
     if (user && profileUid === user.uid) {
@@ -234,8 +433,34 @@ onAuthStateChanged(auth, async (user) => {
       usernameColorInput.value = usernameColor;
 
       saveColorBtn.onclick = async () => {
-        await set(ref(db, "users/" + user.uid + "/usernameColor"), usernameColorInput.value);
-        userProfile.innerHTML = `<p style="color:${usernameColorInput.value}">${userData.username}'s Profile</p><br>`;
+        const newColor = usernameColorInput.value;
+        await set(ref(db, "users/" + user.uid + "/usernameColor"), newColor);
+        userProfile.innerHTML = `<p style="color:${newColor}">${userData.username}'s Profile</p><br>`;
+
+        // Reapply all color changes
+        profileImg.style.borderColor = newColor;
+        profileLeft.style.borderColor = newColor;
+        profileRight.style.borderColor = newColor;
+        profileHeader.style.borderBottomColor = newColor;
+        const profileTitle = document.querySelector(".profile-header-title");
+        if (profileTitle) profileTitle.style.color = newColor;
+
+        document.getElementById("upload-image-btn").style.background = `linear-gradient(135deg, ${newColor} 0%, ${adjustBrightness(newColor, -20)} 100%)`;
+
+        document.querySelectorAll(".shadow-box").forEach(box => {
+          box.style.borderColor = `rgba(${hexToRgb(newColor).join(', ')}, 0.3)`;
+          const h2 = box.querySelector("h2");
+          if (h2) h2.style.color = newColor;
+        });
+
+        const style = document.createElement("style");
+        style.textContent = `
+          .img-input:focus { border-color: ${newColor} !important; box-shadow: 0 0 8px ${newColor}33 !important; }
+          .button { background: linear-gradient(135deg, ${newColor} 0%, ${adjustBrightness(newColor, -20)} 100%) !important; }
+          .button:hover { box-shadow: 0 4px 12px ${newColor}66 !important; }
+          #username-color { border-color: ${newColor} !important; }
+        `;
+        document.head.appendChild(style);
       };
 
       // Allow bio editing
@@ -269,8 +494,6 @@ onAuthStateChanged(auth, async (user) => {
       });
     } else {
       colorPickerContainer.style.display = "none";
-      urlInput.style.display = "none";
-      urlBtn.style.display = "none";
       uploadImageBtn.style.display = "none";
       imageUploadStatus.style.display = "none";
     }

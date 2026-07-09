@@ -1,46 +1,44 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega Speedruns</title>
+    <title>Mega Speedruns - Level Packs</title>
+    <meta name="description" content="Mega Speedruns - community speedrun leaderboards, tournaments, and level packs for Mega Man Maker.">
     <link rel="stylesheet" href="styles.css">
-	<style>
-        /* Add the background image directly in the HTML */
-        body {
-            background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
-            background-size: cover;
-        }
-    </style>
     <link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
 </head>
 <body>
     <header>
-        <div class="logo">
-            <img src="Mega%20Speedruns_files/logo.png" alt="Logo">
+        <div class="header-container">
+            <div class="logo">
+                <img src="Mega%20Speedruns_files/logo.png" alt="Mega Speedruns Logo">
+                <span class="logo-text">Mega Speedruns</span>
+            </div>
+            <nav class="nav-wrapper">
+                <ul>
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="MSTLP.htm" class="nav-link active">Level Packs</a></li>
+                    <li><a href="MMMLevels.htm" class="nav-link">MMM Levels</a></li>
+                    <li><a href="Speedruns.htm" class="nav-link">Speedruns</a></li>
+                    <li><a href="Forum.html" class="nav-link">Forums</a></li>
+                    <li><a href="Creator.html" class="nav-link">Creator</a></li>
+                    <li><a href="Users.html" class="nav-link">Users</a></li>
+                    <li><a id="login" href="Login.html" class="nav-link">Login</a></li>
+                </ul>
+            </nav>
         </div>
-        <nav class="nav-wrapper">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="MSTLP.htm">Level Packs</a></li>
-                <li><a href="MMMLevels.htm">MMM Levels</a></li>
-                <li><a href="Speedruns.htm">Speedruns</a></li>
-                <li><a id="Forums" href="Forum.html">Forums</a></ali>
-                <li><a id="login" href="Login.html">Login</a></li>
-                <li><a href="Creator.html">Creator</a></li>
-                <li><a href="Users.html">Users</a></li>
-            </ul>
-        </nav>
     </header>
 
     <main>
-        <section id="home" class="title">
-            <div class="title-text">
+        <section class="hero">
+            <div class="hero-content">
                 <h1>Mega Speedruns Level Packs</h1>
+                <p>Explore tournaments, races, and community events</p>
             </div>
         </section>
 
-        <section id="links-MMM" class="links-MMM">
+        <section class="links-MMM">
             <div class="link-list">
                 <div class="link-item-packs">
                     <a href="MST1.htm">
@@ -78,14 +76,14 @@
                     </a>
                 </div>
                 <div class="link-item-packs">
-                    <a href="https://drive.google.com/file/d/1deB_D8shCd5nxXScthsRdc9rPYLWELf_/view?usp=sharing">
+                    <a href="https://drive.google.com/file/d/1deB_D8shCd5nxXScthsRdc9rPYLWELf_/view?usp=sharing" target="_blank">
                         <img src="Mega%20Speedruns_files/MMMX.png" alt="MMMX Image">
                         <h3>MS-MMMX (Game Mod)</h3>
                         <p>MS Mega Maker X Race Pack</p>
                     </a>
                 </div>
                 <div class="link-item-packs">
-                    <a href="https://drive.google.com/file/d/1WVVE6N0AEShPSOnhTftF7u8bVrDpo95N/view?usp=sharing">
+                    <a href="https://drive.google.com/file/d/1WVVE6N0AEShPSOnhTftF7u8bVrDpo95N/view?usp=sharing" target="_blank">
                         <img src="Mega%20Speedruns_files/MMMGB.png" alt="MMMGB Image">
                         <h3>MMMGB (Game Mod)</h3>
                         <p>Mega Maker GB Race Pack</p>
@@ -98,59 +96,20 @@
                         <p>Check out this tournament level randomizer</p>
                     </a>
                 </div>
-                <div class="link-item-packs">
-                    <a href="https://drive.google.com/file/d/1XMz4pSz2BgtrOHvWJQbaodaqYjy5XtVc/view" target="blank">
-                        <img src="Mega%20Speedruns_files/Splits.PNG" alt="Tournament Splits">
-                        <h3>MST Splits</h3>
-                        <p>MMM Live Splits</p>
-                    </a>
-                </div>
-                <div class="link-item-packs">
-                    <a href="MSTTiers.htm">
-                        <img src="Mega%20Speedruns_files/MST_TierLists.png" alt="MST Tiers">
-                        <h3>Tier Lists</h3>
-                        <p>MST Tier Lists</p>
-                    </a>
-                </div>
             </div>
         </section>
     </main>
 
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Mega Speedruns. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="auth.js"></script>
+    <script src="nav.js"></script>
 </body>
-
-    <div id= "footerB">MegaSpeedruns</div>
-
-<script>
-window.addEventListener("DOMContentLoaded", () => {
-    const loginEl = document.getElementById("login");
-    const cachedUsername = localStorage.getItem("username");
-    if (cachedUsername) {
-        loginEl.textContent = `Profile`;
-        loginEl.href = "Profile.html";
-    } else {
-        loginEl.textContent = "Login";
-        loginEl.href = "Login.html";
-    }
-    auth.onAuthStateChanged(async (user) => {
-        if (user) {
-            try {
-                const snapshot = await db.ref("users/" + user.uid).once("value");
-                const username = snapshot.val()?.username || "Login";
-                loginEl.textContent = `Profile`;
-                loginEl.href = "Profile.html";
-                localStorage.setItem("username", username);
-            } catch (err) {
-                console.error("Failed to fetch username:", err);
-                loginEl.textContent = "Login";
-                loginEl.href = "Login.html";
-            }
-        } else {
-            loginEl.textContent = "Login";
-            loginEl.href = "Login.html";
-            localStorage.removeItem("username");
-        }
-    });
-});
-</script>
-
 </html>

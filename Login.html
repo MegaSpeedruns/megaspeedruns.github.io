@@ -3,191 +3,146 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Login - Mega Speedruns</title>
   <link rel="stylesheet" href="styles.css">
-  <style>
-    body {
-        background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
-        background-size: cover;
-    }
-    main {
-        max-width: 20%;
-        margin: 40px auto;
-        background-color: rgba(0, 0, 0, 0.65);
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-    }
-  </style>
+  <link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
 </head>
 <body>
     <header>
-        <div class="logo">
-            <img src="Mega%20Speedruns_files/logo.png" alt="Logo">
-            <link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />              
+        <div class="header-container">
+            <div class="logo">
+                <img src="Mega%20Speedruns_files/logo.png" alt="Mega Speedruns Logo">
+                <span class="logo-text">Mega Speedruns</span>
+            </div>
+            <nav class="nav-wrapper">
+                <ul>
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="MSTLP.htm" class="nav-link">Level Packs</a></li>
+                    <li><a href="MMMLevels.htm" class="nav-link">MMM Levels</a></li>
+                    <li><a href="Speedruns.htm" class="nav-link">Speedruns</a></li>
+                    <li><a href="Forum.html" class="nav-link">Forums</a></li>
+                    <li><a href="Creator.html" class="nav-link">Creator</a></li>
+                    <li><a href="Users.html" class="nav-link">Users</a></li>
+                    <li><a id="login" href="Login.html" class="nav-link">Login</a></li>
+                </ul>
+            </nav>
         </div>
-        <nav class="nav-wrapper">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="MSTLP.htm">Level Packs</a></li>
-                <li><a href="MMMLevels.htm">MMM Levels</a></li>
-                <li><a href="Speedruns.htm">Speedruns</a></li>
-                <li><a id="Forums" href="Forum.html">Forums</a></ali>
-                <li><a id="login" href="Login.html">Login</a></li>
-                <li><a href="Creator.html">Creator</a></li>
-                <li><a href="Users.html">Users</a></li>
-            </ul>
-        </nav>>
     </header>
 
-<div class = shadow-box-smaller>
-<h2>Login</h2>
-<br>
-<input type="email" id="login-email" placeholder="Email" required><br><br>
-<input type="password" id="login-password" placeholder="Password" required><br><br>
-<button id="login-btn">Login</button><br><br>
-<h2>Sign Up</h2>
-<br>
-<input type="text" id="signup-username" placeholder="Username" required><br><br>
-<input type="email" id="signup-email" placeholder="Email" required><br><br>
-<input type="password" id="signup-password" placeholder="Password" required><br><br>
-<button id="signup-btn">Sign Up</button><br><br>
-<p id="status"></p>
-</div>
+    <div class="shadow-box-smaller">
+        <h2>Login</h2>
+        <br>
+        <input type="email" id="login-email" placeholder="Email" autocomplete="email" required><br><br>
+        <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" required><br><br>
+        <button type="button" id="login-btn">Login</button><br><br>
+        <h2>Sign Up</h2>
+        <br>
+        <input type="text" id="signup-username" placeholder="Username" autocomplete="username" required><br><br>
+        <input type="email" id="signup-email" placeholder="Email" autocomplete="email" required><br><br>
+        <input type="password" id="signup-password" placeholder="Password" autocomplete="new-password" required><br><br>
+        <button type="button" id="signup-btn">Sign Up</button><br><br>
+        <p id="status" role="status"></p>
+    </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-<script src="auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="auth.js"></script>
+    <script src="nav.js"></script>
 
-<script>
-const statusEl = document.getElementById("status");
-function setStatus(msg) { statusEl.textContent = msg; }
+    <script>
+    const statusEl = document.getElementById("status");
+    function setStatus(msg) { statusEl.textContent = msg; }
 
-// === LOGIN ===
-document.getElementById("login-btn").addEventListener("click", async () => {
-  const email = document.getElementById("login-email").value;
-  const password = document.getElementById("login-password").value;
-  setStatus("Logging in...");
+    async function login() {
+        const email = document.getElementById("login-email").value.trim();
+        const password = document.getElementById("login-password").value;
+        if (!email || !password) {
+            setStatus("Please enter your email and password.");
+            return;
+        }
+        setStatus("Logging in...");
 
-  try {
-    const { user } = await auth.signInWithEmailAndPassword(email, password);
+        try {
+            const { user } = await auth.signInWithEmailAndPassword(email, password);
+            const snapshot = await db.ref("users/" + user.uid).once("value");
+            const username = snapshot.val()?.username || "Unknown";
 
-    const snapshot = await db.ref("users/" + user.uid).once("value");
-    const username = snapshot.val()?.username || "Unknown";
-
-    setStatus(`Welcome ${username}`);
-    console.log("Logged in:", user.email, "Username:", username);
-
-    // Redirect to Profile.html
-    window.location.href = "Profile.html";
-  } catch (err) {
-    setStatus(err.message);
-  }
-});
-
-// === SIGN UP ===
-document.getElementById("signup-btn").addEventListener("click", async () => {
-  const username = document.getElementById("signup-username").value.trim();
-  const email = document.getElementById("signup-email").value;
-  const password = document.getElementById("signup-password").value;
-  setStatus("Checking username...");
-
-  if (!username) {
-    setStatus("Please enter a username!");
-    return;
-  }
-
-  try {
-    const usernameLower = username.toLowerCase();
-
-    const snapshot = await db.ref("users")
-      .orderByChild("username_lower")
-      .equalTo(usernameLower)
-      .once("value");
-
-    if (snapshot.exists()) {
-      setStatus("⚠️ Username already taken. Please choose another.");
-      return;
+            localStorage.setItem("username", username);
+            setStatus(`Welcome ${username}`);
+            window.location.href = "Profile.html";
+        } catch (err) {
+            setStatus(err.message);
+        }
     }
 
-    setStatus("Creating account...");
+    async function signUp() {
+        const username = document.getElementById("signup-username").value.trim();
+        const email = document.getElementById("signup-email").value.trim();
+        const password = document.getElementById("signup-password").value;
 
-    const { user } = await auth.createUserWithEmailAndPassword(email, password);
+        if (!username) {
+            setStatus("Please enter a username!");
+            return;
+        }
+        if (!email || !password) {
+            setStatus("Please enter an email and password.");
+            return;
+        }
+        setStatus("Checking username...");
 
-    await db.ref("users/" + user.uid).set({
-      username: username,
-      username_lower: usernameLower,
-      email: user.email
+        try {
+            const usernameLower = username.toLowerCase();
+            const snapshot = await db.ref("users")
+                .orderByChild("username_lower")
+                .equalTo(usernameLower)
+                .once("value");
+
+            if (snapshot.exists()) {
+                setStatus("⚠️ Username already taken. Please choose another.");
+                return;
+            }
+
+            setStatus("Creating account...");
+
+            const { user } = await auth.createUserWithEmailAndPassword(email, password);
+            await db.ref("users/" + user.uid).set({
+                username: username,
+                username_lower: usernameLower,
+                email: user.email
+            });
+
+            localStorage.setItem("username", username);
+            setStatus(`Account created! Welcome ${username}`);
+            window.location.href = "Profile.html";
+        } catch (err) {
+            setStatus(err.message);
+        }
+    }
+
+    document.getElementById("login-btn").addEventListener("click", login);
+    document.getElementById("signup-btn").addEventListener("click", signUp);
+    document.getElementById("login-password").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") login();
+    });
+    document.getElementById("signup-password").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") signUp();
     });
 
-    setStatus(`Account created! Welcome ${username}`);
-    console.log("Signed up:", user.email, "Username:", username);
-
-    // Redirect to Profile.html
-    window.location.href = "Profile.html";
-  } catch (err) {
-    setStatus(err.message);
-  }
-});
-
-auth.onAuthStateChanged(async user => {
-  if (user) {
-    const snapshot = await db.ref("users/" + user.uid).once("value");
-    const username = snapshot.val()?.username || "Unknown";
-
-    console.log("Current logged-in user:", user.email);
-    setStatus(`Logged in as: ${username} (${user.email})`);
-  } else {
-    console.log("No user logged in");
-    setStatus("Not logged in");
-  }
-});
-</script>
-
-<script>
-window.addEventListener("DOMContentLoaded", () => {
-    const loginEl = document.getElementById("login");
-
-    // Show cached username instantly if available
-    const cachedUsername = localStorage.getItem("username");
-    if (cachedUsername) {
-        loginEl.textContent = "Profile";
-    } else {
-        loginEl.textContent = "Login";
-    }
-
-    // Update username from Firebase Auth + Database
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             try {
                 const snapshot = await db.ref("users/" + user.uid).once("value");
-                const username = snapshot.val()?.username || "Login";
-
-                loginEl.textContent = "Profile";
-                localStorage.setItem("username", username);
+                const username = snapshot.val()?.username || "Unknown";
+                setStatus(`Logged in as: ${username} (${user.email})`);
             } catch (err) {
-                console.error("Failed to fetch username:", err);
-                loginEl.textContent = "Login";
+                setStatus("Logged in.");
             }
         } else {
-            loginEl.textContent = "Login";
-            localStorage.removeItem("username");
+            setStatus("Not logged in");
         }
     });
-
-    // Redirect to Profile.html if logged in when clicking header login
-    loginEl.addEventListener("click", async (e) => {
-        e.preventDefault();
-        const user = auth.currentUser;
-        if (user) {
-            window.location.href = "Profile.html";
-        } else {
-            window.location.href = "Login.html";
-        }
-    });
-});
-</script>
+    </script>
 
 </body>
 </html>

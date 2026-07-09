@@ -3,103 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>User List</title>
+<title>Users - Mega Speedruns</title>
 <link rel="stylesheet" href="styles.css">
+<link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
 <style>
-  body {
-    background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
-    background-size: cover;
+  main {
+    padding: 2rem 1rem;
+    flex: 1;
+  }
+
+  .users-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .users-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .users-header h1 {
+    color: #f4511e;
+    font-size: 2.5em;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 8px rgba(244, 81, 30, 0.3);
+  }
+
+  .users-header p {
+    color: #cbd5e1;
+    font-size: 1.1em;
+  }
+
+  .search-container {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  #search-bar {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 2px solid #5d322f;
+    background-color: #182234;
+    color: #f1f5f9;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    outline: none;
+    font-family: inherit;
+  }
+
+  #search-bar:focus {
+    border-color: #f4511e;
+    background-color: #1c2739;
+    box-shadow: 0 0 12px rgba(244, 81, 30, 0.4);
+  }
+
+  #search-bar::placeholder {
+    color: #94a3b8;
   }
 
   .user-list {
-    max-width: 600px;
-    margin: 50px auto;
-    background: rgba(0,0,0,0.6);
-    padding: 20px;
-    border-radius: 10px;
-    color: white;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
   }
 
   .user-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-    padding: 10px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 5px;
+    background: linear-gradient(135deg, #182234 0%, #121c2e 100%);
+    border: 1px solid #462d30;
+    border-radius: 12px;
+    padding: 1.5rem;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
   .user-item:hover {
-    background: rgba(255,255,255,0.2);
+    border-color: #f4511e;
+    background: linear-gradient(135deg, #1b2538 0%, #131d2f 100%);
+    box-shadow: 0 8px 24px rgba(244, 81, 30, 0.2);
+    transform: translateY(-4px);
   }
 
   .user-item img {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    margin-right: 15px;
+    margin-bottom: 1rem;
+    border: 3px solid #f4511e;
+    object-fit: cover;
+  }
+
+  .user-name {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin-bottom: 0.5rem;
+  }
+
+  .user-info {
+    font-size: 0.9em;
+    color: #cbd5e1;
+    margin-bottom: 0.3rem;
+  }
+
+  .user-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #f4511e 0%, #e64a19 100%);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .user-list {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .users-header h1 {
+      font-size: 2em;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .user-list {
+      grid-template-columns: 1fr;
+    }
+
+    #search-bar {
+      padding: 10px 12px;
+    }
   }
 </style>
 <link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
 </head>
 <body>
 <header>
-    <div class="logo">
-        <img src="Mega%20Speedruns_files/logo.png" alt="Logo">
+    <div class="header-container">
+        <div class="logo">
+            <img src="Mega%20Speedruns_files/logo.png" alt="Mega Speedruns Logo">
+            <span class="logo-text">Mega Speedruns</span>
+        </div>
+        <nav class="nav-wrapper">
+            <ul>
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="MSTLP.htm" class="nav-link">Level Packs</a></li>
+                <li><a href="MMMLevels.htm" class="nav-link">MMM Levels</a></li>
+                <li><a href="Speedruns.htm" class="nav-link">Speedruns</a></li>
+                <li><a href="Forum.html" class="nav-link">Forums</a></li>
+                <li><a href="Creator.html" class="nav-link">Creator</a></li>
+                <li><a href="Users.html" class="nav-link active">Users</a></li>
+                <li><a id="login" href="Login.html" class="nav-link">Login</a></li>
+            </ul>
+        </nav>
     </div>
-      <nav class="nav-wrapper">
-          <ul>
-              <li><a href="index.html">Home</a></li>
-              <li><a href="MSTLP.htm">Level Packs</a></li>
-              <li><a href="MMMLevels.htm">MMM Levels</a></li>
-              <li><a href="Speedruns.htm">Speedruns</a></li>
-              <li><a id="Forums" href="Forum.html">Forums</a></ali>
-              <li><a id="login" href="Login.html">Login</a></li>
-              <li><a href="Creator.html">Creator</a></li>
-              <li><a href="Users.html">Users</a></li>
-          </ul>
-      </nav>
 </header>
-<div class="user-list" id="user-list">
-  <h1>User List</h1>
-  <input 
-    type="text" 
-    id="search-bar" 
-    placeholder="Search for a user..." 
-  >
-</div>
+<main>
+  <div class="users-container">
+    <div class="users-header">
+      <h1>Community Users</h1>
+      <p>Browse and connect with community members</p>
+    </div>
 
-<style>
-  /* Search bar styling */
-  #search-bar {
-    width: 95%;
-    padding: 8px;
-    margin: 10px 0 15px 0;
-    border-radius: 5px;
-    border: 2px solid #444;
-    background-color: #222;
-    color: #fff;
-    font-size: 14px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    outline: none;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
+    <div class="search-container">
+      <input
+        type="text"
+        id="search-bar"
+        placeholder="Search for a user..."
+      >
+    </div>
 
-  /* Hover & focus effect */
-  #search-bar:focus {
-    border-color: orange;
-    box-shadow: 0 0 6px orange;
-  }
-
-  /* Placeholder color */
-  #search-bar::placeholder {
-    color: #aaa;
-  }
-</style>
+    <div class="user-list" id="user-list"></div>
+  </div>
+</main>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";

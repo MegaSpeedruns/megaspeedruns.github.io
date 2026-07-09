@@ -1,6 +1,15 @@
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export function initUserProfile({ loginLinkId = "login", profileHeaderId = null, profileImgId = null, bioContainerId = null, defaultColor = "#FFFFFF", defaultAvatar = "Mega%20Speedruns_files/Default_Avatar.png" }) {
   const auth = getAuth();
   const db = getDatabase();
@@ -38,7 +47,7 @@ export function initUserProfile({ loginLinkId = "login", profileHeaderId = null,
       }
 
       if (bioContainer) {
-        bioContainer.innerHTML = userData.bio ? userData.bio.replace(/\n/g, "<br>") : "No bio set.";
+        bioContainer.innerHTML = userData.bio ? escapeHtml(userData.bio).replace(/\n/g, "<br>") : "No bio set.";
       }
 
     } catch (err) {

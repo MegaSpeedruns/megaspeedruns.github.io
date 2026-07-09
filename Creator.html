@@ -8,8 +8,8 @@
 <link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
 <style>
     body {
-        background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
-        background-size: cover;
+        background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
+        min-height: 100vh;
     }
 
     .state-message {
@@ -19,7 +19,7 @@
         padding: 30px;
         font-size: 1.05em;
         line-height: 1.6;
-        background-color: rgba(18, 18, 26, 0.6);
+        background-color: #111420;
         border-radius: 16px;
     }
 
@@ -30,19 +30,21 @@
 </head>
 <body>
     <header>
-        <div class="logo">
-            <img src="Mega%20Speedruns_files/logo.png" alt="Logo">
-        </div>
-        <nav class="nav-wrapper">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="MSTLP.htm">Level Packs</a></li>
-                <li><a href="MMMLevels.htm">MMM Levels</a></li>
-                <li><a href="Speedruns.htm">Speedruns</a></li>
-                <li><a id="Forums" href="Forum.html">Forums</a></li>
-                <li><a id="login" href="Login.html">Login</a></li>
-                <li><a href="Creator.html">Creator</a></li>
-                <li><a href="Users.html">Users</a></li>
+        <div class="header-container">
+            <div class="logo">
+                <img src="Mega%20Speedruns_files/logo.png" alt="Mega Speedruns Logo">
+                <span class="logo-text">Mega Speedruns</span>
+            </div>
+            <nav class="nav-wrapper">
+                <ul>
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="MSTLP.htm" class="nav-link">Level Packs</a></li>
+                    <li><a href="MMMLevels.htm" class="nav-link">MMM Levels</a></li>
+                    <li><a href="Speedruns.htm" class="nav-link">Speedruns</a></li>
+                    <li><a href="Forum.html" class="nav-link">Forums</a></li>
+                    <li><a href="Creator.html" class="nav-link active">Creator</a></li>
+                    <li><a href="Users.html" class="nav-link">Users</a></li>
+                    <li><a id="login" href="Login.html" class="nav-link">Login</a></li>
             </ul>
         </nav>
     </header>

@@ -8,9 +8,248 @@
     <link rel="stylesheet" href="styles2.css">
     <style>
         body {
-            background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
+            background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%) fixed;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: url('Mega%20Speedruns_files/bg.png') no-repeat center center;
             background-size: cover;
-            background-position: fixed;
+            opacity: var(--bg-art-opacity, 0.8);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        header {
+            display: block;
+            padding: 0;
+            position: sticky;
+            top: 0;
+        }
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 1.25rem;
+        }
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        .logo-text {
+            font-weight: 700;
+            background: linear-gradient(135deg, #f4511e 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #f4511e 0%, #60a5fa 100%);
+            transition: all 0.2s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover {
+            background-color: #17253f;
+            color: #60a5fa;
+            text-decoration: none;
+        }
+        .nav-link:hover::after {
+            width: 80%;
+        }
+        .nav-link.active {
+            background-color: #1b2c49;
+            color: #ff7043;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            column-gap: 2rem;
+            align-items: start;
+        }
+        .left-col {
+            grid-column: 1;
+            grid-row: 1 / span 2;
+            align-self: start;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .menu-container {
+            position: static;
+            width: 220px;
+            height: auto;
+            max-height: none;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        /* Search and sort panels below the side nav */
+        .search-box,
+        .sort-box {
+            background: #0a101d;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+        }
+        .search-box .input,
+        .sort-box select {
+            width: 100%;
+            min-width: 0;
+        }
+        .sort-box label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        #title input {
+            display: none;
+        }
+        .title-text,
+        .layout {
+            grid-column: 2;
+        }
+        .menu .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item:focus-within .submenu {
+            display: none;
+        }
+
+        .submenu .menu-btn-b,
+        .submenu .expandable {
+            padding-left: 28px;
+        }
+        .submenu .submenu .expandable {
+            padding-left: 40px;
+        }
+
+        #submitRun {
+            text-align: left;
+        }
+        #submitRun .submit-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem 2rem;
+            align-items: start;
+        }
+        #submitRun .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        #submitRun .field label {
+            margin: 0;
+        }
+        #submitRun .field select,
+        #submitRun .field .input {
+            width: 100%;
+            min-width: 0;
+        }
+        #submitRun .time-inputs {
+            display: grid;
+            grid-template-columns: repeat(4, auto minmax(0, 1fr));
+            align-items: center;
+            gap: 0.5rem;
+        }
+        #submitRun .time-inputs label {
+            margin: 0;
+            font-weight: 500;
+            color: #94a3b8;
+        }
+        #submitRun .time-inputs .time {
+            width: 100%;
+            min-width: 0;
+            max-width: none;
+            padding: 10px 8px;
+            text-align: center;
+        }
+        #submitRun #TimeInfo {
+            margin: 0.25rem 0 0;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+        #submitRun .submit-rules {
+            grid-column: 1 / -1;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            border-top: 1px solid #334155;
+            padding-top: 1rem;
+        }
+        #submitRun .submit-rules p {
+            margin: 0 0 0.5rem;
+        }
+        #submitRun #AddBtn {
+            grid-column: 1 / -1;
+            justify-self: center;
+            padding: 0.5rem 3rem;
+        }
+        #submitRun #AddBtn h1 {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                display: block;
+            }
+        }
+
+        .collapsible-list .list-item {
+            display: grid;
+            grid-template-columns: 70px minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .collapsible-list .spacing {
+            display: grid;
+            grid-template-columns: 64px minmax(0, 2fr) minmax(0, 0.9fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 90px);
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .collapsible-list .list-item img,
+        .collapsible-list .spacing img {
+            margin-right: 0;
+        }
+        .collapsible-list .list-item span,
+        .collapsible-list .spacing span {
+            text-align: left;
+            padding: 0;
+            overflow-wrap: break-word;
+        }
+
+        .collapsible-list {
+            display: none;
+        }
+        .collapsible-list:has(> div[style*="display: block"]),
+        .collapsible-list:has(> div[style*="display:block"]) {
+            display: block;
+        }
+
+        .title-text {
+            display: none;
         }
     </style>
     <link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
@@ -18,24 +257,28 @@
 
 <body>
     <header>
-        <div class="logo">
-            <img src="Mega%20Speedruns_files/logo.png" alt="Logo">
+        <div class="header-container">
+            <div class="logo">
+                <img src="Mega%20Speedruns_files/logo.png" alt="Mega Speedruns Logo">
+                <span class="logo-text">Mega Speedruns</span>
+            </div>
+            <nav class="nav-wrapper">
+                <ul>
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="MSTLP.htm" class="nav-link">Level Packs</a></li>
+                    <li><a href="MMMLevels.htm" class="nav-link">MMM Levels</a></li>
+                    <li><a href="Speedruns.htm" class="nav-link active">Speedruns</a></li>
+                    <li><a id="Forums" href="Forum.html" class="nav-link">Forums</a></li>
+                    <li><a href="Creator.html" class="nav-link">Creator</a></li>
+                    <li><a href="Users.html" class="nav-link">Users</a></li>
+                    <li><a id="login" href="Login.html" class="nav-link">Login</a></li>
+                </ul>
+            </nav>
         </div>
-        <nav class="nav-wrapper">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="MSTLP.htm">Level Packs</a></li>
-                <li><a href="MMMLevels.htm">MMM Levels</a></li>
-                <li><a href="Speedruns.htm">Speedruns</a></li>
-                <li><a id="Forums" href="Forum.html">Forums</a></ali>
-                <li><a id="login" href="Login.html">Login</a></li>
-                <li><a href="Creator.html">Creator</a></li>
-                <li><a href="Users.html">Users</a></li>
-            </ul>
-        </nav>
     </header>
     <main>
 
+        <div class="left-col">
         <div class="menu-container">
             <div class="menu">
                 <div class="menu-item" onclick="javascript:showhide('allSpeedruns')">
@@ -213,23 +456,30 @@
             </div>
         </div>
 
+        <div class="search-box">
+            <input class="input" type="text" id="searchBar" placeholder="Search speedruns..." oninput="filterSpeedruns()" />
+        </div>
+
+        <div class="sort-box">
+            <label for="sortCriteria">Sort By</label>
+            <select id="sortCriteria" onchange="sortSpeedruns()">
+                <option value="default">Newest</option>
+                <option value="invert">Oldest</option>
+                <option value="runner">Runner (A-Z)</option>
+                <option value="runner-desc">Runner (Z-A)</option>
+                <option value="level">Level Name (A-Z)</option>
+                <option value="level-desc">Level Name (Z-A)</option>
+                <option value="time">Time (Shortest)</option>
+                <option value="time-desc">Time (Longest)</option>
+                <option value="category">Category (A-Z)</option>
+                <option value="category-desc">Category (Z-A)</option>
+            </select>
+        </div>
+        </div>
+
         <div class="title-text">
             <a href=" https://example.com" class="clickable-text"></a>
-            <h2 id="title">
-                Speedruns
-                <span>
-                    Sort By:
-                    <select id="sortCriteria" onchange="sortSpeedruns()">
-                        <option value="default">Newest</option>
-                        <option value="time">Time</option>
-                        <option value="runner">Runner</option>
-                        <option value="level">Level</option>
-                        <option value="category">Category</option>
-                        <option value="invert">Invert Order</option>
-                    </select>
-                </span>
-                <input class="input" type="text" id="searchBar" placeholder="Search speedruns..." oninput="filterSpeedruns()" />
-            </h2>
+            <h2 id="title"></h2>
             <span id="clickable-text"></span>
         </div>
 
@@ -6399,8 +6649,8 @@
 
             <section id="collapsible-list" class="collapsible-list">
                 <div class="content" id="submitRun">
-                    <ul>
-                        <br>
+                    <div class="submit-form">
+                        <div class="field">
                         <label>Tournament/Pack</label>
                         <select id="Tournament">
                             <option value="MST1">MST1</option>
@@ -6412,9 +6662,10 @@
                             <option value="NCE">NCR</option>
                             <option value="MSSS">MSSS</option>
                         </select>
+                        </div>
 
+                        <div class="field">
                         <label>Pack/Level</label>
-
                         <select id="Run">
                             <option value="MST1_Week_1_Group_A">MST1 - Week 1 Group A</option>
                             <option value="MST1_Week_2_Group_B">MST1 - Week 2 Group B</option>
@@ -6478,47 +6729,53 @@
                             <option value="ThunderCloud_Fortress">ThunderCloud Fortress</option>
                             <option value="Toxic_Waltz">Toxic Waltz</option>
                             <option value="Warm_Front_Cool_Sliding">Warm Front - Cool Sliding</option>
-
                         </select>
+                        </div>
 
+                        <div class="field">
                         <label>Category</label>
                         <select id="Category">
                             <option value="Any%">Any%</option>
                             <option value="Damageless">Damageless</option>
                             <option value="Min-Damage">Min-Damage</option>
                         </select>
+                        </div>
 
-                        <br><br>
-
+                        <div class="field">
                         <label>Runner</label>
                         <input class="input" type="text" id="Runner">
+                        </div>
 
+                        <div class="field">
                         <label>Link (Video)</label>
                         <input class="input" type="text" id="Link">
+                        </div>
 
-                        <label>Time:</label><label>H</label>
-                        <input class="time" type="text" id="Hour">
-                        <label>M</label>
-                        <input class="time" type="text" id="Minute">
-                        <label>S</label>
-                        <input class="time" type="text" id="Second">
-                        <label>MS</label>
-                        <input class="time" type="text" id="Millisecond">
-                        <br><br>
-                        <p id="TimeInfo"> Time format: [ Hours | Minutes | Seconds | Milliseconds ] </p>
+                        <div class="field">
+                        <label>Time</label>
+                        <div class="time-inputs">
+                            <label>H</label>
+                            <input class="time" type="text" id="Hour">
+                            <label>M</label>
+                            <input class="time" type="text" id="Minute">
+                            <label>S</label>
+                            <input class="time" type="text" id="Second">
+                            <label>MS</label>
+                            <input class="time" type="text" id="Millisecond">
+                        </div>
+                        <p id="TimeInfo">Time format: [ Hours | Minutes | Seconds | Milliseconds ] (If uncertain on Milliseconds round up to next second, or to next hundred Milliseconds)</p>
+                        </div>
 
-                        <br>
-
-                        Levels: Run starts when "Ready" first appears on screen, and ends when screen (fully) fades to black. <br><br>
-                        Packs: Run starts from hit play on first level, and ends when final level (fully) fades to black. <br><br>
-                        <p id="InfoEnd">(No Edited Runs) </p>
-
-                        <br>
+                        <div class="submit-rules">
+                            <p>Levels: Run starts when "Ready" first appears on screen, and ends when screen (fully) fades to black.</p>
+                            <p>Packs: Run starts from hit play on first level, and ends when final level (fully) fades to black.</p>
+                            <p id="InfoEnd">(No Edited Runs) </p>
+                        </div>
 
                         <button class="sendButton" id="AddBtn">
                             <h1>Send</h1>
                         </button>
-                    </ul>
+                    </div>
                 </div>
             </section>
         </div>
@@ -8178,10 +8435,9 @@ if (tournamentDropdown.value==='NRS2') {
             if (allSpeedrunsSection) {
                 // Update title based on visibility
                 if (allSpeedrunsSection.style.display==='none') {
-                    titleElement.textContent='Speedruns'; // Simple title
+                    titleElement.textContent=''; // No title text
                 } else {
                     titleElement.innerHTML=`
-                    Speedruns
                     <span>
                         Sort By:
                         <select id="sortCriteria" onchange="sortSpeedruns()">

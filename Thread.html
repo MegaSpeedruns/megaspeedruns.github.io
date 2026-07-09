@@ -7,102 +7,156 @@
 <link rel="stylesheet" href="styles.css">
 <style>
     body {
-        background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
-        background-size: cover;
-        font-family: Arial, sans-serif;
-        color: #fff;
+        background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        color: #f1f5f9;
         margin: 0;
         padding: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
 
     main {
-        max-width: 60%;
-        margin: 40px auto;
-        background-color: rgba(0, 0, 0, 0.7);
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 2rem;
+        flex: 1;
+        width: 100%;
     }
 
     h1 {
-        color: #ffcc00;
-        margin-bottom: 10px;
+        color: #f4511e;
+        margin-bottom: 1.5rem;
+        font-size: 2em;
+        text-shadow: 0 2px 8px rgba(244, 81, 30, 0.3);
     }
 
     .post {
-        background-color: rgba(40, 40, 40, 0.8);
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
+        background: linear-gradient(135deg, #1a2436 0%, #131d2f 100%);
+        border: 1px solid #5d322f;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
     }
 
     .post-author {
-        font-weight: bold;
+        font-weight: 600;
+        margin-bottom: 1rem;
     }
 
     .replies {
-        margin-top: 20px;
+        margin-top: 2rem;
+    }
+
+    .replies h2 {
+        color: #f4511e;
+        font-size: 1.3em;
     }
 
     .reply {
-        background-color: rgba(30, 30, 30, 0.8);
-        padding: 10px;
-        margin-top: 10px;
-        border-radius: 6px;
+        background: linear-gradient(135deg, #111b2e 0%, #0f172a 100%);
+        border-left: 3px solid #f4511e;
+        padding: 1rem;
+        margin-top: 1rem;
+        border-radius: 8px;
     }
 
     .reply-box {
         display: none;
-        margin-top: 15px;
+        margin-top: 1.5rem;
+        background: linear-gradient(135deg, #182234 0%, #121c2e 100%);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid #462d30;
     }
 
     .input {
-        width: 95%;
-        padding: 10px;
+        width: 100%;
+        padding: 0.75rem;
         border-radius: 6px;
-        border: none;
-        background-color: #222;
-        color: #fff;
-        margin-bottom: 10px;
+        border: 2px solid #5d322f;
+        background-color: #131520;
+        color: #f1f5f9;
+        margin-bottom: 1rem;
+        font-family: inherit;
+        transition: all 0.2s;
+        box-sizing: border-box;
+    }
+
+    .input:focus {
+        border-color: #f4511e;
+        background-color: #1d1d28;
+        box-shadow: 0 0 8px rgba(244, 81, 30, 0.3);
+        outline: none;
     }
 
     button {
-        padding: 10px 15px;
-        background-color: darkblue;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #f4511e 0%, #d84315 100%);
         color: #fff;
         border: none;
         border-radius: 6px;
         cursor: pointer;
-        font-weight: bold;
-        transition: 0.2s;
+        font-weight: 600;
+        transition: all 0.2s;
+        font-family: inherit;
+        font-size: 0.95em;
     }
 
     button:hover {
-        background-color: #55F;
+        background: linear-gradient(135deg, #ff7043 0%, #f4511e 100%);
+        box-shadow: 0 4px 12px rgba(244, 81, 30, 0.4);
+        transform: translateY(-2px);
     }
 
     #login-warning {
         color: #ff5555;
         font-weight: bold;
         text-align: center;
-        margin-top: 20px;
+        margin-top: 2rem;
+        background: linear-gradient(135deg, #271d2e 0%, #221a2b 100%);
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 3px solid #ff5555;
+    }
+
+    @media (max-width: 768px) {
+        main {
+            margin: 1rem;
+            padding: 1rem;
+        }
+
+        h1 {
+            font-size: 1.5em;
+        }
+
+        .post, .reply-box {
+            padding: 1rem;
+        }
     }
 </style>
 </head>
 <body>
     <header>
-        <nav class="nav-wrapper">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="MSTLP.htm">Level Packs</a></li>
-                <li><a href="MMMLevels.htm">MMM Levels</a></li>
-                <li><a href="Speedruns.htm">Speedruns</a></li>
-                <li><a id="Forums" href="Forum.html">Forums</a></ali>
-                <li><a id="login" href="Login.html">Login</a></li>
-                <li><a href="Creator.html">Creator</a></li>
-                <li><a href="Users.html">Users</a></li>
-            </ul>
-        </nav>
+        <div class="header-container">
+            <div class="logo">
+                <img src="Mega%20Speedruns_files/logo.png" alt="Mega Speedruns Logo">
+                <span class="logo-text">Mega Speedruns</span>
+            </div>
+            <nav class="nav-wrapper">
+                <ul>
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="MSTLP.htm" class="nav-link">Level Packs</a></li>
+                    <li><a href="MMMLevels.htm" class="nav-link">MMM Levels</a></li>
+                    <li><a href="Speedruns.htm" class="nav-link">Speedruns</a></li>
+                    <li><a href="Forum.html" class="nav-link">Forums</a></li>
+                    <li><a href="Creator.html" class="nav-link">Creator</a></li>
+                    <li><a href="Users.html" class="nav-link">Users</a></li>
+                    <li><a id="login" href="Login.html" class="nav-link">Login</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
     <main>
         <h1 id="thread-title">Loading...</h1>
@@ -122,6 +176,12 @@
             Please log in to reply to this thread.
         </div>
     </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Mega Speedruns. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>

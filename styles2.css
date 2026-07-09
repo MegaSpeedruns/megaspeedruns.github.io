@@ -1,445 +1,367 @@
-body {
-    height: 100vh;
-    font-family: Arial, sans-serif;
-    color: #fff;
+/* Root Variables */
+:root {
+    --primary: #f4511e;
+    --primary-dark: #d84315;
+    --primary-light: #ff7043;
+    --secondary: #60a5fa;
+    --accent: #60a5fa;
+    --background: #0f172a;
+    --surface: #1e293b;
+    --surface-light: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --border: #334155;
+    --menu-bg: #0f172a;
+    --menu-hover: #f4511e;
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --transition: 0.2s ease;
+    /* Opacity of the bg.png artwork overlay - change here */
+    --bg-art-opacity: 0.2;
 }
 
-/* Font settings */
-body, h1, h2, h3, p, ul, li, img, a {
+/* Reset & Base Styles */
+* {
     margin: 0;
     padding: 0;
-    list-style: none;
-    text-decoration: none;
     box-sizing: border-box;
 }
 
-/* Outline text with black */
-h1, h2, h3, p, a, label, button {
-    color: white;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-    /* Black outline */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, var(--background) 0%, #1a1f35 100%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-primary);
 }
 
 h1 {
-    font-size: 1.75em;
+    font-size: 1.875rem;
+    margin-bottom: 0.5rem;
 }
 
 h2 {
-    font-size: 1.2em;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
-/* Header styles */
+h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+a {
+    color: #6bb6ff;
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+a:hover {
+    color: #ff9900;
+    text-decoration: underline;
+}
+
+/* ============================================
+   HEADER & NAVIGATION
+   ============================================ */
+
 header {
+    background: linear-gradient(180deg, var(--surface) 0%, #1b2538 100%);
+    border-bottom: 2px solid var(--border);
+    position: relative;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px;
-    background-color: #014;
+    padding: 0.75rem 2rem;
+    gap: 2rem;
 }
 
-header .logo img {
-    width: 0px;
-    height: 0px;
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.logo img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    border-radius: var(--radius-md);
 }
 
 .nav-wrapper {
     flex: 1;
 }
 
-.shadow {
-    position: relative;
-    background: rgba(0, 0, 0, 0.5);
-    height: 0px; 
-    top: 0px;
-}
-
 nav ul {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
-    font-size: 1.5em;
+    list-style: none;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
-nav ul li {
-    flex: 1;
-    text-align: center;
+nav li {
+    position: relative;
 }
 
 nav ul li a {
-    color: #fff;
+    color: var(--text-primary);
     display: block;
-    padding: 10px;
+    padding: 0.75rem 1.25rem;
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    transition: all var(--transition);
 }
 
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-.menu-container {
-    width: 200px;
-    position: absolute;
-    left: 0;
-    top: 49px;
-    height: 888px;
-    background-color: #002;
-    padding-top: 0px;
-    border-left: 1px solid #555;
-    border-bottom: 1px solid #555;
-    border-right: 1px solid #555;
-	z-index: 0
-}
-
-.menu {
-    height: 0%; /* Ensure the menu takes up the full height of its container */
-    display: flex;
-    flex-direction: column; /* Align menu items vertically */
-}
-
-.menu-item {
-    border-bottom: 1px solid #555;
-}
-
-.nav-wrapper li {
-    border-left: 1px solid #555;
-    border-bottom: 1px solid #555;
-}
-
-.menu-btn {
-    background-color: #555;
-    color: white;
-    padding: 10px;
-    border: none;
-    text-align: left;
-    width: 100%;
-    cursor: pointer;
-    outline: none;
-    font-size: 5px;
-}
-
-.menu-btn:hover {
-    background-color: #30B;
-    box-shadow: 0 0 5px #30B;
-}
-
-.menu-btn:active {
-    background-color: #30B;
-    box-shadow: 0 0 5px #30B;
-}
-
-.menu-btn-b:hover {
-    background-color: #30B;
-    box-shadow: 0 0 5px #30B;
-}
-
-.menu-btn-b:active {
-    background-color: #30B;
-    box-shadow: 0 0 5px #30B;
-}
-
-.submenu {
-    display: none;
-    background-color: #111;
-    padding-left: 5px;
-}
-
-.submenu a {
-    padding: 10px;
-    display: block;
+nav ul li a:hover {
+    background-color: var(--menu-hover);
     color: white;
     text-decoration: none;
 }
 
-.submenu a:hover {
-    background-color: #575757;
-}   
-
-/* Title text styles */
-.title-text {
-    position: relative;
-    text-align: center;
-    color: white;
-    padding-top: 9px;
-    padding-bottom: 3px;
-    min-height: 30px;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 0px;
-    left: 202px;
-    width: calc(100% - 202px);
-    flex-wrap: wrap;
+.nav-wrapper li {
+    border: none;
 }
 
-#clickable-text {
-    cursor: pointer; /* Makes the text appear interactive */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
-#clickable-text:hover {
-    color: orange;
+/* ============================================
+   SIDEBAR MENU
+   ============================================ */
+
+.menu-container {
+    width: 220px;
+    position: fixed;
+    left: 0;
+    top: 60px;
+    height: calc(100vh - 60px);
+    background: linear-gradient(180deg, var(--menu-bg) 0%, #0f172a 100%);
+    padding: 0;
+    border-right: 1px solid var(--border);
+    z-index: 99;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-.prompt {
-    font-size: 0.0em;
+.menu {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    height: 100%;
 }
 
-label {
-    font-size: 1.0em;
-    font-weight: bold;
-    position: relative;
-    margin-left: 20px;
+.menu-item {
+    border-bottom: 1px solid var(--border);
 }
 
-/* Default main menu button style */
-.menu-btn {
-    background-color: #014;
-    color: white;
-    padding: 10px;
+.menu-btn,
+.menu-btn-b {
+    background-color: var(--surface);
+    color: var(--text-primary);
+    padding: 12px 16px;
     border: none;
     text-align: left;
     width: 100%;
     cursor: pointer;
     outline: none;
-    font-size: 1.1em;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all var(--transition);
+    font-family: inherit;
 }
 
-.menu-btn-b {
-    background-color: #014;
+.menu-btn:hover,
+.menu-btn:active,
+.menu-btn-b:hover,
+.menu-btn-b:active {
+    background-color: var(--menu-hover);
     color: white;
-    padding: 10px;
-    cursor: pointer;
-    display: block;
-    border: none;
-    text-align: left;
-    width: 100%;
-    outline: 1px white;
-}
-
-.submenu .expandable {
-    background-color: #002;
-    color: white;
-    padding: 10px;
-    cursor: pointer;
-    display: block;
-    border: none;
-    text-align: left;
-    width: 100%;
-    outline: 1px white;
-}
-
-/*.menu-item:focus-within .menu-btn {
-    back0ground-color: #30B; 
-}*/
-
-.submenu .expandable:focus-within {
-    background-color: #30B; 
+    box-shadow: inset 0 0 10px rgba(96, 165, 250, 0.3);
 }
 
 .submenu {
     display: none;
+    background-color: #0a101d;
+    padding-left: 0;
+    border-top: 1px solid var(--border);
 }
 
-/* Show submenu when the main menu item or its submenu is in focus */
+.submenu a {
+    padding: 10px 20px;
+    display: block;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-left: 3px solid transparent;
+    transition: all var(--transition);
+}
+
+.submenu a:hover {
+    background-color: #1b2c49;
+    color: var(--accent);
+    border-left-color: var(--menu-hover);
+}
+
+.submenu .expandable {
+    background-color: #1b2538;
+    color: var(--text-secondary);
+    padding: 10px 20px;
+    cursor: pointer;
+    display: block;
+    border: none;
+    text-align: left;
+    width: 100%;
+    outline: none;
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: all var(--transition);
+    border-left: 3px solid transparent;
+}
+
+.submenu .expandable:hover,
+.submenu .expandable.active {
+    background-color: #1f3354;
+    color: var(--accent);
+    border-left-color: var(--menu-hover);
+}
+
 .menu-item:focus-within .submenu {
     display: block;
 }
 
-/* Hover effect for submenu buttons */
-.submenu .expandable:hover {
-    background-color: #30B; /* Optional hover effect */
+/* ============================================
+   MAIN CONTENT AREA
+   ============================================ */
+
+main {
+    margin-left: 220px;
+    padding: 2rem;
+    min-height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
 }
 
-.input[type="submit"] {
-    font-size: 1.1em;
-    padding: 10px 20px;
-}
-
-.input {
-    position: relative;
-    margin-left: 20px;
-    padding: 10px;
-    font-size: 1.1em;
-    min-width: 30vh;
-    min-height: 2vh;
-    background-color: #11111175; 
-    color: white; 
-    border: 1px solid #575757; 
-    border-radius: 5px;
-    outline: none; 
-    transition: all 0.2s ease;
-}
-
-.time {
-    position: relative;
-    margin-left: 20px;
-    padding: 10px;
-    font-size: 1.1em;
-    max-width: 4vh;
-    min-height: 2vh;
-    background-color: #11111175; 
-    color: white; 
-    border: 1px solid #575757; 
-    border-radius: 5px;
-    outline: none;
-    transition: all 0.2s ease;
-}
-
-.input:focus {
-    border-color: orange; 
-    box-shadow: 0 0 5px orange; 
-}
-
-.time:focus {
-    border-color: orange; 
-    box-shadow: 0 0 5px orange; 
-}
-
-select {
-    position: relative;
-    margin-left: 20px;
-    font-size: 1.1em;
-    padding: 10px;
-    width: 100%;
-    max-width: 250px;
-    background-color: #11111175;
+.title,
+.title-text {
+    text-align: center;
     color: white;
-    border: 1px solid #575757;
-    border-radius: 5px;
-    outline: none;
-    transition: all 0.2s ease;
-}
-
-select option {
-    background-color: #222;
-}
-
-select:focus {
-    border-color: blue; 
-    box-shadow: 0 0 5px blue;
-    background-color: #11111175;
-}
-
-option:focus {
-    background-color: orange;
-}
-
-form {
-    margin: 20px auto;
-    text-align: center;
-}
-
-.adjust {
-    padding: 0px;
-    margin: 20px auto;
-    text-align: center;
-}
-
-/* Collapsible list styles */
-.collapsible-list {
-    position: absolute;
-    top: -1px;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #17253f, #131e34);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
     width: 100%;
-    margin: 0px auto;
-    border-radius: 0px;
-    min-height: 0px;
-    background: rgba(0, 0, 0, 0.5);
-    border-left: 1px solid #555;
-    border-right: 1px solid #555;
-    border-top: 1px solid #555;
 }
 
-.layout {
-    position: relative;
-    top: 0px;
-    left: 201px;
-    width: calc(100% - 203px);
-    text-align: center;
-    height: 820px;
-    border-radius: 0px;
-    flex-wrap: wrap;
+.title-text h1 {
+    margin: 0;
 }
 
-.visual {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+.collapsible-list {
+    width: 100%;
+    margin: 0 auto 2rem;
+    border-radius: var(--radius-lg);
+    min-height: 0;
+    background: #0a101d;
+    border: 1px solid var(--border);
 }
 
 .collapsible-list-inner {
-    bottom: 0px;
-    font-size: 0.9em;
+    font-size: 0.95rem;
     width: 100%;
-    margin: 20px auto;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 0px;
-    border-radius: 0px;
+    margin: 0;
+    background: #0c1222;
+    padding: 0;
+    border-radius: 0;
+}
+
+.collapsible,
+.collapsible-inner {
+    background-color: var(--surface);
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 14px 18px;
+    width: 100%;
+    border: 1px solid var(--border);
+    text-align: left;
+    outline: none;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all var(--transition);
+    font-family: inherit;
 }
 
 .collapsible {
-    background-color: #555;
+    font-size: 1.1rem;
+}
+
+.collapsible.active,
+.collapsible:hover {
+    background-color: var(--menu-hover);
     color: white;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 1.5em;
+    border-color: var(--menu-hover);
 }
 
-.collapsible.active, .collapsible:hover {
-    background-color: #30B;
-}
-
-.collapsible-inner {
-    background-color: #333;
+.collapsible-inner.active,
+.collapsible-inner:hover {
+    background-color: var(--secondary);
     color: white;
-    cursor: pointer;
-    padding: 18px;
-    top: 20px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 1.75em;
-}
-
-.collapsible-inner.active, .collapsible-inner:hover {
-    background-color: #8117BB;
+    border-color: var(--secondary);
 }
 
 .expandable {
-    background-color: #333;
-    color: white;
+    background-color: #1b2538;
+    color: var(--text-secondary);
     cursor: pointer;
-    margin: 0px;
-    margin-top: 0px;
-    padding: 10px;
+    margin: 0;
+    padding: 10px 14px;
     width: 100%;
-    border: none;
+    border: 1px solid var(--border);
     text-align: left;
     outline: none;
-    font-size: 0.8em;
+    font-size: 0.9rem;
+    transition: all var(--transition);
+    font-family: inherit;
 }
 
-.expanding {
-    background-color: #333;
+.expandable.active,
+.expandable:hover {
+    background-color: var(--secondary);
     color: white;
-    cursor: pointer;
-    margin: 0px;
-    margin-top: 0px;
-    padding: 10px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 0.8em;
-}
-
-.expandable.active, .expandable:hover {
-    background-color: #8117BB;
-}
-
-.expanding.active, .expanding:hover {
-    background-color: #8117BB;
+    border-color: var(--secondary);
 }
 
 .button-layout {
@@ -448,38 +370,67 @@ form {
     overflow: hidden;
 }
 
-a {
-    color: lightblue;
-    text-decoration: none;
-    /* Optional: Remove underline */
+.content {
+    padding: 1.5rem;
+    display: none;
+    overflow: hidden;
+    text-align: justify;
+    color: var(--text-secondary);
+    background: #0c1222;
+    border-top: 1px solid var(--border);
 }
 
-/* Change color on hover */
-a:hover {
-    color: orange;
-    text-decoration: underline;
-    /* Optional: Add underline on hover */
+.content.show {
+    display: block;
 }
 
-.list-item {
+.content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.content li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+/* ============================================
+   LIST STYLES
+   ============================================ */
+
+.list-item,
+.list-item-speedrun {
     display: flex;
-    flex-wrap: wrap; /* Allows items to wrap within the container */
-    justify-content: center; /* Aligns items horizontally */
-    align-items: flex-start; /* Aligns items to the top */
-    padding-left: 5px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    padding-right: 0px;
-    border-bottom: 1px solid #555;
-    font-size: 1.1em;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+    background: #0c1222;
 }
 
-.list-item img {
-    width: 64;
+.list-item:hover,
+.list-item-speedrun:hover {
+    background: #17253f;
+}
+
+.list-item img,
+.list-item-speedrun img {
+    width: 70px;
     height: 56px;
-    margin-right: 20px;
-    border-radius: 5px;
-    margin-left: 5px;
+    margin-right: 12px;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+}
+
+.list-item span {
+    display: inline-block;
+    width: auto;
+    text-align: center;
+    color: var(--text-primary);
+    padding: 0 8px;
 }
 
 .spacing {
@@ -487,166 +438,352 @@ a:hover {
     justify-content: space-between;
     flex-wrap: wrap;
     align-items: center;
-    padding-right: 0px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 5px;
-    border-bottom: 1px solid #555;
-    font-size: 1.1em; /* Speedruns Category Font Size*/
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+    background: #0c1222;
+    gap: 8px;
+}
+
+.spacing span {
+    flex: 0 0 auto;
+    text-align: center;
+    color: var(--text-primary);
 }
 
 .imgResize {
     width: 64px;
     height: 56px;
-    margin-right: 5px;
-    border-radius: 5px;
+    margin-right: 8px;
+    border-radius: var(--radius-md);
+    object-fit: cover;
 }
 
-.list-item span {
-    display: block; /* Ensures spans stack when content exceeds width */
-    width: 100%; /* Adjust width to wrap within the container */
-    word-wrap: break-word; /* Allows long words or URLs to break */
-    text-align: left; /* Centers the text */
-    overflow-wrap: break-word; /* Ensures compatibility for modern browsers */
-    max-width: 20%; /* Set a maximum width to trigger wrapping */
-    margin: auto; /* Centers the span within its container */
+/* ============================================
+   FORM ELEMENTS
+   ============================================ */
+
+label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    position: relative;
+    margin-left: 0;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 0.5rem;
 }
 
-.speedruns span {
-    display: block; /* Ensures spans stack when content exceeds width */
-    width: 100%; /* Adjust width to wrap within the container */
-    word-wrap: break-word; /* Allows long words or URLs to break */
-    text-align: left; /* Centers the text */
-    overflow-wrap: break-word; /* Ensures compatibility for modern browsers */
-    max-width: 15%; /* Set a maximum width to trigger wrapping */ /* Centers the span within its container */
+.input,
+.time,
+select {
+    position: relative;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    background-color: #0f172a;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    outline: none;
+    transition: all var(--transition);
+    font-family: inherit;
 }
 
-.speedruns .list-item {
-    border-bottom: 1px solid #555;
+.input {
+    min-width: 250px;
+    min-height: auto;
 }
 
-.speedruns img {
-    margin-left: 5px;
-    margin-right: -10px;
+.time {
+    max-width: 100px;
+    min-height: auto;
 }
 
-footer {
-    border-top: 1px solid #555;
-    background-color: #333;
+.input:focus,
+.time:focus,
+select:focus {
+    border-color: var(--primary);
+    background-color: #131e34;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+select option {
+    background-color: var(--surface);
+    color: var(--text-primary);
+}
+
+option:focus {
+    background-color: var(--primary);
     color: white;
+}
+
+input[type="submit"],
+.input[type="submit"] {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    min-width: auto;
+    font-size: 0.95rem;
+}
+
+input[type="submit"]:hover,
+.input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(96, 165, 250, 0.4);
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.button,
+.sendButton,
+.buttonStyle {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 10px 16px;
     text-align: center;
-    padding: 10px 0;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    transition: all var(--transition);
+    font-weight: 600;
+    font-family: inherit;
+}
+
+.button:hover,
+.sendButton:hover,
+.buttonStyle:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 12px rgba(96, 165, 250, 0.4);
+    color: var(--accent);
+}
+
+#submitRun {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    justify-content: space-evenly;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    background: #0c1222;
+}
+
+.runner-link {
+    text-decoration: none;
+    color: #6bb6ff;
+}
+
+.runner-link:hover {
+    text-decoration: underline;
+    color: #ff9900;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+footer,
+#footer,
+#footerB,
+.footer,
+.footerC {
+    border-top: 1px solid var(--border);
+    background-color: var(--surface);
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 1.5rem 1rem;
     width: 100%;
-    position: absolute;
-    top: calc(100vh - 38);
-    left: 0;
+    position: static;
+}
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+
+.visual {
+    box-shadow: 0 0 10px rgba(96, 165, 250, 0.2);
 }
 
 .about img {
-    width: 0px;
-    height: 0px;
+    width: 0;
+    height: 0;
     position: relative;
     left: 190vh;
     top: 25vh;
 }
 
-#footer {
-    border-top: 1px solid #555;
-    background-color: #333;
-    color: white;
+.prompt {
+    font-size: 0;
+}
+
+form {
+    margin: 1.5rem auto;
     text-align: center;
-    position: absolute;
-    top: 97vh;
-    padding: 10px 0;
-    width: 100%;
+    padding: 1.5rem;
+    background: #0c1222;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
 }
 
-#footerB {
-    border-top: 1px solid #555;
-    background-color: #333;
-    color: white;
+.adjust {
+    padding: 0;
+    margin: 1.5rem auto;
     text-align: center;
-    position: relative;
-    top: 40vh;
-    padding: 10px 0;
-    width: 100%;
 }
 
-.footer {
-    border-top: 1px solid #555;
-    background-color: #004;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    width: 100%;
-    position: relative;
-    top: 20vh;
-    left: 0;
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .menu-container {
+        width: 180px;
+    }
+
+    main {
+        margin-left: 180px;
+        padding: 1.5rem;
+    }
+
+    .list-item img,
+    .list-item-speedrun img {
+        width: 60px;
+        height: 48px;
+    }
 }
 
-.footerC {
-    border-top: 1px solid #555;
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    top: 0px;
-    width: 100%;
-    position: relative;
-    left: 0;
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 1rem 0.75rem;
+        gap: 0.75rem;
+    }
+
+    .menu-container {
+        width: 0;
+        overflow: hidden;
+        display: none;
+    }
+
+    main {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    nav ul {
+        gap: 0.25rem;
+        justify-content: center;
+    }
+
+    nav ul li a {
+        padding: 0.625rem 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    .collapsible,
+    .collapsible-inner {
+        padding: 12px 14px;
+        font-size: 0.95rem;
+    }
+
+    .list-item,
+    .list-item-speedrun {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .list-item img,
+    .list-item-speedrun img {
+        width: 50px;
+        height: 40px;
+        margin-bottom: 0.5rem;
+    }
+
+    .spacing span {
+        flex: 1 1 40%;
+    }
 }
 
-#submitRun {
-    padding-bottom: 20px;
-    border-bottom: 1px solid #555;
-    text-align: center;
-    justify-content: space-evenly;
-    align-items: center;
+@media (max-width: 480px) {
+    header {
+        padding: 0.75rem 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .logo img {
+        width: 30px;
+        height: 30px;
+    }
+
+    nav ul li a {
+        padding: 0.5rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    main {
+        padding: 0.75rem;
+    }
+
+    h1 {
+        font-size: 1.25rem;
+    }
+
+    h2 {
+        font-size: 1rem;
+    }
+
+    .input,
+    select {
+        min-width: 100%;
+        font-size: 0.9rem;
+    }
+
+    .collapsible,
+    .collapsible-inner {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+
+    .list-item span,
+    .spacing span {
+        font-size: 0.85rem;
+    }
 }
 
-.buttonStyle {
-    background-color: #333; /* Background */
-    border: none; /* Remove borders */
-    color: white; /* White text */
-    padding: 5px;
-    min-width: 70px;
-    max-width: 70px;
-    max-height: 70px;
-    text-align: center; /* Center the text */
-    text-decoration: none; /* Remove underline */
-    display: inline-block; /* Make the button an inline-block */
-    font-size: 16px; /* Increase font size */
-    cursor: pointer; /* Add a pointer on hover */
-    border-radius: 8px; /* Rounded corners */
-    transition: background-color 0.2s ease; /* Smooth transition on hover */
+/* Scrollbar Styling */
+.menu-container::-webkit-scrollbar {
+    width: 6px;
 }
 
-.buttonStyle:hover {
-    background-color: #30B; /* Darker green on hover */
+.menu-container::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-.sendButton {
-    width: 80px;
-    height: 35px;
-    border-style: none;
-    border-radius: 5px;
-    background-color: #333;
-    outline: none; /* Remove outline */
-    border: 1px solid #555; /* Default border color */
-    cursor: pointer; /* Ensure the button has a pointer cursor */
-    transition: all 0.2s ease; /* Optional: Smooth transition */
+.menu-container::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
 }
 
-.sendButton:hover {
-    border: 1px solid orange; /* Change border to orange on hover */
-    box-shadow: 0 0 5px orange; /* Optional: Add glow effect */
-}
-
-.runner-link { 
-    text-decoration: none;
-}
-
-.runner-link:hover {
-    text-decoration: underline;
-    text-decoration-color: #ff9900; /* Orange underline on hover */
+.menu-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
 }

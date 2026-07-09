@@ -3,23 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mega Speedruns Forum</title>
+<title>Mega Speedruns - Forum</title>
+<meta name="description" content="Mega Speedruns - Community forum.">
 <link rel="stylesheet" href="styles.css">
-<link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />   
+<link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
 <style>
     body {
-        background: url('Mega%20Speedruns_files/bg.png') no-repeat center center fixed;
-        background-size: cover;
-        font-family: Arial, sans-serif;
-        color: #fff;
+        background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        color: #f1f5f9;
         margin: 0;
         padding: 0;
+        min-height: 100vh;
     }
 
     main {
         max-width: 60%;
         margin: 40px auto;
-        background-color: rgba(0, 0, 0, 0.65);
+        background-color: #05080f;
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
@@ -27,8 +28,10 @@
 
     h1 {
         text-align: center;
-        color: #ffcc00;
+        color: #f4511e;
         margin-bottom: 15px;
+        font-size: 2em;
+        text-shadow: 0 2px 8px rgba(244, 81, 30, 0.3);
     }
 
     .forum-categories {
@@ -38,16 +41,18 @@
     }
 
     .category {
-        background-color: rgba(20, 20, 20, 0.8);
+        background: linear-gradient(135deg, #1b2538 0%, #131d2f 100%);
         padding: 15px;
         border-radius: 10px;
-        border: 1px solid #333;
+        border: 1px solid #5d322f;
     }
 
     .category h2 {
         margin: 0;
         font-size: 1.3em;
-        color: #00e6ff;
+        color: #60a5fa;
+        border-bottom: 2px solid #f4511e;
+        padding-bottom: 8px;
     }
 
     .category p {
@@ -62,16 +67,19 @@
     }
 
     .thread-list li {
-        padding: 10px;
+        padding: 12px;
         margin-bottom: 8px;
-        background-color: rgba(40, 40, 40, 0.8);
-        border-radius: 6px;
+        background-color: #182234;
+        border-left: 3px solid #f4511e;
+        border-radius: 4px;
         cursor: pointer;
-        transition: 0.2s;
+        transition: all 0.2s;
     }
 
     .thread-list li:hover {
-        background-color: rgba(80, 80, 80, 0.8);
+        background-color: #2b3950;
+        border-left-color: #ff7043;
+        padding-left: 16px;
     }
 
     .new-thread {
@@ -85,32 +93,38 @@
     .input {
         padding: 10px;
         border-radius: 6px;
-        border: none;
+        border: 2px solid #232b3b;
         outline: none;
         font-size: 14px;
-        background-color: #222;
-        color: #fff;
-        transition: border 0.2s;
+        background-color: #131520;
+        color: #f1f5f9;
+        transition: all 0.2s;
+        font-family: inherit;
     }
 
     .input:focus {
-        border: 2px solid darkblue;
+        border: 2px solid #f4511e;
+        background-color: #1d1d28;
+        box-shadow: 0 0 8px rgba(244, 81, 30, 0.3);
     }
 
     .new-thread button {
-        padding: 10px;
+        padding: 12px 20px;
         border: none;
-        background-color: darkblue;
-        color: #fff; /* White text */
+        background: linear-gradient(135deg, #f4511e 0%, #d84315 100%);
+        color: #fff;
         font-weight: bold;
         border-radius: 6px;
         cursor: pointer;
-        transition: 0.2s;
+        transition: all 0.2s;
+        font-family: inherit;
+        font-size: 14px;
     }
 
     .new-thread button:hover {
-        background-color: #33C;
-        color: #fff; /* Keep text white on hover */
+        background: linear-gradient(135deg, #ff7043 0%, #f4511e 100%);
+        box-shadow: 0 4px 12px rgba(244, 81, 30, 0.4);
+        transform: translateY(-2px);
     }
 
     .auth-warning {
@@ -123,18 +137,24 @@
 </head>
 <body>
     <header>
-        <nav class="nav-wrapper">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="MSTLP.htm">Level Packs</a></li>
-                <li><a href="MMMLevels.htm">MMM Levels</a></li>
-                <li><a href="Speedruns.htm">Speedruns</a></li>
-                <li><a id="Forums" href="Forum.html">Forums</a></ali>
-                <li><a id="login" href="Login.html">Login</a></li>
-                <li><a href="Creator.html">Creator</a></li>
-                <li><a href="Users.html">Users</a></li>
-            </ul>
-        </nav>
+        <div class="header-container">
+            <div class="logo">
+                <img src="Mega%20Speedruns_files/logo.png" alt="Mega Speedruns Logo">
+                <span class="logo-text">Mega Speedruns</span>
+            </div>
+            <nav class="nav-wrapper">
+                <ul>
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="MSTLP.htm" class="nav-link">Level Packs</a></li>
+                    <li><a href="MMMLevels.htm" class="nav-link">MMM Levels</a></li>
+                    <li><a href="Speedruns.htm" class="nav-link">Speedruns</a></li>
+                    <li><a href="Forum.html" class="nav-link active">Forums</a></li>
+                    <li><a href="Creator.html" class="nav-link">Creator</a></li>
+                    <li><a href="Users.html" class="nav-link">Users</a></li>
+                    <li><a id="login" href="Login.html" class="nav-link">Login</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <main>
