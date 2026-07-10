@@ -20,7 +20,7 @@
     main {
         max-width: 60%;
         margin: 40px auto;
-        background-color: #05080f;
+        background-color: #0a101d;
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
@@ -28,10 +28,9 @@
 
     h1 {
         text-align: center;
-        color: #f4511e;
+        color: #f97316;
         margin-bottom: 15px;
         font-size: 2em;
-        text-shadow: 0 2px 8px rgba(244, 81, 30, 0.3);
     }
 
     .forum-categories {
@@ -44,14 +43,15 @@
         background: linear-gradient(135deg, #1b2538 0%, #131d2f 100%);
         padding: 15px;
         border-radius: 10px;
-        border: 1px solid #5d322f;
+        border: 1px solid #475569;
     }
 
     .category h2 {
         margin: 0;
         font-size: 1.3em;
+        font-family: Verdana, Geneva, sans-serif;
         color: #60a5fa;
-        border-bottom: 2px solid #f4511e;
+        border-bottom: 2px solid #2563eb;
         padding-bottom: 8px;
     }
 
@@ -67,10 +67,11 @@
     }
 
     .thread-list li {
+        --user-color: #2563eb;
         padding: 12px;
         margin-bottom: 8px;
         background-color: #182234;
-        border-left: 3px solid #f4511e;
+        border-left: 3px solid var(--user-color);
         border-radius: 4px;
         cursor: pointer;
         transition: all 0.2s;
@@ -78,7 +79,8 @@
 
     .thread-list li:hover {
         background-color: #2b3950;
-        border-left-color: #ff7043;
+        border-left-color: var(--user-color);
+        box-shadow: -2px 0 12px color-mix(in srgb, var(--user-color) 45%, transparent);
         padding-left: 16px;
     }
 
@@ -89,7 +91,6 @@
         gap: 8px;
     }
 
-    /* Shared styling for all inputs and textareas */
     .input {
         padding: 10px;
         border-radius: 6px;
@@ -103,15 +104,15 @@
     }
 
     .input:focus {
-        border: 2px solid #f4511e;
+        border: 2px solid #2563eb;
         background-color: #1d1d28;
-        box-shadow: 0 0 8px rgba(244, 81, 30, 0.3);
+        box-shadow: 0 0 8px rgba(37, 99, 235, 0.3);
     }
 
     .new-thread button {
         padding: 12px 20px;
         border: none;
-        background: linear-gradient(135deg, #f4511e 0%, #d84315 100%);
+        background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
         color: #fff;
         font-weight: bold;
         border-radius: 6px;
@@ -122,8 +123,8 @@
     }
 
     .new-thread button:hover {
-        background: linear-gradient(135deg, #ff7043 0%, #f4511e 100%);
-        box-shadow: 0 4px 12px rgba(244, 81, 30, 0.4);
+        background: #f97316;
+        box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
         transform: translateY(-2px);
     }
 
@@ -161,7 +162,6 @@
         <h1>Mega Speedruns Forum</h1>
         <div class="forum-categories">
 
-            <!-- Example Category -->
             <div class="category">
                 <h2>General Discussion</h2>
                 <p>Talk about anything Mega Speedruns-related.</p>
@@ -174,7 +174,6 @@
                 </div>
             </div>
 
-            <!-- Example Category -->
             <div class="category">
                 <h2>Speedrun Strategies</h2>
                 <p>Share tips, tricks, and guides to improve your runs.</p>
@@ -193,7 +192,12 @@
         </div>
     </main>
 
-    <!-- Firebase Setup -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2022 Mega Speedruns. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
@@ -260,20 +264,52 @@
         loadThreads(category);
     }
 
+    async function getUsernameColor(username) {
+        if (!username) return "#2563eb";
+        try {
+            const snapshot = await db.ref("users")
+                .orderByChild("username")
+                .equalTo(username)
+                .once("value");
+
+            if (!snapshot.exists()) return "#2563eb";
+
+            let color = "#2563eb";
+            snapshot.forEach(child => {
+                const data = child.val();
+                if (data.usernameColor) {
+                    color = data.usernameColor.startsWith("#")
+                        ? data.usernameColor
+                        : `#${data.usernameColor}`;
+                }
+            });
+            return color;
+        } catch (err) {
+            console.error("Failed to fetch username color:", err);
+            return "#2563eb";
+        }
+    }
+
     async function loadThreads(category) {
         const listEl = document.getElementById(`${category}-threads`);
         listEl.innerHTML = "";
         const snapshot = await db.ref(`forum/${category}`).once("value");
+        const threads = [];
         snapshot.forEach((child) => {
-            const data = child.val();
+            threads.push({ ...child.val(), key: child.key });
+        });
+
+        for (const data of threads) {
+            const color = await getUsernameColor(data.author);
             const li = document.createElement("li");
-            li.innerHTML = `<strong>${data.title}</strong> — by ${data.author}`;
+            li.style.setProperty("--user-color", color);
+            li.innerHTML = `<strong>${data.title}</strong> — by <span style="color: ${color};">${data.author}</span>`;
             li.style.cursor = "pointer";
             li.addEventListener("click", () => {
-                window.location.href = `Thread.html?category=${category}&id=${child.key}`;
+                window.location.href = `Thread.html?category=${category}&id=${data.key}`;
             });
             listEl.appendChild(li);
-        });
+        }
     }
 
     ["general", "strategy"].forEach(loadThreads);

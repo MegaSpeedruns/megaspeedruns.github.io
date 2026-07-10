@@ -23,10 +23,9 @@
   }
 
   .users-header h1 {
-    color: #f4511e;
+    color: #f97316;
     font-size: 2.5em;
     margin-bottom: 0.5rem;
-    text-shadow: 0 2px 8px rgba(244, 81, 30, 0.3);
   }
 
   .users-header p {
@@ -45,7 +44,7 @@
     max-width: 500px;
     padding: 12px 16px;
     border-radius: 8px;
-    border: 2px solid #5d322f;
+    border: 2px solid #475569;
     background-color: #182234;
     color: #f1f5f9;
     font-size: 15px;
@@ -55,9 +54,9 @@
   }
 
   #search-bar:focus {
-    border-color: #f4511e;
+    border-color: #2563eb;
     background-color: #1c2739;
-    box-shadow: 0 0 12px rgba(244, 81, 30, 0.4);
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
   }
 
   #search-bar::placeholder {
@@ -71,8 +70,9 @@
   }
 
   .user-item {
+    --user-color: #2563eb;
     background: linear-gradient(135deg, #182234 0%, #121c2e 100%);
-    border: 1px solid #462d30;
+    border: 1px solid #475569;
     border-radius: 12px;
     padding: 1.5rem;
     cursor: pointer;
@@ -84,9 +84,9 @@
   }
 
   .user-item:hover {
-    border-color: #f4511e;
+    border-color: var(--user-color);
     background: linear-gradient(135deg, #1b2538 0%, #131d2f 100%);
-    box-shadow: 0 8px 24px rgba(244, 81, 30, 0.2);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--user-color) 35%, transparent);
     transform: translateY(-4px);
   }
 
@@ -95,7 +95,7 @@
     height: 80px;
     border-radius: 50%;
     margin-bottom: 1rem;
-    border: 3px solid #f4511e;
+    border: 3px solid #2563eb;
     object-fit: cover;
   }
 
@@ -114,7 +114,7 @@
 
   .user-badge {
     display: inline-block;
-    background: linear-gradient(135deg, #f4511e 0%, #e64a19 100%);
+    background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
     color: white;
     padding: 4px 12px;
     border-radius: 20px;
@@ -169,8 +169,8 @@
 <main>
   <div class="users-container">
     <div class="users-header">
-      <h1>Community Users</h1>
-      <p>Browse and connect with community members</p>
+      <h1>Community Members</h1>
+      <p>Browse and connect with others</p>
     </div>
 
     <div class="search-container">
@@ -184,6 +184,12 @@
     <div class="user-list" id="user-list"></div>
   </div>
 </main>
+
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2022 Mega Speedruns. All rights reserved.</p>
+    </div>
+</footer>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -237,19 +243,18 @@
         return;
       }
 
-      // Sort alphabetically
       const sortedUsers = Object.entries(users).sort((a, b) => {
         const usernameA = (a[1].username || "").toLowerCase();
         const usernameB = (b[1].username || "").toLowerCase();
         return usernameA.localeCompare(usernameB);
       });
 
-      // Render users
       sortedUsers.forEach(([uid, user]) => {
         const userItem = document.createElement("div");
         userItem.className = "user-item";
 
         const usernameColor = user.usernameColor || "#ffffff";
+        userItem.style.setProperty("--user-color", usernameColor);
         const imgSrc = user.profileImageURL
           ? user.profileImageURL + (user.profileImageURL.includes("?") ? "&" : "?") + "t=" + new Date().getTime()
           : "Mega%20Speedruns_files/Default_Avatar.png";
@@ -273,7 +278,6 @@
         userListDiv.appendChild(userItem);
       });
 
-      // Enable search filtering
       searchInput.addEventListener("input", () => {
         const query = searchInput.value.toLowerCase();
         const userItems = document.querySelectorAll(".user-item");

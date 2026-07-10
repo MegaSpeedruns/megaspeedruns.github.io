@@ -46,10 +46,7 @@
         }
         .logo-text {
             font-weight: 700;
-            background: linear-gradient(135deg, #f4511e 0%, #60a5fa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #f97316;
         }
         .nav-link {
             position: relative;
@@ -61,7 +58,7 @@
             left: 50%;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #f4511e 0%, #60a5fa 100%);
+            background: #f97316;
             transition: all 0.2s ease;
             transform: translateX(-50%);
         }
@@ -75,7 +72,7 @@
         }
         .nav-link.active {
             background-color: #1b2c49;
-            color: #ff7043;
+            color: #f97316;
         }
 
         main {
@@ -104,13 +101,17 @@
             border-radius: 0.75rem;
             overflow: hidden;
         }
-        /* Search and sort panels below the side nav */
         .search-box,
         .sort-box {
-            background: #0a101d;
             border: 1px solid #334155;
             border-radius: 0.75rem;
             padding: 0.75rem;
+        }
+        .search-box {
+            background: #1e293b;
+        }
+        .sort-box {
+            background: #1e293b;
         }
         .search-box .input,
         .sort-box select {
@@ -6782,6 +6783,12 @@
 
     </main>
 
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2022 Mega Speedruns. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script>
         document.addEventListener("DOMContentLoaded",function() {
             const menuBtns=document.querySelectorAll(".menu-btn");
@@ -6830,7 +6837,6 @@
     </script>
 
     <script>
-        // Function to hide all collapsible sections
         function hideAllSections() {
             const sections=document.querySelectorAll(".collapsible-list > div");
             sections.forEach(section => {
@@ -6839,32 +6845,25 @@
 
         }
 
-        // Function to show the clicked section and hide others
         function showhide(elementId) {
-            // Get all collapsible elements by class name or specific IDs
-            var allElements=document.querySelectorAll('.collapsible-list > div'); // Adjust selector as needed
+            var allElements=document.querySelectorAll('.collapsible-list > div');
 
-            // Loop through each element and collapse it if it's not the one clicked
             allElements.forEach(function(element) {
                 if (element.id===elementId) {
-                    // Toggle the clicked element's visibility
                     element.style.display="block";
                 } else {
-                    // Hide other elements
                     element.style.display="none";
                 }
             });
 
-            // Handle clickable-text visibility
             const clickableText=document.getElementById('clickable-text');
 
-            // Determine which button was clicked
-            const clickedButton=document.activeElement; // This gets the currently focused button
+            const clickedButton=document.activeElement;
             if (clickedButton&&clickedButton.textContent.trim()==="All Speedruns") {
-                clickableText.style.display="inline"; // Show the clickable-text
-            } else //if (Number(z) != "0") 
+                clickableText.style.display="inline";
+            } else
             {
-                clickableText.style.display="none"; // Hide the clickable-text
+                clickableText.style.display="none";
             }
             updateTitleBasedOnAllSpeedruns();
         }
@@ -6897,11 +6896,11 @@
                     const nickname=data.nickname||"";
 
                     if (runnerName===username||runnerName===nickname) {
-                        uid=child.key; // Firebase UID
+                        uid=child.key;
                     }
                 });
 
-                return uid; // null if not found
+                return uid;
             } catch (error) {
                 console.error("Error fetching UID by runner:",error);
                 return null;
@@ -6921,12 +6920,10 @@
         let Run=document.getElementById('Run');
         let Category=document.getElementById('Category');
         let ID=document.getElementById('ID');
-        //let Time = document.getElementById("Time");
         let Hour=document.getElementById('Hour');
         let Minute=document.getElementById('Minute');
         let Second=document.getElementById('Second');
         let Millisecond=document.getElementById('Millisecond');
-        //let Time = Hour + ":" + Minute + ":" + Second + "." + Millisecond;
 
         let AddBtn=document.getElementById('AddBtn');
         let UpdBtn=document.getElementById('UpdBtn');
@@ -6956,8 +6953,6 @@
                     }
                 }
                 else {
-                    //alert("Unsuccessful");
-                    //console.log(error);
                 }
                 document.getElementById("InfoEnd").innerHTML+="&nbsp;Runs Submited: "+Number(x);
             })
@@ -7011,32 +7006,25 @@
         function getTimesForRun(runName) {
             const dbRef=ref(db);
 
-            // Retrieve all speedrun entries
             get(child(dbRef,'SpeedRunner/')).then((snapshot) => {
                 if (snapshot.exists()) {
                     const speedruns=snapshot.val();
 
-                    // Iterate over all speedrun entries
                     for (const key in speedruns) {
                         const runData=speedruns[key];
-                        let levelName=runData.Run.replace(/_/g," "); // Normalize the run name by replacing underscores with spaces
+                        let levelName=runData.Run.replace(/_/g," ");
 
-                        // Check if the run matches the desired level
                         if (levelName===levelName) {
-                            // Push just the time into the array
                             timesArray.push(runData.Time);
                         }
                     }
 
-                    // Sort the array based on times (assuming the time is in HH:MM:SS or MM:SS format)
                     timesArray.sort((a,b) => {
                         return convertTimeToSeconds(a)-convertTimeToSeconds(b);
                     });
 
-                    // Log the sorted times
                     console.log("Sorted times: ",timesArray);
 
-                    // Optionally, do something with the sorted times (e.g., pass to another function)
                 } else {
                     console.log("No speedrun data found.");
                 }
@@ -7057,7 +7045,6 @@
                     return;
                 }
 
-                // Extract data
                 const runData=snapshot.val();
                 let level=runData.Run.replace(/_/g," ");
                 let runnerName=runData.Runner.replace(/_/g," ");
@@ -7066,13 +7053,11 @@
                 let link=runData.Link;
                 let tournament=runData.Tournament;
 
-                // Get UID for runner
                 const uid=await getUIDByRunner(runnerName);
                 const runnerLink=uid
                     ? `<a href="Profile.html?uid=${uid}" class="runner-link">${runnerName}</a>`
                     :runnerName;
 
-                // Create list item
                 const list=document.createElement("li");
                 list.setAttribute("class","spacing");
 
@@ -7081,23 +7066,18 @@
                 let imgPath;
                 let label;
 
-                // Determine image path
                 if (tournament==="MML") {
-                    // If tournament is MML, use folder without "SS"
                     imgPath=`Mega%20Speedruns_files/${tournament}/${runData.Run}.png`;
                 } else {
-                    // All other tournaments use "SS" folder
                     imgPath=`Mega%20Speedruns_files/${tournament}SS/${runData.Run}.png`;
                 }
 
-                // Determine label
                 if (level.includes(word)) {
                     label="LevelPack";
                 } else {
                     label="Level";
                 }
 
-                // Set the inner HTML
                 list.innerHTML=`
                     <img src="${imgPath}" alt="${level}" class="imgResize">
                     <span>${label}: ${level}</span>
@@ -7107,13 +7087,11 @@
                     <span><a href="${link}" target="_blank">Watch Run</a></span>
                 `;
 
-                // Prepend or append based on y
                 if (Number(y)==0) document.getElementById("allSpeedruns").prepend(list);
                 else document.getElementById("allSpeedruns").append(list);
 
                 console.log(level,runnerName,timeSnap,link);
 
-                // Update leaderboard
                 updateLeaderboard(level,runnerName,timeSnap,{link,category});
                 populateDefaultOrder();
 
@@ -7123,25 +7101,20 @@
         }
 
         document.getElementById("clickable-text").addEventListener("click",() => {
-            //getID();
             if (Number(y)==0) y="1";
             else y="0";
         });
 
         function updateLeaderboard(levelName,runner,time,data) {
-            // Locate all list items
             const items=document.querySelectorAll('.list-item');
 
-            // Flag to track if the level was found
             let levelFound=false;
 
             levelName=levelName.replace(/\bWeek\b\s+\d+/g,(match) => `- ${match}`);
 
-            // Store the times for each level in an object (if not already existing)
             if (!window.leaderboard) window.leaderboard={};
             if (!window.leaderboard[levelName]) window.leaderboard[levelName]=[];
 
-            // Add the runner and their time to the leaderboard for this level
             window.leaderboard[levelName].push({
                 runner,
                 time,
@@ -7149,63 +7122,52 @@
                 category: data? data.category:''
             });
 
-            // Sort the times by ascending order (fastest first)
             window.leaderboard[levelName].sort((a,b) => {
-                const timeA=parseTime(a.time); // Parse time for runner A
-                const timeB=parseTime(b.time); // Parse time for runner B
+                const timeA=parseTime(a.time);
+                const timeB=parseTime(b.time);
 
-                // Sort in ascending order (shorter times first)
                 return timeA-timeB;
             });
 
-            // Keep only the top 3 times
             window.leaderboard[levelName]=window.leaderboard[levelName].slice(0,3);
 
-            // Iterate through each item
             items.forEach(item => {
                 const levelSpan=item.querySelector('span:first-of-type');
 
-                // Check if the level span contains the correct level name
                 if (levelSpan&&levelSpan.textContent.includes(levelName)) {
-                    levelFound=true; // Level found
+                    levelFound=true;
 
-                    // Locate the spans for 1st, 2nd, and 3rd places
                     const firstPlace=item.querySelector('span:nth-of-type(2)');
                     const secondPlace=item.querySelector('span:nth-of-type(3)');
                     const thirdPlace=item.querySelector('span:nth-of-type(4)');
 
-                    // Check if the spans exist
                     if (!firstPlace||!secondPlace||!thirdPlace) {
                         console.error(`Error: Could not find all required spans for level ${levelName}`);
                         return;
                     }
 
-                    // Update the inner text of each place with sorted leaderboard
                     const leaderboard=window.leaderboard[levelName];
 
-                    // Helper to update a position and optionally add a link
                     const updatePosition=(span,position,entry) => {
                         if (entry) {
                             span.innerHTML=`${position}: ${entry.runner} - ${entry.time} ${entry.category}`;
                             if (entry.link) {
-                                // Add the "Watch Run" link
                                 const existingLink=span.querySelector('a');
-                                if (existingLink) span.removeChild(existingLink); // Remove existing link
+                                if (existingLink) span.removeChild(existingLink);
 
                                 const watchRunLink=document.createElement('a');
                                 watchRunLink.href=entry.link;
                                 watchRunLink.target='_blank';
                                 watchRunLink.textContent='Watch Run';
 
-                                span.appendChild(document.createElement('br')); // Line break
-                                span.appendChild(watchRunLink); // Append new link
+                                span.appendChild(document.createElement('br'));
+                                span.appendChild(watchRunLink);
                             }
                         } else {
                             span.innerHTML=`${position}: `;
                         }
                     };
 
-                    // Update each position
                     updatePosition(firstPlace,'1st',leaderboard[0]);
                     updatePosition(secondPlace,'2nd',leaderboard[1]);
                     updatePosition(thirdPlace,'3rd',leaderboard[2]);
@@ -7213,7 +7175,6 @@
             });
         }
 
-        // Utility function to parse time in format "minutes:seconds.milliseconds" into milliseconds
         function parseTime(timeString) {
             const parts=timeString.split(':');
             const hours=parts.length===3? parseInt(parts[0],10):0;
@@ -8277,9 +8238,8 @@ if (tournamentDropdown.value==='NRS2') {
     </script>
 
     <script>
-        let defaultOrder=[]; // To store the original order of speedruns
+        let defaultOrder=[];
 
-        // Populate the defaultOrder array when the page loads
         function populateDefaultOrder() {
             const speedrunList=document.querySelector('#allSpeedruns');
             defaultOrder=Array.from(speedrunList.querySelectorAll('li'));
@@ -8287,27 +8247,25 @@ if (tournamentDropdown.value==='NRS2') {
 
         document.addEventListener('DOMContentLoaded',populateDefaultOrder);
 
-        // Search function to filter the list
         function filterSpeedruns() {
             const searchValue=document.getElementById('searchBar').value.toLowerCase();
             const speedrunList=document.querySelectorAll('#allSpeedruns li');
 
             speedrunList.forEach(item => {
-                const itemText=item.textContent.toLowerCase(); // Combine all text in the <li>
-                item.style.display=itemText.includes(searchValue)? '':'none'; // Show/hide based on search
+                const itemText=item.textContent.toLowerCase();
+                item.style.display=itemText.includes(searchValue)? '':'none';
             });
         }
 
-        // Sorting function with inverted options
         function sortSpeedruns() {
             const sortOption=document.getElementById('sortCriteria').value;
             const speedrunList=document.querySelector('#allSpeedruns');
             let items=[];
 
             if (sortOption==='default') {
-                items=[...defaultOrder]; // Restore default order
+                items=[...defaultOrder];
             } else if (sortOption==='invert') {
-                items=Array.from(speedrunList.querySelectorAll('li')).reverse(); // Reverse order
+                items=Array.from(speedrunList.querySelectorAll('li')).reverse();
             } else {
                 items=Array.from(speedrunList.querySelectorAll('li'));
 
@@ -8315,8 +8273,8 @@ if (tournamentDropdown.value==='NRS2') {
                     const getText=(el,selector) => el.querySelector(selector)?.innerText||'';
                     const compareText=(textA,textB,isDescending) => {
                         return isDescending
-                            ? textB.localeCompare(textA) // Descending order
-                            :textA.localeCompare(textB); // Ascending order
+                            ? textB.localeCompare(textA)
+                            :textA.localeCompare(textB);
                     };
 
                     switch (sortOption) {
@@ -8372,7 +8330,6 @@ if (tournamentDropdown.value==='NRS2') {
                 });
             }
 
-            // Clear and re-render the list in the sorted order
             speedrunList.innerHTML='';
             items.forEach(item => speedrunList.appendChild(item));
         }
@@ -8382,44 +8339,32 @@ if (tournamentDropdown.value==='NRS2') {
         function playVideo(videoId) {
             const player=document.getElementById('speedrunPlayer');
 
-            // Construct the YouTube embed URL
             const embedUrl=`https://www.youtube.com/embed/${videoId}`;
 
-            // Set the new video URL in the iframe
             player.src=embedUrl;
 
-            // Show the player
             player.style.display='block';
 
-            // Scroll to the top of the allSpeedruns section to make the video visible
             document.getElementById('allSpeedruns').scrollIntoView({behavior: 'smooth'});
         }
 
         function toggleMenuItem(menuItem) {
-            // Get all menu-item elements
             var allMenuItems=document.querySelectorAll('.menu-item');
 
-            // Check the submenu of the clicked menu item
             var clickedSubmenu=menuItem.querySelector('.submenu');
 
-            // Toggle the clicked menu item's submenu
             if (clickedSubmenu) {
-                // If the submenu is already open, close it
                 var isVisible=(clickedSubmenu.style.display==="block");
             }
 
-            // Collapse all submenus that are not the clicked one
             allMenuItems.forEach(function(item) {
                 var submenu=item.querySelector('.submenu');
                 if (submenu) {
-                    // Collapse all other submenus
                     submenu.style.display="none";
                 }
             });
 
-            // Toggle the clicked menu-item's submenu
             if (clickedSubmenu) {
-                // If it was visible, hide it; otherwise, show it
                 clickedSubmenu.style.display=isVisible? "none":"block";
             }
         }
@@ -8431,11 +8376,9 @@ if (tournamentDropdown.value==='NRS2') {
             const allSpeedrunsSection=document.getElementById('allSpeedruns');
             const titleElement=document.getElementById('title');
 
-            // Ensure the section exists
             if (allSpeedrunsSection) {
-                // Update title based on visibility
                 if (allSpeedrunsSection.style.display==='none') {
-                    titleElement.textContent=''; // No title text
+                    titleElement.textContent='';
                 } else {
                     titleElement.innerHTML=`
                     <span>
@@ -8465,20 +8408,19 @@ if (tournamentDropdown.value==='NRS2') {
             }
         }
 
-        // Trigger this function whenever you need to check/update the title
         window.onload=function() {
             updateTitleBasedOnAllSpeedruns();
         };
 
         window.addEventListener("DOMContentLoaded",() => {
             const loginEl=document.getElementById("login");
-            const runnerEl=document.getElementById("Runner"); // Get the textbox
+            const runnerEl=document.getElementById("Runner");
             const cachedUsername=localStorage.getItem("username");
 
             if (cachedUsername) {
                 loginEl.textContent=`Profile`;
                 loginEl.href="Profile.html";
-                if (runnerEl) runnerEl.value=cachedUsername; // Auto-fill textbox
+                if (runnerEl) runnerEl.value=cachedUsername;
             } else {
                 loginEl.textContent="Login";
                 loginEl.href="Login.html";
@@ -8494,7 +8436,7 @@ if (tournamentDropdown.value==='NRS2') {
                         loginEl.href="Profile.html";
                         localStorage.setItem("username",username);
 
-                        if (runnerEl) runnerEl.value=username; // Auto-fill textbox
+                        if (runnerEl) runnerEl.value=username;
                     } catch (err) {
                         console.error("Failed to fetch username:",err);
                         loginEl.textContent="Login";
@@ -8504,7 +8446,7 @@ if (tournamentDropdown.value==='NRS2') {
                     loginEl.textContent="Login";
                     loginEl.href="Login.html";
                     localStorage.removeItem("username");
-                    if (runnerEl) runnerEl.value=""; // Clear textbox
+                    if (runnerEl) runnerEl.value="";
                 }
             });
         });
@@ -8513,17 +8455,10 @@ if (tournamentDropdown.value==='NRS2') {
 </body>
 
 <script>
-    // <div id="footerC" class="footerC">Mega Speedruns</div>
-</script>
-
-<script>
-    // Default image path
     const defaultImage="Mega%20Speedruns_files/placeholder.png";
 
-    // Select all images in the document
     const images=document.querySelectorAll("img");
 
-    // Add an error handler to each image
     images.forEach(img => {
         img.onerror=() => {
             img.src=defaultImage;

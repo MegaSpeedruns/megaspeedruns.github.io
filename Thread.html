@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="styles.css">
 <style>
     body {
+        --user-color: #2563eb;
         background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         color: #f1f5f9;
@@ -26,15 +27,17 @@
     }
 
     h1 {
-        color: #f4511e;
+        color: var(--user-color);
         margin-bottom: 1.5rem;
         font-size: 2em;
-        text-shadow: 0 2px 8px rgba(244, 81, 30, 0.3);
+        text-shadow: 0 2px 8px color-mix(in srgb, var(--user-color) 30%, transparent);
     }
 
     .post {
+        --user-color: #2563eb;
         background: linear-gradient(135deg, #1a2436 0%, #131d2f 100%);
-        border: 1px solid #5d322f;
+        border: 1px solid var(--user-color);
+        border-left: 4px solid var(--user-color);
         padding: 1.5rem;
         border-radius: 12px;
         margin-bottom: 2rem;
@@ -50,32 +53,34 @@
     }
 
     .replies h2 {
-        color: #f4511e;
+        color: var(--user-color);
         font-size: 1.3em;
     }
 
     .reply {
+        --user-color: #2563eb;
         background: linear-gradient(135deg, #111b2e 0%, #0f172a 100%);
-        border-left: 3px solid #f4511e;
+        border-left: 3px solid var(--user-color);
         padding: 1rem;
         margin-top: 1rem;
         border-radius: 8px;
     }
 
     .reply-box {
+        --user-color: #2563eb;
         display: none;
         margin-top: 1.5rem;
         background: linear-gradient(135deg, #182234 0%, #121c2e 100%);
         padding: 1.5rem;
         border-radius: 12px;
-        border: 1px solid #462d30;
+        border: 1px solid var(--user-color);
     }
 
     .input {
         width: 100%;
         padding: 0.75rem;
         border-radius: 6px;
-        border: 2px solid #5d322f;
+        border: 2px solid var(--user-color);
         background-color: #131520;
         color: #f1f5f9;
         margin-bottom: 1rem;
@@ -85,15 +90,15 @@
     }
 
     .input:focus {
-        border-color: #f4511e;
+        border-color: var(--user-color);
         background-color: #1d1d28;
-        box-shadow: 0 0 8px rgba(244, 81, 30, 0.3);
+        box-shadow: 0 0 8px color-mix(in srgb, var(--user-color) 30%, transparent);
         outline: none;
     }
 
     button {
         padding: 0.75rem 1.5rem;
-        background: linear-gradient(135deg, #f4511e 0%, #d84315 100%);
+        background: linear-gradient(135deg, var(--user-color) 0%, color-mix(in srgb, var(--user-color) 70%, black) 100%);
         color: #fff;
         border: none;
         border-radius: 6px;
@@ -105,8 +110,8 @@
     }
 
     button:hover {
-        background: linear-gradient(135deg, #ff7043 0%, #f4511e 100%);
-        box-shadow: 0 4px 12px rgba(244, 81, 30, 0.4);
+        background: linear-gradient(135deg, var(--user-color) 0%, color-mix(in srgb, var(--user-color) 70%, black) 100%);
+        box-shadow: 0 4px 12px color-mix(in srgb, var(--user-color) 40%, transparent);
         transform: translateY(-2px);
     }
 
@@ -179,7 +184,7 @@
 
     <footer>
         <div class="footer-content">
-            <p>&copy; 2024 Mega Speedruns. All rights reserved.</p>
+            <p>&copy; 2022 Mega Speedruns. All rights reserved.</p>
         </div>
     </footer>
 
@@ -201,11 +206,20 @@
 
 let currentUser = null;
 
-auth.onAuthStateChanged((user) => {
+auth.onAuthStateChanged(async (user) => {
     currentUser = user;
     if (user) {
         replyBox.style.display = "block";
         loginWarning.style.display = "none";
+
+        try {
+            const snapshot = await db.ref("users/" + user.uid).once("value");
+            const myColor = snapshot.val()?.usernameColor;
+            replyBox.style.setProperty("--user-color", myColor || "#2563eb");
+            repliesEl.style.setProperty("--user-color", myColor || "#2563eb");
+        } catch (err) {
+            console.error("Failed to fetch logged-in user's color:", err);
+        }
     } else {
         replyBox.style.display = "none";
         loginWarning.style.display = "block";
@@ -215,11 +229,10 @@ auth.onAuthStateChanged((user) => {
 async function getUsernameColor(username) {
     if (!username) {
         console.warn("No username provided to getUsernameColor");
-        return "#00e6ff"; // Fallback color
+        return "#00e6ff";
     }
 
     try {
-        // Search for a user where username matches
         const snapshot = await db.ref("users")
             .orderByChild("username")
             .equalTo(username)
@@ -227,16 +240,16 @@ async function getUsernameColor(username) {
 
         if (!snapshot.exists()) {
             console.warn(`No user found with username: ${username}`);
-            return "#00e6ff"; // Default fallback
+            return "#00e6ff";
         }
 
-        let color = "#00e6ff"; // Default if missing
+        let color = "#00e6ff";
 
         snapshot.forEach(child => {
             const data = child.val();
             if (data.usernameColor) {
-                color = data.usernameColor.startsWith("#") 
-                    ? data.usernameColor 
+                color = data.usernameColor.startsWith("#")
+                    ? data.usernameColor
                     : `#${data.usernameColor}`;
             }
         });
@@ -245,7 +258,7 @@ async function getUsernameColor(username) {
 
     } catch (error) {
         console.error("Error fetching username color:", error);
-        return "#00e6ff"; // Fallback on error
+        return "#00e6ff";
     }
 }
 
@@ -256,7 +269,6 @@ async function getUserProfile(username) {
     }
 
     try {
-        // Search for a user where username matches
         const snapshot = await db.ref("users")
             .orderByChild("username")
             .equalTo(username)
@@ -272,9 +284,8 @@ async function getUserProfile(username) {
 
         snapshot.forEach(child => {
             const data = child.val();
-            uid = child.key; // Get UID from the directory name
+            uid = child.key;
 
-            // Use profileImageURL instead of profileImage
             if (data.profileImageURL && data.profileImageURL.trim() !== "") {
                 profileImage = data.profileImageURL;
             }
@@ -296,39 +307,41 @@ async function loadThread() {
     const color = await getUsernameColor(data.author);
     const { profileImage, uid } = await getUserProfile(data.author);
 
+    document.body.style.setProperty("--user-color", color);
+    document.querySelector(".post").style.setProperty("--user-color", color);
+
     authorEl.innerHTML = `
-        <div style="display:flex;align-items:center;gap:10px;">
-            <a href="Profile.html?uid=${uid || ''}" style="text-decoration:none;">
-                <img src="${profileImage}" alt="${data.author}" 
-                    style="width:40px;height:40px;border-radius:50%;border:2px solid ${color};object-fit:cover;cursor:pointer;">
-            </a>
-            <a href="Profile.html?uid=${uid || ''}" 
-                style="color:${color};font-weight:bold;text-decoration:none;cursor:pointer;">
-                ${data.author}
-            </a>
+        <div id="thread-author-row" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <a href="Profile.html?uid=${uid || ''}" style="text-decoration:none;">
+                    <img src="${profileImage}" alt="${data.author}"
+                        style="width:40px;height:40px;border-radius:50%;border:2px solid ${color};object-fit:cover;cursor:pointer;">
+                </a>
+                <a href="Profile.html?uid=${uid || ''}"
+                    style="color:${color};font-weight:bold;text-decoration:none;cursor:pointer;">
+                    ${data.author}
+                </a>
+            </div>
         </div>
     `;
 
-    // Show delete button if current user's username matches thread author
     const currentUsername = localStorage.getItem("username");
 if (currentUsername && currentUsername === data.author) {
     const deleteThreadBtn = document.createElement("button");
     deleteThreadBtn.textContent = "x";
 
-    // Style as small dark grey button
-    deleteThreadBtn.style.float = "right";           // Push to the right
-    deleteThreadBtn.style.backgroundColor = "#444";  // Dark grey
-    deleteThreadBtn.style.color = "#fff";            // White text
-    deleteThreadBtn.style.padding = "5px 10px";      // Compact padding
-    deleteThreadBtn.style.fontSize = "0.85rem";      // Small text
-    deleteThreadBtn.style.height = "28px";           // Short height
-    deleteThreadBtn.style.borderRadius = "4px";      // Rounded corners
-    deleteThreadBtn.style.border = "none";           // Remove border
-    deleteThreadBtn.style.cursor = "pointer";        // Pointer on hover
+    deleteThreadBtn.style.background = "#444";
+    deleteThreadBtn.style.flexShrink = "0";
+    deleteThreadBtn.style.color = "#fff";
+    deleteThreadBtn.style.padding = "5px 10px";
+    deleteThreadBtn.style.fontSize = "0.85rem";
+    deleteThreadBtn.style.height = "28px";
+    deleteThreadBtn.style.borderRadius = "4px";
+    deleteThreadBtn.style.border = "none";
+    deleteThreadBtn.style.cursor = "pointer";
 
-    // Optional hover effect
-    deleteThreadBtn.onmouseover = () => deleteThreadBtn.style.backgroundColor = "#666";
-    deleteThreadBtn.onmouseout = () => deleteThreadBtn.style.backgroundColor = "#444";
+    deleteThreadBtn.onmouseover = () => deleteThreadBtn.style.background = "#666";
+    deleteThreadBtn.onmouseout = () => deleteThreadBtn.style.background = "#444";
 
     deleteThreadBtn.onclick = async () => {
         const confirmDelete = confirm("Are you sure you want to delete this thread?");
@@ -336,14 +349,14 @@ if (currentUsername && currentUsername === data.author) {
         try {
             await db.ref(`forum/${category}/${threadId}`).remove();
             alert("Thread deleted successfully.");
-            window.location.href = "Forum.html"; // Redirect back to forum
+            window.location.href = "Forum.html";
         } catch (err) {
             console.error("Failed to delete thread:", err);
             alert("Failed to delete thread. Try again.");
         }
     };
 
-    authorEl.appendChild(deleteThreadBtn);
+    authorEl.querySelector("#thread-author-row").appendChild(deleteThreadBtn);
 }
 
     contentEl.textContent = data.content;
@@ -361,10 +374,8 @@ async function loadReplies() {
         replies.push({ ...child.val(), key: child.key });
     });
 
-    // Sort replies by timestamp
     replies.sort((a, b) => a.timestamp - b.timestamp);
 
-    // Cache to avoid fetching the same user multiple times
     const profileCache = {};
 
     for (const reply of replies) {
@@ -374,7 +385,7 @@ async function loadReplies() {
             profileData = profileCache[reply.author];
         } else {
             profileData = await getUserProfile(reply.author);
-            profileCache[reply.author] = profileData; // Save to cache
+            profileCache[reply.author] = profileData;
         }
 
         const { profileImage, uid } = profileData;
@@ -382,33 +393,35 @@ async function loadReplies() {
 
         const div = document.createElement("div");
         div.classList.add("reply");
+        div.style.setProperty("--user-color", color);
 
         div.innerHTML = `
-            <div style="display:flex;align-items:center;gap:10px;">
-                <a href="Profile.html?uid=${uid || ''}" style="text-decoration:none;">
-                    <img src="${profileImage}" 
-                         alt="${reply.author}" 
-                         style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid ${color};"
-                         onerror="this.onerror=null;this.src='Default_Avatar.png';">
-                </a>
-                <a href="Profile.html?uid=${uid || ''}" 
-                   style="color:${color};font-weight:bold;text-decoration:none;">
-                    ${reply.author}
-                </a>
+            <div id="reply-row-${reply.key}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <a href="Profile.html?uid=${uid || ''}" style="text-decoration:none;">
+                        <img src="${profileImage}"
+                             alt="${reply.author}"
+                             style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid ${color};"
+                             onerror="this.onerror=null;this.src='Default_Avatar.png';">
+                    </a>
+                    <a href="Profile.html?uid=${uid || ''}"
+                       style="color:${color};font-weight:bold;text-decoration:none;">
+                        ${reply.author}
+                    </a>
+                </div>
             </div>
             <div style="margin-left:42px;color:#ccc;">
                 ${reply.content}
             </div>
         `;
 
-        // Show delete button if current user's username matches reply author
         const currentUsername = localStorage.getItem("username");
         if (currentUsername && currentUsername === reply.author) {
             const delBtn = document.createElement("button");
             delBtn.textContent = "x";
 
-            delBtn.style.float = "right";
-            delBtn.style.backgroundColor = "#444";
+            delBtn.style.background = "#444";
+            delBtn.style.flexShrink = "0";
             delBtn.style.color = "#fff";
             delBtn.style.padding = "3px 8px";
             delBtn.style.fontSize = "0.75rem";
@@ -417,21 +430,21 @@ async function loadReplies() {
             delBtn.style.border = "none";
             delBtn.style.cursor = "pointer";
 
-            delBtn.onmouseover = () => delBtn.style.backgroundColor = "#666";
-            delBtn.onmouseout = () => delBtn.style.backgroundColor = "#444";
+            delBtn.onmouseover = () => delBtn.style.background = "#666";
+            delBtn.onmouseout = () => delBtn.style.background = "#444";
 
             delBtn.onclick = async () => {
                 if (!confirm("Are you sure you want to delete this reply?")) return;
                 try {
                     await db.ref(`forum/${category}/${threadId}/replies/${reply.key}`).remove();
-                    loadReplies(); // Refresh replies
+                    loadReplies();
                 } catch (err) {
                     console.error("Failed to delete reply:", err);
                     alert("Failed to delete reply. Try again.");
                 }
             };
 
-            div.appendChild(delBtn);
+            div.querySelector(`#reply-row-${reply.key}`).appendChild(delBtn);
         }
 
         repliesEl.appendChild(div);
