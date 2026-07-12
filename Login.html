@@ -45,6 +45,24 @@
         max-width: 380px;
         margin: 0 auto;
     }
+
+    .link-btn {
+        background: none;
+        border: none;
+        color: #64748b;
+        padding: 4px 0;
+        margin: -0.5rem 0 0.75rem;
+        font-weight: 500;
+        font-family: inherit;
+        font-size: 0.85em;
+        text-decoration: underline;
+        cursor: pointer;
+        display: block;
+    }
+
+    .link-btn:hover {
+        color: #b7c8ff;
+    }
   </style>
 </head>
 <body>
@@ -82,6 +100,7 @@
                     <label for="login-password">Password</label>
                     <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" required>
                 </div>
+                <button type="button" class="link-btn" id="forgot-password-btn">Forgot password?</button>
                 <button type="button" class="button primary auth-submit" id="login-btn">Login</button>
             </div>
 
@@ -190,6 +209,23 @@
         }
     }
 
+    async function resetPassword() {
+        const email = document.getElementById("login-email").value.trim();
+        if (!email) {
+            setStatus("Enter your email above, then click \"Forgot password?\" again.");
+            document.getElementById("login-email").focus();
+            return;
+        }
+        setStatus("Sending password reset email...");
+        try {
+            await auth.sendPasswordResetEmail(email);
+            setStatus(`Password reset email sent to ${email}. Check your inbox.`);
+        } catch (err) {
+            setStatus(err.message);
+        }
+    }
+
+    document.getElementById("forgot-password-btn").addEventListener("click", resetPassword);
     document.getElementById("login-btn").addEventListener("click", login);
     document.getElementById("signup-btn").addEventListener("click", signUp);
     document.getElementById("login-password").addEventListener("keypress", (e) => {
@@ -208,8 +244,6 @@
             } catch (err) {
                 setStatus("Logged in.");
             }
-        } else {
-            setStatus("Not logged in");
         }
     });
     </script>
