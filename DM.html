@@ -473,4 +473,52 @@
     composeInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    auth.onAuthStateChanged(async (user) => {
+        if (!otherUID) {
+            dmName.textContent = "No user selected";
+            return;
+        }
+
+        if (!user) {
+            loginWarning.style.display = "block";
+            chatArea.style.display = "none";
+            noKeyNotice.style.display = "none";
+            return;
+        }
+
+        loginWarning.style.display = "none";
+        currentUID = user.uid;
+        conversationId = DMCrypto.conversationId(currentUID, otherUID);
+
+        await Promise.all([loadOtherProfile(), loadMyProfile()]);
+
+        try {
+            const privateKey = await DMCrypto.ensureKeyPair(currentUID);
+            const otherPublicKey = await DMCrypto.getPublicKeyFor(otherUID);
+
+            if (!otherPublicKey) {
+                noKeyNotice.style.display = "block";
+                chatArea.style.display = "none";
+                return;
+            }
+
+            noKeyNotice.style.display = "none";
+            sharedKey = await DMCrypto.deriveSharedKey(privateKey, otherPublicKey);
+            chatArea.style.display = "block";
+            listenForMessages();
+        } catch (err) {
+            console.error("Failed to set up encryption keys:", err);
+            noKeyNotice.style.display = "block";
+            chatArea.style.display = "none";
+        }
+    });
+    </script>
+
+    <script src="nav.js"></script>
+</body>
+</html>
        

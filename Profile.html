@@ -811,7 +811,7 @@ onAuthStateChanged(auth, async (user) => {
       profileImg.src = userData.profileImageURL + sep + "t=" + new Date().getTime();
     }
 
-    userInfoDiv.innerHTML = '<p id="bio-text">' + (userData.bio ? userData.bio.replace(/\n/g, "<br>") : "No bio set.") + "</p>";
+    userInfoDiv.innerHTML = '<p id="bio-text">' + (userData.bio ? userData.bio.replace(/\n/g, "<br>") : "") + "</p>";
 
     if (isOwnProfile) {
       uploadImageBtn.classList.remove("hidden");
@@ -868,7 +868,7 @@ onAuthStateChanged(auth, async (user) => {
           const newBio = bioInput.value.trim();
           try {
             await set(ref(db, "users/" + user.uid + "/bio"), newBio);
-            bioText.innerHTML = newBio ? newBio.replace(/\n/g, "<br>") : "No bio set.";
+            bioText.innerHTML = newBio ? newBio.replace(/\n/g, "<br>") : "";
             bioInput.style.display = "none";
             bioBtn.textContent = "Edit Profile";
           } catch (err) {
