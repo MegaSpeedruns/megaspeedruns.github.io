@@ -814,6 +814,8 @@ onAuthStateChanged(auth, async (user) => {
     userInfoDiv.innerHTML = '<p id="bio-text">' + (userData.bio ? userData.bio.replace(/\n/g, "<br>") : "No bio set.") + "</p>";
 
     if (isOwnProfile) {
+      uploadImageBtn.classList.remove("hidden");
+      imageUploadStatus.style.display = "";
       colorPickerContainer.style.display = "flex";
       profileMenuWrapper.style.display = "block";
       usernameColorInput.value = usernameColor;
@@ -876,6 +878,8 @@ onAuthStateChanged(auth, async (user) => {
         }
       });
     } else {
+      uploadImageBtn.classList.add("hidden");
+      imageUploadStatus.style.display = "none";
       colorPickerContainer.style.display = "none";
       profileMenuWrapper.style.display = "none";
     }
