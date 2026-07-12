@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Messages - Mega Speedruns</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
+<style>
+    body {
+        background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
+        min-height: 100vh;
+    }
+
+    main {
+        max-width: 700px;
+        margin: 2rem auto;
+        padding: 0 1rem 3rem;
+    }
+
+    h1 {
+        color: #2563eb;
+        margin-bottom: 1.5rem;
+        font-size: 2em;
+    }
+
+    .panel {
+        background: linear-gradient(135deg, #1a2436 0%, #131d2f 100%);
+        border: 1px solid #334155;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .panel .hint {
+        color: #94a3b8;
+        font-size: 0.85em;
+        line-height: 1.5;
+        margin: 0.5rem 0 1rem;
+    }
+
+    textarea, input[type="text"] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.65rem;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        font-family: inherit;
+        font-size: 0.9em;
+    }
+
+    textarea { min-height: 70px; resize: vertical; }
+
+    .key-actions, .new-convo {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+    }
+
+    .new-convo input { flex: 1; min-width: 160px; }
+
+    button {
+        padding: 10px 16px;
+        border: none;
+        border-radius: 8px;
+        background-color: #2563eb;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        font-family: inherit;
+        font-size: 0.9em;
+    }
+
+    button:hover { background-color: #1e3a8a; }
+    button:disabled { opacity: 0.6; cursor: default; }
+
+    .secondary-btn {
+        background-color: rgba(148, 163, 184, 0.2);
+        color: #cbd5e1;
+    }
+    .secondary-btn:hover { background-color: rgba(148, 163, 184, 0.35); }
+
+    .link-btn {
+        background: none;
+        color: #64748b;
+        padding: 4px 0;
+        font-weight: 500;
+        text-decoration: underline;
+    }
+    .link-btn:hover { background: none; color: #b7c8ff; }
+
+    #new-convo-status, #key-import-status {
+        width: 100%;
+        min-height: 1.2em;
+        font-size: 0.85em;
+        color: #ff9d94;
+        margin: 4px 0 0;
+    }
+
+    .inbox-list {
+        background: linear-gradient(135deg, #1a2436 0%, #131d2f 100%);
+        border: 1px solid #334155;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .conversation-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        text-decoration: none;
+        color: inherit;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        transition: background-color 0.15s ease;
+    }
+    .conversation-row:last-child { border-bottom: none; }
+    .conversation-row:hover { background-color: rgba(255, 255, 255, 0.04); }
+
+    .conversation-row img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+        border: 2px solid #2563eb;
+        background-color: #0f172a;
+    }
+
+    .conversation-row .convo-info { min-width: 0; flex: 1; }
+    .conversation-row .convo-top-line {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 10px;
+    }
+    .conversation-row .convo-name {
+        font-weight: 700;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .conversation-row .convo-preview {
+        color: #94a3b8;
+        font-size: 0.85em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 3px;
+    }
+    .conversation-row .convo-time {
+        color: #64748b;
+        font-size: 0.75em;
+        flex-shrink: 0;
+    }
+
+    .remove-btn {
+        background-color: rgba(148, 163, 184, 0.25);
+        color: #cbd5e1;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        border-radius: 999px;
+        padding: 0;
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .remove-btn:hover {
+        background-color: rgba(148, 163, 184, 0.4);
+    }
+
+    .empty-state {
+        color: #94a3b8;
+        font-style: italic;
+        text-align: center;
+        padding: 1.25rem 0;
+    }
+
+    #login-warning {
+        color: #ff5555;
+        font-weight: bold;
+        text-align: center;
+        background: linear-gradient(135deg, #271d2e 0%, #221a2b 100%);
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 3px solid #ff5555;
+    }
+
+    .key-backup { margin-top: 1.5rem; }
+</style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="Mega%20Speedruns_files/logo.png" alt="Mega Speedruns Logo">
+                <span class="logo-text">Mega Speedruns</span>
+            </div>
+            <nav class="nav-wrapper">
+                <ul>
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="MSTLP.html" class="nav-link">Level Packs</a></li>
+                    <li><a href="MMMLevels.html" class="nav-link">MMM Levels</a></li>
+                    <li><a href="Speedruns.html" class="nav-link">Speedruns</a></li>
+                    <li><a href="Forum.html" class="nav-link">Forums</a></li>
+                    <li><a href="Creator.html" class="nav-link">Creator</a></li>
+                    <li><a href="Users.html" class="nav-link">Users</a></li>
+                    <li><a id="login" href="Login.html" class="nav-link">Login</a></li>
+                    <li id="messages-nav-item" style="display:none;"><a href="Messages.html" class="nav-link active">Messages</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <h1>Messages</h1>
+
+        <div id="login-warning" style="display:none;">Please log in to view your messages.</div>
+
+        <div id="dm-app" style="display:none;">
+            <div id="conversation-list" class="inbox-list"></div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2022 Mega Speedruns. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="auth.js"></script>
+    <script src="dm-crypto.js"></script>
+
+    <script>
+    const loginWarning = document.getElementById("login-warning");
+    const dmApp = document.getElementById("dm-app");
+    const conversationList = document.getElementById("conversation-list");
+
+    let currentUID = null;
+    const profileCache = {};
+
+    async function getProfile(uid) {
+        if (profileCache[uid]) return profileCache[uid];
+        try {
+            const snap = await db.ref("users/" + uid).once("value");
+            const data = snap.val() || {};
+            const profile = {
+                username: data.username || "Unknown",
+                color: data.usernameColor || "#64748b",
+                image: data.profileImageURL || "Default_Avatar.png"
+            };
+            profileCache[uid] = profile;
+            return profile;
+        } catch (err) {
+            console.error("Failed to load profile for", uid, err);
+            return { username: "Unknown", color: "#64748b", image: "Default_Avatar.png" };
+        }
+    }
+
+    function formatTime(ts) {
+        if (!ts) return "";
+        return new Date(ts).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+    }
+
+    async function decryptLastMessage(conversationId, otherUID, privateKey) {
+        try {
+            const snap = await db.ref("dmThreads/" + conversationId + "/messages").limitToLast(1).once("value");
+            let last = null;
+            snap.forEach(child => { last = child.val(); });
+            if (!last) return "No messages.";
+
+            const otherPublicKey = await DMCrypto.getPublicKeyFor(otherUID);
+            if (!otherPublicKey) return "(this user needs to login again, before you can message them)";
+            const sharedKey = await DMCrypto.deriveSharedKey(privateKey, otherPublicKey);
+            const text = await DMCrypto.decryptText(sharedKey, last.ciphertext, last.iv);
+            const prefix = last.senderUID === currentUID ? "You: " : "";
+            return prefix + text;
+        } catch (err) {
+            console.error("Failed to decrypt last message for", conversationId, err);
+            return "(couldn't decrypt message)";
+        }
+    }
+
+    async function loadConversations(privateKey) {
+        conversationList.innerHTML = "<p class='empty-state'>Loading conversations...</p>";
+        try {
+            const snap = await db.ref("dmIndex/" + currentUID).once("value");
+            const entries = [];
+            snap.forEach(child => entries.push({ conversationId: child.key, ...child.val() }));
+            entries.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+
+            if (entries.length === 0) {
+                conversationList.innerHTML = "<p class='empty-state'>No messages.</p>";
+                return;
+            }
+
+            conversationList.innerHTML = "";
+            for (const entry of entries) {
+                const profile = await getProfile(entry.otherUID);
+                const preview = await decryptLastMessage(entry.conversationId, entry.otherUID, privateKey);
+
+                const row = document.createElement("div");
+                row.className = "conversation-row";
+                row.style.cursor = "pointer";
+                row.innerHTML = `
+                    <img src="${profile.image}" alt="${profile.username}" style="border-color:${profile.color};" onerror="this.onerror=null;this.src='Default_Avatar.png';">
+                    <div class="convo-info">
+                        <div class="convo-top-line">
+                            <span class="convo-name" style="color:${profile.color};">${profile.username}</span>
+                            <span class="convo-time">${formatTime(entry.updatedAt)}</span>
+                        </div>
+                        <div class="convo-preview">${preview}</div>
+                    </div>
+                `;
+
+                const removeBtn = document.createElement("button");
+                removeBtn.type = "button";
+                removeBtn.className = "remove-btn";
+                removeBtn.textContent = "×";
+                removeBtn.title = "Remove conversation";
+                removeBtn.onclick = async (e) => {
+                    e.stopPropagation();
+                    if (!confirm("Remove this conversation from your inbox?")) return;
+                    try {
+                        await db.ref("dmIndex/" + currentUID + "/" + entry.conversationId).remove();
+                        row.remove();
+                        if (!conversationList.querySelector(".conversation-row")) {
+                            conversationList.innerHTML = "<p class='empty-state'>No messages.</p>";
+                        }
+                    } catch (err) {
+                        console.error("Failed to remove conversation:", err);
+                        alert("Failed to remove conversation. Try again.");
+                    }
+                };
+                row.appendChild(removeBtn);
+
+                row.addEventListener("click", () => {
+                    window.location.href = "DM.html?uid=" + entry.otherUID;
+                });
+
+                conversationList.appendChild(row);
+            }
+        } catch (err) {
+            console.error("Failed to load conversations:", err);
+            conversationList.innerHTML = "<p class='empty-state'>Couldn't load conversations.</p>";
+        }
+    }
+
+    auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+            loginWarning.style.display = "block";
+            dmApp.style.display = "none";
+            return;
+        }
+        loginWarning.style.display = "none";
+        currentUID = user.uid;
+        try {
+            const privateKey = await DMCrypto.ensureKeyPair(currentUID);
+            dmApp.style.display = "block";
+            await loadConversations(privateKey);
+        } catch (err) {
+            console.error("Failed to set up encryption keys:", err);
+        }
+    });
+    </script>
+
+    <script src="nav.js"></script>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     

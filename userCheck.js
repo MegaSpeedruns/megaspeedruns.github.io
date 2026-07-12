@@ -10,7 +10,7 @@ function escapeHtml(text) {
     .replace(/'/g, "&#39;");
 }
 
-export function initUserProfile({ loginLinkId = "login", profileHeaderId = null, profileImgId = null, bioContainerId = null, defaultColor = "#FFFFFF", defaultAvatar = "Mega%20Speedruns_files/Default_Avatar.png" }) {
+export function initUserProfile({ loginLinkId = "login", profileHeaderId = null, profileImgId = null, bioContainerId = null, defaultColor = "#64748b", defaultAvatar = "Mega%20Speedruns_files/Default_Avatar.png" }) {
   const auth = getAuth();
   const db = getDatabase();
   const loginLink = document.getElementById(loginLinkId);

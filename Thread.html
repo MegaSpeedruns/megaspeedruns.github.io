@@ -115,6 +115,37 @@
         transform: translateY(-2px);
     }
 
+    .remove-btn {
+        background: rgba(148, 163, 184, 0.25);
+        color: #cbd5e1;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        border-radius: 999px;
+        padding: 0;
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .remove-btn:hover {
+        background: rgba(148, 163, 184, 0.4);
+        box-shadow: none;
+        transform: none;
+    }
+
+    .remove-btn.small {
+        width: 18px;
+        height: 18px;
+        font-size: 0.9em;
+    }
+
     #login-warning {
         color: #ff5555;
         font-weight: bold;
@@ -152,13 +183,14 @@
             <nav class="nav-wrapper">
                 <ul>
                     <li><a href="index.html" class="nav-link">Home</a></li>
-                    <li><a href="MSTLP.htm" class="nav-link">Level Packs</a></li>
-                    <li><a href="MMMLevels.htm" class="nav-link">MMM Levels</a></li>
-                    <li><a href="Speedruns.htm" class="nav-link">Speedruns</a></li>
+                    <li><a href="MSTLP.html" class="nav-link">Level Packs</a></li>
+                    <li><a href="MMMLevels.html" class="nav-link">MMM Levels</a></li>
+                    <li><a href="Speedruns.html" class="nav-link">Speedruns</a></li>
                     <li><a href="Forum.html" class="nav-link">Forums</a></li>
                     <li><a href="Creator.html" class="nav-link">Creator</a></li>
                     <li><a href="Users.html" class="nav-link">Users</a></li>
                     <li><a id="login" href="Login.html" class="nav-link">Login</a></li>
+                    <li id="messages-nav-item" style="display:none;"><a href="Messages.html" class="nav-link">Messages</a></li>
                 </ul>
             </nav>
         </div>
@@ -192,6 +224,8 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
     <script src="auth.js"></script>
+    <script src="dm-crypto.js"></script>
+<script src="nav.js"></script>
 
 <script>
     const params = new URLSearchParams(window.location.search);
@@ -229,7 +263,7 @@ auth.onAuthStateChanged(async (user) => {
 async function getUsernameColor(username) {
     if (!username) {
         console.warn("No username provided to getUsernameColor");
-        return "#00e6ff";
+        return "#64748b";
     }
 
     try {
@@ -240,10 +274,10 @@ async function getUsernameColor(username) {
 
         if (!snapshot.exists()) {
             console.warn(`No user found with username: ${username}`);
-            return "#00e6ff";
+            return "#64748b";
         }
 
-        let color = "#00e6ff";
+        let color = "#64748b";
 
         snapshot.forEach(child => {
             const data = child.val();
@@ -258,7 +292,7 @@ async function getUsernameColor(username) {
 
     } catch (error) {
         console.error("Error fetching username color:", error);
-        return "#00e6ff";
+        return "#64748b";
     }
 }
 
@@ -328,20 +362,9 @@ async function loadThread() {
     const currentUsername = localStorage.getItem("username");
 if (currentUsername && currentUsername === data.author) {
     const deleteThreadBtn = document.createElement("button");
-    deleteThreadBtn.textContent = "x";
-
-    deleteThreadBtn.style.background = "#444";
-    deleteThreadBtn.style.flexShrink = "0";
-    deleteThreadBtn.style.color = "#fff";
-    deleteThreadBtn.style.padding = "5px 10px";
-    deleteThreadBtn.style.fontSize = "0.85rem";
-    deleteThreadBtn.style.height = "28px";
-    deleteThreadBtn.style.borderRadius = "4px";
-    deleteThreadBtn.style.border = "none";
-    deleteThreadBtn.style.cursor = "pointer";
-
-    deleteThreadBtn.onmouseover = () => deleteThreadBtn.style.background = "#666";
-    deleteThreadBtn.onmouseout = () => deleteThreadBtn.style.background = "#444";
+    deleteThreadBtn.className = "remove-btn";
+    deleteThreadBtn.textContent = "×";
+    deleteThreadBtn.title = "Delete thread";
 
     deleteThreadBtn.onclick = async () => {
         const confirmDelete = confirm("Are you sure you want to delete this thread?");
@@ -418,20 +441,9 @@ async function loadReplies() {
         const currentUsername = localStorage.getItem("username");
         if (currentUsername && currentUsername === reply.author) {
             const delBtn = document.createElement("button");
-            delBtn.textContent = "x";
-
-            delBtn.style.background = "#444";
-            delBtn.style.flexShrink = "0";
-            delBtn.style.color = "#fff";
-            delBtn.style.padding = "3px 8px";
-            delBtn.style.fontSize = "0.75rem";
-            delBtn.style.height = "24px";
-            delBtn.style.borderRadius = "4px";
-            delBtn.style.border = "none";
-            delBtn.style.cursor = "pointer";
-
-            delBtn.onmouseover = () => delBtn.style.background = "#666";
-            delBtn.onmouseout = () => delBtn.style.background = "#444";
+            delBtn.className = "remove-btn small";
+            delBtn.textContent = "×";
+            delBtn.title = "Delete reply";
 
             delBtn.onclick = async () => {
                 if (!confirm("Are you sure you want to delete this reply?")) return;

@@ -57,6 +57,7 @@
 
 
   .button {
+    display: block !important;
     background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
     color: white;
     border: none;
@@ -64,10 +65,16 @@
     border-radius: 6px;
     cursor: pointer;
     margin: 0.5rem 0;
-    width: 100%;
+    width: 100% !important;
+    box-sizing: border-box !important;
     font-weight: 600;
+    text-align: center;
     transition: all 0.2s;
     font-family: inherit;
+  }
+
+  .button.hidden {
+    display: none !important;
   }
 
   .button:hover {
@@ -83,6 +90,10 @@
   }
 
   .profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
     border-bottom: 2px solid #2563eb;
     padding-bottom: 0.25rem;
     margin-bottom: 0.5rem;
@@ -98,6 +109,159 @@
     margin: 0;
   }
 
+  #profile-menu-wrapper {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .hamburger-btn {
+    background: none;
+    border: none;
+    color: #cbd5e1;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 4px 10px;
+    line-height: 1;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+  }
+
+  .hamburger-btn:hover {
+    background-color: rgba(148, 163, 184, 0.15);
+  }
+
+  .profile-menu-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 6px;
+    background: linear-gradient(135deg, #1a2436 0%, #0f172a 100%);
+    border: 1px solid #334155;
+    border-radius: 8px;
+    min-width: 170px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+    z-index: 20;
+  }
+
+  .profile-menu-dropdown.open {
+    display: block;
+  }
+
+  .menu-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 14px;
+    background: none;
+    border: none;
+    color: #cbd5e1;
+    font-weight: 600;
+    font-family: inherit;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin: 0;
+  }
+
+  .menu-item:hover {
+    background-color: rgba(148, 163, 184, 0.12);
+  }
+
+  .menu-item.danger {
+    color: #ff6b6b;
+  }
+
+  .menu-item.danger:hover {
+    background-color: rgba(255, 85, 85, 0.12);
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 1rem;
+  }
+
+  .modal-overlay.open {
+    display: flex;
+  }
+
+  .modal-card {
+    background: linear-gradient(135deg, #1a2436 0%, #131d2f 100%);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 1.75rem;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+  }
+
+  .modal-card h3 {
+    margin-top: 0;
+    color: #60a5fa;
+  }
+
+  .modal-card label {
+    display: block;
+    color: #cbd5e1;
+    font-weight: 600;
+    margin: 0.75rem 0 0.25rem;
+    font-size: 0.9em;
+  }
+
+  .modal-card input[type="password"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.9em;
+  }
+
+  .modal-status {
+    min-height: 1.2em;
+    font-size: 0.85em;
+    margin-top: 0.75rem;
+    color: #ff9d94;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+
+  .modal-actions .button {
+    margin: 0;
+  }
+
+  .modal-secondary-btn {
+    background: rgba(148, 163, 184, 0.2);
+    color: #cbd5e1;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: inherit;
+    font-size: 0.95em;
+    transition: background-color 0.2s ease;
+  }
+
+  .modal-secondary-btn:hover {
+    background-color: rgba(148, 163, 184, 0.35);
+  }
+
   #color-picker-container {
     display: flex;
     flex-direction: column;
@@ -109,14 +273,17 @@
   #color-picker-container label {
     color: #cbd5e1;
     font-weight: 600;
+    text-align: center;
   }
 
   #username-color {
+    display: block !important;
     cursor: pointer;
     border: 2px solid #2563eb;
     border-radius: 6px;
-    width: 100%;
+    width: 100% !important;
     height: 40px;
+    box-sizing: border-box;
   }
 
   #user-info {
@@ -179,13 +346,14 @@
         <nav class="nav-wrapper">
             <ul>
                 <li><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="MSTLP.htm" class="nav-link">Level Packs</a></li>
-                <li><a href="MMMLevels.htm" class="nav-link">MMM Levels</a></li>
-                <li><a href="Speedruns.htm" class="nav-link">Speedruns</a></li>
+                <li><a href="MSTLP.html" class="nav-link">Level Packs</a></li>
+                <li><a href="MMMLevels.html" class="nav-link">MMM Levels</a></li>
+                <li><a href="Speedruns.html" class="nav-link">Speedruns</a></li>
                 <li><a href="Forum.html" class="nav-link">Forums</a></li>
                 <li><a href="Creator.html" class="nav-link">Creator</a></li>
                 <li><a href="Users.html" class="nav-link">Users</a></li>
                 <li><a id="login" href="Login.html" class="nav-link">Profile</a></li>
+                <li id="messages-nav-item" style="display:none;"><a href="Messages.html" class="nav-link">Messages</a></li>
             </ul>
         </nav>
     </div>
@@ -199,10 +367,11 @@
         <input type="file" id="image-file-input" accept="image/*" style="display:none;">
         <button class="button" id="upload-image-btn">Upload Image</button>
         <p id="image-upload-status" style="font-size:0.8em; margin-top:4px; color: #cbd5e1;"></p>
+        <button class="button hidden" id="message-user-btn">Message</button>
 
         <div id="color-picker-container" style="display: none; margin-top: 0.5rem; flex-direction: column; gap: 0.75rem; width: 100%;">
-          <label for="username-color" style="color: #cbd5e1; font-weight: 600;">User Color:</label>
-          <input type="color" id="username-color" value="#FFFFFF" style="width: 100%; height: 40px; cursor: pointer; border: 2px solid #2563eb; border-radius: 6px;">
+          <label for="username-color" style="color: #cbd5e1; font-weight: 600; text-align: center;">User Color:</label>
+          <input type="color" id="username-color" value="#64748b" style="cursor: pointer; border: 2px solid #2563eb; border-radius: 6px;">
           <button class="button" id="save-color-btn">Save Color</button>
           <button class="button" id="logout-btn" style="background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);">Logout</button>
         </div>
@@ -211,6 +380,13 @@
       <div class="profile-right">
         <div class="profile-header">
           <h1 id="profile">Profile Details</h1>
+          <div id="profile-menu-wrapper" style="display:none;">
+            <button id="profile-menu-btn" type="button" class="hamburger-btn" aria-label="Profile menu">&#9776;</button>
+            <div id="profile-menu-dropdown" class="profile-menu-dropdown">
+              <button id="change-password-btn" type="button" class="menu-item">Change Password</button>
+              <button id="delete-account-btn" type="button" class="menu-item danger">Delete Account</button>
+            </div>
+          </div>
         </div>
         <div id="user-info"></div>
         <div id="user-runs"></div>
@@ -219,6 +395,23 @@
 
     <div class="shadow-box">
       <ul id="userSpeedruns"></ul>
+    </div>
+  </div>
+
+  <div id="change-password-overlay" class="modal-overlay">
+    <div class="modal-card">
+      <h3>Change Password</h3>
+      <label for="current-password-input">Current Password</label>
+      <input type="password" id="current-password-input" autocomplete="current-password">
+      <label for="new-password-input">New Password</label>
+      <input type="password" id="new-password-input" autocomplete="new-password">
+      <label for="confirm-password-input">Confirm New Password</label>
+      <input type="password" id="confirm-password-input" autocomplete="new-password">
+      <p id="change-password-status" class="modal-status"></p>
+      <div class="modal-actions">
+        <button type="button" class="button" id="submit-password-btn">Save Password</button>
+        <button type="button" class="modal-secondary-btn" id="cancel-password-btn">Cancel</button>
+      </div>
     </div>
   </div>
 </main>
@@ -234,20 +427,26 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import {
   getAuth,
   onAuthStateChanged,
-  signOut
+  signOut,
+  deleteUser,
+  updatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
   getDatabase,
   ref,
   get,
   set,
+  update,
   child
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import {
   getStorage,
   ref as storageRef,
   uploadBytes,
-  getDownloadURL
+  getDownloadURL,
+  deleteObject
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -273,31 +472,229 @@ const uploadImageBtn = document.getElementById("upload-image-btn");
 const imageUploadStatus = document.getElementById("image-upload-status");
 const loginLink = document.getElementById("login");
 const logoutBtn = document.getElementById("logout-btn");
+const profileMenuWrapper = document.getElementById("profile-menu-wrapper");
+const profileMenuBtn = document.getElementById("profile-menu-btn");
+const profileMenuDropdown = document.getElementById("profile-menu-dropdown");
+const deleteAccountBtn = document.getElementById("delete-account-btn");
 
-const runsContainer = document.createElement("div");
-const runCountEl = document.createElement("h3");
-runCountEl.className = "outline";
-const userRunsList = document.createElement("ul");
-runsContainer.appendChild(runCountEl);
-runsContainer.appendChild(userRunsList);
-document.querySelector(".shadow-box").appendChild(runsContainer);
+profileMenuBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  profileMenuDropdown.classList.toggle("open");
+});
 
-uploadImageBtn.addEventListener("click", () => imageFileInput.click());
+document.addEventListener("click", (e) => {
+  if (!profileMenuWrapper.contains(e.target)) {
+    profileMenuDropdown.classList.remove("open");
+  }
+});
 
-async function urlSetImage(url) {
+deleteAccountBtn.addEventListener("click", () => {
+  profileMenuDropdown.classList.remove("open");
+  deleteAccount();
+});
+
+const changePasswordBtn = document.getElementById("change-password-btn");
+const changePasswordOverlay = document.getElementById("change-password-overlay");
+const currentPasswordInput = document.getElementById("current-password-input");
+const newPasswordInput = document.getElementById("new-password-input");
+const confirmPasswordInput = document.getElementById("confirm-password-input");
+const changePasswordStatus = document.getElementById("change-password-status");
+const submitPasswordBtn = document.getElementById("submit-password-btn");
+const cancelPasswordBtn = document.getElementById("cancel-password-btn");
+
+function openChangePasswordModal() {
+  currentPasswordInput.value = "";
+  newPasswordInput.value = "";
+  confirmPasswordInput.value = "";
+  changePasswordStatus.textContent = "";
+  changePasswordOverlay.classList.add("open");
+  currentPasswordInput.focus();
+}
+
+function closeChangePasswordModal() {
+  changePasswordOverlay.classList.remove("open");
+}
+
+changePasswordBtn.addEventListener("click", () => {
+  profileMenuDropdown.classList.remove("open");
+  openChangePasswordModal();
+});
+
+cancelPasswordBtn.addEventListener("click", closeChangePasswordModal);
+
+changePasswordOverlay.addEventListener("click", (e) => {
+  if (e.target === changePasswordOverlay) closeChangePasswordModal();
+});
+
+submitPasswordBtn.addEventListener("click", async () => {
   const user = auth.currentUser;
   if (!user) return;
 
-  try {
-    const sep = url.includes("?") ? "&" : "?";
-    profileImg.src = url + sep + "t=" + new Date().getTime();
+  const currentPassword = currentPasswordInput.value;
+  const newPassword = newPasswordInput.value;
+  const confirmPassword = confirmPasswordInput.value;
 
-    await set(ref(db, "users/" + user.uid + "/profileImageURL"), url);
+  changePasswordStatus.style.color = "#ff9d94";
+
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    changePasswordStatus.textContent = "Please fill out all fields.";
+    return;
+  }
+  if (newPassword.length < 6) {
+    changePasswordStatus.textContent = "New password must be at least 6 characters.";
+    return;
+  }
+  if (newPassword !== confirmPassword) {
+    changePasswordStatus.textContent = "New passwords don't match.";
+    return;
+  }
+
+  submitPasswordBtn.disabled = true;
+  changePasswordStatus.style.color = "#94a3b8";
+  changePasswordStatus.textContent = "Updating password...";
+
+  try {
+    const credential = EmailAuthProvider.credential(user.email, currentPassword);
+    await reauthenticateWithCredential(user, credential);
+    await updatePassword(user, newPassword);
+    changePasswordStatus.style.color = "#8fffb0";
+    changePasswordStatus.textContent = "Password updated!";
+    setTimeout(closeChangePasswordModal, 1200);
   } catch (err) {
-    console.error("Failed to save image URL:", err);
-    imageUploadStatus.textContent = "Upload failed. Please try again.";
+    console.error("Failed to change password:", err);
+    changePasswordStatus.style.color = "#ff9d94";
+    if (err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
+      changePasswordStatus.textContent = "Current password is incorrect.";
+    } else if (err.code === "auth/too-many-requests") {
+      changePasswordStatus.textContent = "Too many attempts. Please try again later.";
+    } else {
+      changePasswordStatus.textContent = "Failed to update password. Please try again.";
+    }
+  } finally {
+    submitPasswordBtn.disabled = false;
+  }
+});
+
+async function wipeAccountData(uid) {
+  try {
+    const snap = await get(ref(db, "users/" + uid + "/profileImageURL"));
+    const imageUrl = snap.val();
+    if (imageUrl) {
+      try {
+        const path = decodeURIComponent(new URL(imageUrl).pathname.split("/o/")[1].split("?")[0]);
+        await deleteObject(storageRef(storage, path));
+      } catch (imgErr) {
+        console.warn("Could not delete profile image (continuing anyway):", imgErr);
+      }
+    }
+  } catch (err) {
+    console.warn("Could not check for profile image (continuing anyway):", err);
+  }
+
+  try {
+    const userSnap = await get(ref(db, "users/" + uid));
+    const userData = userSnap.val() || {};
+    const updates = {};
+    for (const key of Object.keys(userData)) {
+      if (key === "canUpload") continue;
+      updates["users/" + uid + "/" + key] = null;
+    }
+    if (Object.keys(updates).length > 0) {
+      await update(ref(db), updates);
+    }
+  } catch (err) {
+    console.error("Failed to clear user record:", err);
+    throw err;
+  }
+
+  try {
+    const dmIndexSnap = await get(ref(db, "dmIndex/" + uid));
+    const conversations = dmIndexSnap.val() || {};
+    const removals = Object.entries(conversations)
+      .filter(([, entry]) => entry && entry.otherUID)
+      .map(([conversationId, entry]) => set(ref(db, "dmIndex/" + entry.otherUID + "/" + conversationId), null));
+    await Promise.all(removals);
+  } catch (err) {
+    console.warn("Could not clean up conversations for other users (continuing anyway):", err);
+  }
+
+  await Promise.all([
+    set(ref(db, "dmKeys/" + uid), null),
+    set(ref(db, "dmIndex/" + uid), null)
+  ]);
+
+  localStorage.removeItem("username");
+  localStorage.removeItem("dmPrivateKey_" + uid);
+}
+
+function finishAsDeleted() {
+  alert("Your account has been deleted.");
+  window.location.href = "index.html";
+}
+
+async function performAccountDeletion(user) {
+  await wipeAccountData(user.uid);
+  await deleteUser(user);
+  finishAsDeleted();
+}
+
+async function deleteAccount() {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const confirmed = confirm("This will permanently delete your account and all of your profile data. This cannot be undone. Continue?");
+  if (!confirmed) return;
+
+  const typed = prompt('Type "DELETE" to confirm permanently deleting your account.');
+  if (typed !== "DELETE") {
+    alert("Account deletion cancelled.");
+    return;
+  }
+
+  try {
+    await performAccountDeletion(user);
+  } catch (err) {
+    if (!auth.currentUser || err.code === "auth/user-not-found" || err.code === "auth/user-token-expired") {
+      try {
+        await signOut(auth);
+      } catch (e) {}
+      finishAsDeleted();
+      return;
+    }
+
+    if (err.code === "auth/requires-recent-login") {
+      const password = prompt("For your security, please re-enter your password to confirm account deletion:");
+      if (!password) return;
+      try {
+        const credential = EmailAuthProvider.credential(user.email, password);
+        await reauthenticateWithCredential(user, credential);
+        await performAccountDeletion(user);
+      } catch (reauthErr) {
+        if (!auth.currentUser || reauthErr.code === "auth/user-not-found") {
+          try {
+            await signOut(auth);
+          } catch (e) {}
+          finishAsDeleted();
+          return;
+        }
+        console.error("Re-authentication failed:", reauthErr);
+        alert("Failed to verify your password. Your account was not deleted.");
+      }
+    } else {
+      console.error("Failed to delete account:", err);
+      alert("Failed to delete account. Please try again.");
+    }
   }
 }
+
+const messageBtn = document.getElementById("message-user-btn");
+const colorPickerContainer = document.getElementById("color-picker-container");
+const usernameColorInput = document.getElementById("username-color");
+const saveColorBtn = document.getElementById("save-color-btn");
+const messagesNavItem = document.getElementById("messages-nav-item");
+const userRunsList = document.getElementById("userSpeedruns");
+
+uploadImageBtn.addEventListener("click", () => imageFileInput.click());
 
 imageFileInput.addEventListener("change", async () => {
   const file = imageFileInput.files[0];
@@ -317,7 +714,9 @@ imageFileInput.addEventListener("change", async () => {
     const fileRef = storageRef(storage, "profileImages/" + user.uid + "/avatar." + ext);
     await uploadBytes(fileRef, file);
     const url = await getDownloadURL(fileRef);
-    urlSetImage(url);
+    const sep = url.includes("?") ? "&" : "?";
+    profileImg.src = url + sep + "t=" + new Date().getTime();
+    await set(ref(db, "users/" + user.uid + "/profileImageURL"), url);
     imageUploadStatus.textContent = "Uploaded!";
   } catch (err) {
     console.error("Failed to upload image:", err);
@@ -328,36 +727,39 @@ imageFileInput.addEventListener("change", async () => {
   }
 });
 
-function linkify(text) {
-  const urlPattern = /(\bhttps?:\/\/[^\s]+)/gi;
-  return text.replace(urlPattern, '<a href="$1" target="_blank">$1</a>');
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [255, 255, 255];
 }
 
-const urlParams = new URLSearchParams(window.location.search);
-const profileUidFromUrl = urlParams.get("uid");
+function adjustBrightness(hex, percent) {
+  const rgb = hexToRgb(hex);
+  const adjusted = rgb.map(val => Math.max(0, Math.min(255, val + percent)));
+  return "#" + adjusted.map(x => x.toString(16).padStart(2, "0")).join("");
+}
 
 onAuthStateChanged(auth, async (user) => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const uidToView = urlParams.get("uid");
-
   if (user) {
-    loginLink.innerText = "Profile";
-    loginLink.href = `Profile.html?uid=${user.uid}`;
-    logoutBtn.style.display = "inline-block";
+    loginLink.textContent = "Profile";
+    loginLink.href = "Profile.html?uid=" + user.uid;
+    messagesNavItem.style.display = "";
   } else {
-    loginLink.innerText = "Login";
+    loginLink.textContent = "Login";
     loginLink.href = "Login.html";
-    logoutBtn.style.display = "none";
+    messagesNavItem.style.display = "none";
   }
 
-  if (!uidToView && user) {
-    const newUrl = `${window.location.pathname}?uid=${user.uid}`;
-    window.history.replaceState({}, "", newUrl);
+  const urlParams = new URLSearchParams(window.location.search);
+  let profileUid = urlParams.get("uid");
+
+  if (!profileUid && user) {
+    profileUid = user.uid;
+    window.history.replaceState({}, "", window.location.pathname + "?uid=" + user.uid);
   }
 
-  const profileUid = urlParams.get("uid") || (user ? user.uid : null);
   if (!profileUid) {
-    userProfile.innerText = "No profile selected.";
+    userProfile.textContent = "No profile selected.";
+    userInfoDiv.innerHTML = "";
     return;
   }
 
@@ -366,177 +768,179 @@ onAuthStateChanged(auth, async (user) => {
     const userData = snapshot.val();
 
     if (!userData) {
-      userProfile.innerText = "User not found";
+      userProfile.textContent = "User not found";
       userInfoDiv.innerHTML = "";
       return;
     }
 
-    const usernameColor = userData.usernameColor || "#FFFFFF";
-    userProfile.innerHTML = `<p style="color:${usernameColor}">${userData.username}'s Profile</p>`;
+    const isOwnProfile = !!(user && profileUid === user.uid);
 
-    const profileLeft = document.querySelector(".profile-left");
-    const profileRight = document.querySelector(".profile-right");
-    const profileImg = document.getElementById("profile-img");
-    const profileHeader = document.querySelector(".profile-header");
-    const profileTitle = document.querySelector(".profile-header-title");
+    if (user && !isOwnProfile) {
+      messageBtn.classList.remove("hidden");
+      messageBtn.onclick = () => {
+        window.location.href = "DM.html?uid=" + profileUid;
+      };
+    } else {
+      messageBtn.classList.add("hidden");
+    }
+
+    const usernameColor = userData.usernameColor || "#64748b";
+    userProfile.textContent = userData.username + "'s Profile";
+    userProfile.style.color = usernameColor;
 
     profileImg.style.borderColor = usernameColor;
-    profileLeft.style.borderColor = usernameColor;
-    profileRight.style.borderColor = usernameColor;
-    profileHeader.style.borderBottomColor = usernameColor;
-    if (profileTitle) profileTitle.style.color = usernameColor;
+    document.querySelector(".profile-left").style.borderColor = usernameColor;
+    document.querySelector(".profile-right").style.borderColor = usernameColor;
+    document.querySelector(".profile-header").style.borderBottomColor = usernameColor;
 
-    document.getElementById("upload-image-btn").style.background = `linear-gradient(135deg, ${usernameColor} 0%, ${adjustBrightness(usernameColor, -20)} 100%)`;
-
-    document.querySelectorAll(".shadow-box").forEach(box => {
-      const h2 = box.querySelector("h2");
-      if (h2) h2.style.color = usernameColor;
-    });
-
-    const style = document.createElement("style");
-    style.textContent = `
-      .img-input:focus { border-color: ${usernameColor} !important; box-shadow: 0 0 8px ${usernameColor}33 !important; }
-      .button { background: linear-gradient(135deg, ${usernameColor} 0%, ${adjustBrightness(usernameColor, -20)} 100%) !important; }
+    let dynamicStyle = document.getElementById("dynamic-color-style");
+    if (!dynamicStyle) {
+      dynamicStyle = document.createElement("style");
+      dynamicStyle.id = "dynamic-color-style";
+      document.head.appendChild(dynamicStyle);
+    }
+    dynamicStyle.textContent = `
+      .button { background: linear-gradient(135deg, ${usernameColor} 0%, ${adjustBrightness(usernameColor, -40)} 100%) !important; }
       .button:hover { box-shadow: 0 4px 12px ${usernameColor}66 !important; }
       #username-color { border-color: ${usernameColor} !important; }
+      .shadow-box h2 { color: ${usernameColor} !important; }
     `;
-    document.head.appendChild(style);
-
-    function hexToRgb(hex) {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [255, 255, 255];
-    }
-
-    function adjustBrightness(hex, percent) {
-      const rgb = hexToRgb(hex);
-      const adjusted = rgb.map(val => Math.max(0, Math.min(255, val + percent)));
-      return "#" + adjusted.map(x => x.toString(16).padStart(2, '0')).join('');
-    }
 
     if (userData.profileImageURL) {
       const sep = userData.profileImageURL.includes("?") ? "&" : "?";
       profileImg.src = userData.profileImageURL + sep + "t=" + new Date().getTime();
     }
 
-    userInfoDiv.innerHTML = `<p id="bio-text">${userData.bio ? userData.bio.replace(/\n/g, "<br>") : ""}</p>`;
+    userInfoDiv.innerHTML = '<p id="bio-text">' + (userData.bio ? userData.bio.replace(/\n/g, "<br>") : "No bio set.") + "</p>";
 
-    if (user && profileUid === user.uid) {
-      colorPickerContainer.style.display = "block";
+    if (isOwnProfile) {
+      colorPickerContainer.style.display = "flex";
+      profileMenuWrapper.style.display = "block";
       usernameColorInput.value = usernameColor;
 
       saveColorBtn.onclick = async () => {
         const newColor = usernameColorInput.value;
-        await set(ref(db, "users/" + user.uid + "/usernameColor"), newColor);
-        userProfile.innerHTML = `<p style="color:${newColor}">${userData.username}'s Profile</p><br>`;
-
-        profileImg.style.borderColor = newColor;
-        profileLeft.style.borderColor = newColor;
-        profileRight.style.borderColor = newColor;
-        profileHeader.style.borderBottomColor = newColor;
-        const profileTitle = document.querySelector(".profile-header-title");
-        if (profileTitle) profileTitle.style.color = newColor;
-
-        document.getElementById("upload-image-btn").style.background = `linear-gradient(135deg, ${newColor} 0%, ${adjustBrightness(newColor, -20)} 100%)`;
-
-        document.querySelectorAll(".shadow-box").forEach(box => {
-          const h2 = box.querySelector("h2");
-          if (h2) h2.style.color = newColor;
-        });
-
-        const style = document.createElement("style");
-        style.textContent = `
-          .img-input:focus { border-color: ${newColor} !important; box-shadow: 0 0 8px ${newColor}33 !important; }
-          .button { background: linear-gradient(135deg, ${newColor} 0%, ${adjustBrightness(newColor, -20)} 100%) !important; }
-          .button:hover { box-shadow: 0 4px 12px ${newColor}66 !important; }
-          #username-color { border-color: ${newColor} !important; }
-        `;
-        document.head.appendChild(style);
+        try {
+          await set(ref(db, "users/" + user.uid + "/usernameColor"), newColor);
+          userProfile.style.color = newColor;
+          profileImg.style.borderColor = newColor;
+          document.querySelector(".profile-left").style.borderColor = newColor;
+          document.querySelector(".profile-right").style.borderColor = newColor;
+          document.querySelector(".profile-header").style.borderBottomColor = newColor;
+          dynamicStyle.textContent = `
+            .button { background: linear-gradient(135deg, ${newColor} 0%, ${adjustBrightness(newColor, -40)} 100%) !important; }
+            .button:hover { box-shadow: 0 4px 12px ${newColor}66 !important; }
+            #username-color { border-color: ${newColor} !important; }
+            .shadow-box h2 { color: ${newColor} !important; }
+          `;
+        } catch (err) {
+          console.error("Failed to save color:", err);
+          alert("Failed to save color. Please try again.");
+        }
       };
 
+      const bioText = document.getElementById("bio-text");
       const bioInput = document.createElement("textarea");
       bioInput.id = "bio-input";
-      bioInput.style.width = "100%";
-      bioInput.style.height = "60px";
       bioInput.value = userData.bio || "";
-      bioInput.className = "bio-input";
+      bioInput.style.width = "100%";
+      bioInput.style.minHeight = "70px";
+      bioInput.style.boxSizing = "border-box";
       bioInput.style.display = "none";
+      bioInput.style.marginTop = "0.5rem";
       userInfoDiv.appendChild(bioInput);
 
       const bioBtn = document.createElement("button");
+      bioBtn.type = "button";
       bioBtn.className = "button";
       bioBtn.id = "bio-btn";
-      bioBtn.innerText = "Edit Profile";
+      bioBtn.textContent = "Edit Profile";
+      bioBtn.style.marginTop = "0.5rem";
       userInfoDiv.appendChild(bioBtn);
 
-      const bioText = document.getElementById("bio-text");
       bioBtn.addEventListener("click", async () => {
-        if (bioBtn.innerText === "Edit Profile") {
+        if (bioBtn.textContent === "Edit Profile") {
           bioInput.style.display = "block";
-          bioBtn.innerText = "Save";
+          bioBtn.textContent = "Save Profile";
         } else {
           const newBio = bioInput.value.trim();
-          await set(ref(db, "users/" + user.uid + "/bio"), newBio);
-          bioText.innerHTML = newBio ? newBio.replace(/\n/g, "<br>") : "No bio set.";
-          bioInput.style.display = "none";
-          bioBtn.innerText = "Edit Profile";
+          try {
+            await set(ref(db, "users/" + user.uid + "/bio"), newBio);
+            bioText.innerHTML = newBio ? newBio.replace(/\n/g, "<br>") : "No bio set.";
+            bioInput.style.display = "none";
+            bioBtn.textContent = "Edit Profile";
+          } catch (err) {
+            console.error("Failed to save bio:", err);
+            alert("Failed to save bio. Please try again.");
+          }
         }
       });
     } else {
       colorPickerContainer.style.display = "none";
-      uploadImageBtn.style.display = "none";
-      imageUploadStatus.style.display = "none";
+      profileMenuWrapper.style.display = "none";
     }
 
-    const dbRef = ref(db);
-    const speedrunSnapshot = await get(child(dbRef, "SpeedRunner/"));
-
-    if (speedrunSnapshot.exists()) {
-      const data = speedrunSnapshot.val();
-      const totalRuns = Number(data.RunNum) || 0;
-      let matchCount = 0;
-
-      const loggedInUser = (userData.username || "").replace(/_/g, " ").trim().toLowerCase();
-      const userNickname = (userData.nickname || "").replace(/_/g, " ").trim().toLowerCase();
-
-      userRunsList.innerHTML = "";
-
-      for (let i = 1; i <= totalRuns; i++) {
-        const runData = data[i];
-        if (!runData) continue;
-
-        const runnerName = (runData.Runner || "").replace(/_/g, " ").trim().toLowerCase();
-        if (runnerName === loggedInUser || runnerName === userNickname) {
-          matchCount++;
-
-          const list = document.createElement("li");
-          list.setAttribute("class", "spacing");
-
-          const level = runData.Run.replace(/_/g, " ");
-          const time = runData.Time.replace(/^0+:?/, "").replace(/^0+/, "");
-          const link = runData.Link;
-          const tournament = runData.Tournament;
-          const levelLabel = level.includes("Week") ? "LevelPack" : "Level";
-
-          list.innerHTML = `
-            <img src="Mega%20Speedruns_files/${tournament}SS/${runData.Run}.png" alt="${level}" class="imgResize">
-            <span>${levelLabel}: ${level}</span>
-            <span>Time: ${time}</span>
-            <span><a href="${link}" target="_blank">Watch Run</a></span>
-          `;
-
-          userRunsList.appendChild(list);
-        }
+    try {
+      let runCountEl = document.getElementById("speedrun-count");
+      if (!runCountEl) {
+        runCountEl = document.createElement("h3");
+        runCountEl.id = "speedrun-count";
+        runCountEl.className = "outline";
+        userRunsList.parentElement.insertBefore(runCountEl, userRunsList);
       }
 
-      runCountEl.innerText = `Speedruns - Runs Submitted: ${matchCount}`;
-    } else {
-      runCountEl.innerText = "Speedruns - Runs Submitted: 0";
+      const speedrunSnapshot = await get(child(ref(db), "SpeedRunner/"));
+      userRunsList.innerHTML = "";
+
+      if (speedrunSnapshot.exists()) {
+        const data = speedrunSnapshot.val();
+        const totalRuns = Number(data.RunNum) || 0;
+        let matchCount = 0;
+
+        const targetUsername = (userData.username || "").replace(/_/g, " ").trim().toLowerCase();
+        const targetNickname = (userData.nickname || "").replace(/_/g, " ").trim().toLowerCase();
+
+        for (let i = 1; i <= totalRuns; i++) {
+          const runData = data[i];
+          if (!runData) continue;
+
+          const runnerName = (runData.Runner || "").replace(/_/g, " ").trim().toLowerCase();
+          if (runnerName === targetUsername || (targetNickname && runnerName === targetNickname)) {
+            matchCount++;
+
+            const level = (runData.Run || "").replace(/_/g, " ");
+            const time = (runData.Time || "").replace(/^0+:?/, "").replace(/^0+/, "");
+            const link = runData.Link;
+            const tournament = runData.Tournament;
+            const levelLabel = level.includes("Week") ? "LevelPack" : "Level";
+
+            const imgPath = tournament === "MML"
+              ? `Mega%20Speedruns_files/${tournament}/${runData.Run}.png`
+              : `Mega%20Speedruns_files/${tournament}SS/${runData.Run}.png`;
+
+            const li = document.createElement("li");
+            li.setAttribute("class", "spacing");
+            li.innerHTML = `
+              <img src="${imgPath}" alt="${level}" class="imgResize">
+              <span>${levelLabel}: ${level}</span>
+              <span>Time: ${time}</span>
+              <span><a href="${link}" target="_blank">Watch Run</a></span>
+            `;
+            userRunsList.appendChild(li);
+          }
+        }
+
+        runCountEl.textContent = "Speedruns - Runs Submitted: " + matchCount;
+      } else {
+        runCountEl.textContent = "Speedruns - Runs Submitted: 0";
+      }
+    } catch (err) {
+      console.error("Failed to load speedruns:", err);
     }
   } catch (err) {
     console.error("Failed to load profile:", err);
   }
 });
-
 
 logoutBtn.addEventListener("click", async () => {
   try {
@@ -544,32 +948,30 @@ logoutBtn.addEventListener("click", async () => {
     window.location.href = "Login.html";
   } catch (err) {
     console.error("Logout failed:", err);
-    alert("Failed to log out. Try again.");
+    alert("Failed to log out. Please try again.");
   }
 });
 
 profileImg.onerror = () => {
-    profileImg.src = 'Mega Speedruns_files/Default_Avatar.png';
+  profileImg.src = "Mega Speedruns_files/Default_Avatar.png";
 };
 </script>
 
 <script>
 window.addEventListener("DOMContentLoaded", () => {
-    const loginEl = document.getElementById("login");
-    const cachedUsername = localStorage.getItem("username");
-    if (cachedUsername) {
-        loginEl.textContent = `Profile`;
-        loginEl.href = "Profile.html";
-    } else {
-        loginEl.textContent = "Login";
-        loginEl.href = "Login.html";
-    }
+  const loginEl = document.getElementById("login");
+  const cachedUsername = localStorage.getItem("username");
+  if (cachedUsername) {
+    loginEl.textContent = "Profile";
+    loginEl.href = "Profile.html";
+  } else {
+    loginEl.textContent = "Login";
+    loginEl.href = "Login.html";
+  }
 });
-
-const usernameColorInput = document.getElementById("username-color");
-const saveColorBtn = document.getElementById("save-color-btn");
-const colorPickerContainer = document.getElementById("color-picker-container");
 </script>
 
+<script src="dm-crypto.js"></script>
+<script src="nav.js"></script>
 </body>
 </html>

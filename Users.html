@@ -155,13 +155,14 @@
         <nav class="nav-wrapper">
             <ul>
                 <li><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="MSTLP.htm" class="nav-link">Level Packs</a></li>
-                <li><a href="MMMLevels.htm" class="nav-link">MMM Levels</a></li>
-                <li><a href="Speedruns.htm" class="nav-link">Speedruns</a></li>
+                <li><a href="MSTLP.html" class="nav-link">Level Packs</a></li>
+                <li><a href="MMMLevels.html" class="nav-link">MMM Levels</a></li>
+                <li><a href="Speedruns.html" class="nav-link">Speedruns</a></li>
                 <li><a href="Forum.html" class="nav-link">Forums</a></li>
                 <li><a href="Creator.html" class="nav-link">Creator</a></li>
                 <li><a href="Users.html" class="nav-link active">Users</a></li>
                 <li><a id="login" href="Login.html" class="nav-link">Login</a></li>
+                <li id="messages-nav-item" style="display:none;"><a href="Messages.html" class="nav-link">Messages</a></li>
             </ul>
         </nav>
     </div>
@@ -252,7 +253,7 @@
         const userItem = document.createElement("div");
         userItem.className = "user-item";
 
-        const usernameColor = user.usernameColor || "#ffffff";
+        const usernameColor = user.usernameColor || "#64748b";
         userItem.style.setProperty("--user-color", usernameColor);
         const imgSrc = user.profileImageURL
           ? user.profileImageURL + (user.profileImageURL.includes("?") ? "&" : "?") + "t=" + new Date().getTime()
@@ -326,5 +327,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 });
 </script>
+<script src="dm-crypto.js"></script>
+<script src="nav.js"></script>
 </body>
 </html>

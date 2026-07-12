@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Message - Mega Speedruns</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="shortcut icon" type="image/x-icon" href="Mega%20Speedruns_files/logo.png" />
+<style>
+    body {
+        background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
+        min-height: 100vh;
+    }
+
+    main {
+        max-width: 700px;
+        margin: 2rem auto;
+        padding: 0 1rem 2rem;
+    }
+
+    #dm-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 1rem;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    #dm-header img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #2563eb;
+    }
+
+    #dm-header .dm-name {
+        font-size: 1.4em;
+        font-weight: 700;
+    }
+
+    .panel {
+        background: linear-gradient(135deg, #1a2436 0%, #131d2f 100%);
+        border: 1px solid #334155;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .panel .hint {
+        color: #94a3b8;
+        font-size: 0.85em;
+        line-height: 1.5;
+        margin: 0.5rem 0 1rem;
+    }
+
+    textarea, input[type="text"] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.65rem;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        font-family: inherit;
+        font-size: 0.9em;
+    }
+
+    textarea { min-height: 70px; resize: vertical; }
+
+    .key-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+    }
+
+    button {
+        padding: 10px 16px;
+        border: none;
+        border-radius: 8px;
+        background-color: #2563eb;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        font-family: inherit;
+        font-size: 0.9em;
+    }
+
+    button:hover { background-color: #1e3a8a; }
+    button:disabled { opacity: 0.6; cursor: default; }
+
+    .secondary-btn {
+        background-color: rgba(148, 163, 184, 0.2);
+        color: #cbd5e1;
+    }
+    .secondary-btn:hover { background-color: rgba(148, 163, 184, 0.35); }
+
+    #key-setup-status { min-height: 1.2em; font-size: 0.85em; color: #ff9d94; }
+
+    #message-list {
+        display: flex;
+        flex-direction: column;
+        min-height: 200px;
+        padding: 0.25rem 0.5rem 0.5rem;
+        background: rgba(10, 16, 29, 0.6);
+        border: 1px solid #334155;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+    }
+
+    .dm-item {
+        border-left: 3px solid var(--msg-color, #2563eb);
+        background: linear-gradient(135deg, #111b2e 0%, #0f172a 100%);
+        padding: 4px 12px;
+        border-radius: 6px;
+        width: 100%;
+        box-sizing: border-box;
+        flex-shrink: 0;
+    }
+
+    .dm-item-first {
+        margin-top: 1rem;
+        padding-top: 10px;
+    }
+
+    .dm-item-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+    }
+
+    .dm-item-header img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid var(--msg-color, #2563eb);
+    }
+
+    .dm-item-header a {
+        color: var(--msg-color, #2563eb);
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .dm-item-body {
+        margin-left: 42px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .dm-msg-text {
+        color: #ccc;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        flex: 1;
+    }
+
+    .dm-msg-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .dm-msg-time {
+        color: #64748b;
+        font-size: 0.75em;
+        flex-shrink: 0;
+    }
+
+    .remove-btn {
+        background-color: rgba(148, 163, 184, 0.25);
+        color: #cbd5e1;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        border-radius: 999px;
+        padding: 0;
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        font-size: 0.9em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .remove-btn:hover {
+        background-color: rgba(148, 163, 184, 0.4);
+    }
+
+    .empty-state {
+        color: #94a3b8;
+        font-style: italic;
+        text-align: center;
+        margin: auto;
+    }
+
+    #compose-row {
+        display: flex;
+        gap: 8px;
+        align-items: flex-end;
+    }
+
+    #compose-input { flex: 1; min-height: 46px; }
+
+    #login-warning, #no-key-notice {
+        color: #ff5555;
+        font-weight: bold;
+        text-align: center;
+        background: linear-gradient(135deg, #271d2e 0%, #221a2b 100%);
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 3px solid #ff5555;
+        margin-bottom: 1rem;
+    }
+</style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="Mega%20Speedruns_files/logo.png" alt="Mega Speedruns Logo">
+                <span class="logo-text">Mega Speedruns</span>
+            </div>
+            <nav class="nav-wrapper">
+                <ul>
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="MSTLP.html" class="nav-link">Level Packs</a></li>
+                    <li><a href="MMMLevels.html" class="nav-link">MMM Levels</a></li>
+                    <li><a href="Speedruns.html" class="nav-link">Speedruns</a></li>
+                    <li><a href="Forum.html" class="nav-link">Forums</a></li>
+                    <li><a href="Creator.html" class="nav-link">Creator</a></li>
+                    <li><a href="Users.html" class="nav-link">Users</a></li>
+                    <li><a id="login" href="Login.html" class="nav-link">Login</a></li>
+                    <li id="messages-nav-item" style="display:none;"><a href="Messages.html" class="nav-link active">Messages</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div id="login-warning" style="display:none;">Please log in to send messages.</div>
+
+        <a id="dm-header" href="#">
+            <img id="dm-avatar" src="Default_Avatar.png" alt="">
+            <span class="dm-name" id="dm-name">Loading...</span>
+        </a>
+
+        <div id="no-key-notice" style="display:none;">This user needs to login again, before you can message them.</div>
+
+        <div id="chat-area" style="display:none;">
+            <div id="message-list"></div>
+            <div id="compose-row">
+                <textarea id="compose-input" placeholder="Write a message..."></textarea>
+                <button id="send-btn" type="button">Send</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2022 Mega Speedruns. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="auth.js"></script>
+    <script src="dm-crypto.js"></script>
+
+    <script>
+    const params = new URLSearchParams(window.location.search);
+    const otherUID = params.get("uid");
+
+    const loginWarning = document.getElementById("login-warning");
+    const dmHeader = document.getElementById("dm-header");
+    const dmAvatar = document.getElementById("dm-avatar");
+    const dmName = document.getElementById("dm-name");
+    const noKeyNotice = document.getElementById("no-key-notice");
+    const chatArea = document.getElementById("chat-area");
+    const messageList = document.getElementById("message-list");
+    const composeInput = document.getElementById("compose-input");
+    const sendBtn = document.getElementById("send-btn");
+
+    let currentUID = null;
+    let sharedKey = null;
+    let conversationId = null;
+    let messagesRef = null;
+
+    let otherProfile = { username: "Unknown user", color: "#64748b", image: "Default_Avatar.png" };
+    let myProfile = { username: "You", color: "#64748b", image: "Default_Avatar.png" };
+
+    function formatTime(ts) {
+        if (!ts) return "";
+        return new Date(ts).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+    }
+
+    async function loadOtherProfile() {
+        try {
+            const snap = await db.ref("users/" + otherUID).once("value");
+            const data = snap.val() || {};
+            const color = data.usernameColor || "#64748b";
+            otherProfile = {
+                username: data.username || "Unknown user",
+                color: color,
+                image: data.profileImageURL || "Default_Avatar.png"
+            };
+            dmName.textContent = otherProfile.username;
+            dmName.style.color = color;
+            dmAvatar.src = otherProfile.image;
+            dmAvatar.style.borderColor = color;
+            dmHeader.href = "Profile.html?uid=" + otherUID;
+        } catch (err) {
+            console.error("Failed to load user profile:", err);
+            dmName.textContent = "Unknown user";
+        }
+    }
+
+    async function loadMyProfile() {
+        try {
+            const snap = await db.ref("users/" + currentUID).once("value");
+            const data = snap.val() || {};
+            myProfile = {
+                username: data.username || "You",
+                color: data.usernameColor || "#64748b",
+                image: data.profileImageURL || "Default_Avatar.png"
+            };
+        } catch (err) {
+            console.error("Failed to load own profile:", err);
+        }
+    }
+
+    async function deleteMessage(msgKey) {
+        if (!confirm("Delete this message?")) return;
+        try {
+            await db.ref("dmThreads/" + conversationId + "/messages/" + msgKey).remove();
+        } catch (err) {
+            console.error("Failed to delete message:", err);
+            alert("Failed to delete message. Try again.");
+        }
+    }
+
+    function showEmptyStateIfNeeded() {
+        if (!messageList.querySelector(".dm-item")) {
+            messageList.innerHTML = "<p class='empty-state'>No messages.</p>";
+        }
+    }
+
+    async function handleMessageAdded(snap) {
+        const msg = { key: snap.key, ...snap.val() };
+
+        if (messageList.querySelector('[data-key="' + msg.key + '"]')) return;
+
+        const placeholder = messageList.querySelector(".empty-state");
+        if (placeholder) placeholder.remove();
+
+        let text;
+        try {
+            text = await DMCrypto.decryptText(sharedKey, msg.ciphertext, msg.iv);
+        } catch (err) {
+            console.error("Failed to decrypt message:", err);
+            text = "(couldn't decrypt this message)";
+        }
+
+        const isMine = msg.senderUID === currentUID;
+        const profile = isMine ? myProfile : otherProfile;
+        const profileHref = "Profile.html?uid=" + (isMine ? currentUID : otherUID);
+
+        const lastItem = messageList.lastElementChild;
+        const showHeader = !lastItem || lastItem.dataset.sender !== msg.senderUID;
+
+        const headerHtml = showHeader ? `
+            <div class="dm-item-header">
+                <a href="${profileHref}">
+                    <img src="${profile.image}" alt="${profile.username}" onerror="this.onerror=null;this.src='Default_Avatar.png';">
+                </a>
+                <a href="${profileHref}">${profile.username}</a>
+            </div>
+        ` : "";
+
+        const item = document.createElement("div");
+        item.className = "dm-item" + (showHeader ? " dm-item-first" : "");
+        item.dataset.key = msg.key;
+        item.dataset.sender = msg.senderUID;
+        item.style.setProperty("--msg-color", profile.color);
+        item.innerHTML = `
+            ${headerHtml}
+            <div class="dm-item-body">
+                <div class="dm-msg-text"></div>
+                <div class="dm-msg-meta">
+                    <span class="dm-msg-time">${formatTime(msg.timestamp)}</span>
+                </div>
+            </div>
+        `;
+        item.querySelector(".dm-msg-text").textContent = text;
+
+        if (isMine) {
+            const delBtn = document.createElement("button");
+            delBtn.type = "button";
+            delBtn.className = "remove-btn";
+            delBtn.textContent = "×";
+            delBtn.title = "Delete message";
+            delBtn.onclick = () => deleteMessage(msg.key);
+            item.querySelector(".dm-msg-meta").appendChild(delBtn);
+        }
+
+        messageList.appendChild(item);
+        item.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+
+    function handleMessageRemoved(snap) {
+        const el = messageList.querySelector('[data-key="' + snap.key + '"]');
+        if (el) el.remove();
+        showEmptyStateIfNeeded();
+    }
+
+    function listenForMessages() {
+        if (messagesRef) messagesRef.off();
+        messageList.innerHTML = "";
+        showEmptyStateIfNeeded();
+
+        messagesRef = db.ref("dmThreads/" + conversationId + "/messages");
+        messagesRef.on("child_added", (snap) => {
+            handleMessageAdded(snap).catch(err => console.error("Failed to add message:", err));
+        });
+        messagesRef.on("child_removed", (snap) => {
+            handleMessageRemoved(snap);
+        });
+    }
+
+    async function updateIndexEntry(uidForIndex) {
+        await db.ref("dmIndex/" + uidForIndex + "/" + conversationId).set({
+            otherUID: uidForIndex === currentUID ? otherUID : currentUID,
+            updatedAt: Date.now()
+        });
+    }
+
+    async function sendMessage() {
+        const text = composeInput.value.trim();
+        if (!text || !sharedKey) return;
+        sendBtn.disabled = true;
+        try {
+            const { ciphertext, iv } = await DMCrypto.encryptText(sharedKey, text);
+            await db.ref("dmThreads/" + conversationId + "/messages").push({
+                senderUID: currentUID,
+                ciphertext,
+                iv,
+                timestamp: Date.now()
+            });
+            await Promise.all([updateIndexEntry(currentUID), updateIndexEntry(otherUID)]);
+            composeInput.value = "";
+        } catch (err) {
+            console.error("Failed to send message:", err);
+            alert("Failed to send message. Please try again.");
+        } finally {
+            sendBtn.disabled = false;
+            composeInput.focus();
+        }
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    composeInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+       

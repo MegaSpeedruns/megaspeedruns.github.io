@@ -571,12 +571,19 @@ input:hover, select:hover, textarea:hover {
     border-color: var(--primary);
 }
 
-input:focus, select:focus, textarea:focus,
+input:focus, select:focus,
 .input:focus, .time:focus {
     outline: none;
     border-color: #f97316;
     background-color: #131e34;
     box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.3);
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--border);
+    background-color: #131e34;
+    box-shadow: none;
 }
 
 select option {
