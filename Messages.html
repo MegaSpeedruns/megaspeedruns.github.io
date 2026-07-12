@@ -18,10 +18,21 @@
         padding: 0 1rem 3rem;
     }
 
-    h1 {
-        color: #2563eb;
+    .messages-header {
+        text-align: center;
         margin-bottom: 1.5rem;
-        font-size: 2em;
+    }
+
+    .messages-header-box {
+        background: linear-gradient(180deg, #1a2436 0%, #1b2538 100%);
+        border: 1px solid #334155;
+        border-radius: 12px;
+        padding: 0.85rem 1.5rem;
+    }
+
+    #messages-title {
+        font-size: 1.5rem;
+        margin: 0;
     }
 
     .panel {
@@ -225,7 +236,11 @@
     </header>
 
     <main>
-        <h1>Messages</h1>
+        <section class="messages-header">
+            <div class="messages-header-box">
+                <h1 id="messages-title">Messages</h1>
+            </div>
+        </section>
 
         <div id="login-warning" style="display:none;">Please log in to view your messages.</div>
 
@@ -250,6 +265,7 @@
     const loginWarning = document.getElementById("login-warning");
     const dmApp = document.getElementById("dm-app");
     const conversationList = document.getElementById("conversation-list");
+    const messagesTitle = document.getElementById("messages-title");
 
     let currentUID = null;
     const profileCache = {};
@@ -369,6 +385,15 @@
         }
         loginWarning.style.display = "none";
         currentUID = user.uid;
+
+        try {
+            const myProfile = await getProfile(currentUID);
+            messagesTitle.textContent = myProfile.username + " - Messages";
+            messagesTitle.style.color = myProfile.color;
+        } catch (err) {
+            console.error("Failed to load own profile:", err);
+        }
+
         try {
             const privateKey = await DMCrypto.ensureKeyPair(currentUID);
             dmApp.style.display = "block";
