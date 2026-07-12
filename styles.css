@@ -243,9 +243,16 @@ main {
 }
 
 .hero h1, .title-text h1 {
-    font-size: 3rem;
     color: #ffffff;
     margin-bottom: 1rem;
+}
+
+.hero h1 {
+    font-size: 3rem;
+}
+
+.title-text h1 {
+    font-size: 2.5rem;
 }
 
 .title-text {
