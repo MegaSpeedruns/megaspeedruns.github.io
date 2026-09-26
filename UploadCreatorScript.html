@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Upload Creator Script (Admin Tool)</title>
+<style>
+    body {
+        font-family: sans-serif;
+        background-color: #12121a;
+        color: #eee;
+        max-width: 560px;
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+    .card {
+        background-color: rgba(255, 255, 255, 0.06);
+        border-radius: 14px;
+        padding: 24px;
+    }
+    input[type="file"] {
+        display: block;
+        margin: 16px 0;
+        color: #eee;
+    }
+    input[type="email"],
+    input[type="password"] {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 8px 0;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.06);
+        color: #fff;
+    }
+    button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        background-color: #5b6ee1;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 8px;
+    }
+    button:disabled { opacity: 0.6; cursor: default; }
+    #status { min-height: 1.4em; margin-top: 14px; }
+    .hint { color: #aaa; font-size: 0.9em; line-height: 1.5; }
+</style>
+</head>
+<body>
+    <div class="card">
+        <h2>Upload MST3 Creator Script</h2>
+        <p class="hint">
+            Local admin tool — do NOT upload this page to the website.<br>
+            Log in below, pick <code>mst3-creator-app.js</code>, and it will be
+            written to <code>mst3Script/code</code> in the database.
+            Re-run this whenever you change the script.
+        </p>
+
+        <div id="login-box">
+            <input type="email" id="login-email" placeholder="Email">
+            <input type="password" id="login-password" placeholder="Password">
+            <button type="button" id="login-btn">Log In</button>
+        </div>
+
+        <div id="upload-box" style="display:none;">
+            <input type="file" id="script-file" accept=".js">
+            <button type="button" id="upload-btn">Upload to Database</button>
+        </div>
+
+        <p id="status"></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="auth.js"></script>
+
+    <script>
+    const statusEl = document.getElementById("status");
+    const loginBox = document.getElementById("login-box");
+    const uploadBox = document.getElementById("upload-box");
+    const loginBtn = document.getElementById("login-btn");
+    const uploadBtn = document.getElementById("upload-btn");
+
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            loginBox.style.display = "none";
+            uploadBox.style.display = "block";
+            statusEl.textContent = "Logged in as " + (user.email || user.uid);
+        } else {
+            loginBox.style.display = "block";
+            uploadBox.style.display = "none";
+            statusEl.textContent = "Not logged in.";
+        }
+    });
+
+    loginBtn.addEventListener("click", async () => {
+        const email = document.getElementById("login-email").value.trim();
+        const password = document.getElementById("login-password").value;
+        if (!email || !password) {
+            statusEl.textContent = "Enter your email and password.";
+            return;
+        }
+        loginBtn.disabled = true;
+        statusEl.textContent = "Logging in...";
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+        } catch (err) {
+            console.error(err);
+            statusEl.textContent = "Login failed: " + err.message;
+        } finally {
+            loginBtn.disabled = false;
+        }
+    });
+
+    uploadBtn.addEventListener("click", async () => {
+        const user = auth.currentUser;
+        if (!user) {
+            statusEl.textContent = "You must be logged in.";
+            return;
+        }
+        const file = document.getElementById("script-file").files[0];
+        if (!file) {
+            statusEl.textContent = "Pick the mst3-creator-app.js file first.";
+            return;
+        }
+        uploadBtn.disabled = true;
+        statusEl.textContent = "Uploading...";
+        try {
+            const code = await file.text();
+            await db.ref("mst3Script").set({
+                code: code,
+                updatedAt: Date.now(),
+                updatedBy: user.uid
+            });
+            statusEl.textContent = "Done! Script uploaded (" + code.length + " chars).";
+        } catch (err) {
+            console.error(err);
+            statusEl.textContent = "Upload failed: " + err.message;
+        } finally {
+            uploadBtn.disabled = false;
+        }
+    });
+    </script>
+</body>
+</html>
