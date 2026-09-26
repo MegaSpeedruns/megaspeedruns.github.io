@@ -14,6 +14,7 @@ window.PackCloud = (() => {
   const ADMIN_UID='rVntW7XRN3Xtud9v6xMEFeWTKDh2';
   async function account(){const s=await sdk();await s.userAuth.authStateReady();return s.userAuth.currentUser;}
   async function permissions(slug){const user=await account();if(!user||user.isAnonymous)return {edit:false,admin:false};const s=await sdk();const record=slug?(await s.db.get(s.db.ref(s.database,'levelPackCreator/packs/'+slug))).val():null;return {edit:!slug||record?.owner===user.uid,admin:user.uid===ADMIN_UID};}
+  async function creatorName(uid){if(!uid)return 'Unassigned';const s=await sdk();const profile=(await s.db.get(s.db.ref(s.database,'users/'+uid))).val();return profile?.username||'Unknown creator';}
   async function users(){const user=await account();if(user?.uid!==ADMIN_UID)throw Error('Not allowed');const s=await sdk();const data=(await s.db.get(s.db.ref(s.database,'users'))).val()||{};return Object.entries(data).map(([uid,p])=>({uid,name:p.username||uid})).sort((a,b)=>a.name.localeCompare(b.name));}
   async function assign(slug,uid){if(!(await permissions(slug)).admin)throw Error('Not allowed');const s=await sdk();await s.db.update(s.db.ref(s.database,'levelPackCreator/packs/'+slug),{owner:uid});}
   const slugify=name=>name.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70);
@@ -61,7 +62,7 @@ window.PackCloud = (() => {
       const blob=await response.blob();const ext=({'image/png':'png','image/jpeg':'jpg','image/gif':'gif','image/webp':'webp','audio/mpeg':'mp3','audio/wav':'wav','audio/ogg':'ogg'})[blob.type]||'bin';return upload(blob,ext);
     }
     const result=structuredClone(pack);
-    for(const key of ['customBorderDefault','customBorderActive','titleBackground','selectBackground','wilyBackground','victoryBackground','wilyIcon']){progress('Uploading assets…');result[key]=await asset(result[key]);}
+    for(const key of ['wily2Icon','wily2Background','packThumbnail','customBorderDefault','customBorderActive','titleBackground','selectBackground','wilyBackground','victoryBackground','wilyIcon']){progress('Uploading assets…');result[key]=await asset(result[key]);}
     for(const key of Object.keys(result.music||{}))result.music[key]=await asset(result.music[key]);
     for(const level of result.levels){
       if(level.customMugshot)level.image=await asset(level.image);
@@ -119,5 +120,5 @@ window.PackCloud = (() => {
     }
     if(!obsolete)await s.db.remove(s.db.ref(s.database,'levelPackCreator/packs/'+slug));
   }
-  return {list,load,publish,slugify,remove,olderVersions,canDelete,account,permissions,users,assign};
+  return {list,load,publish,slugify,remove,olderVersions,canDelete,account,permissions,users,assign,creatorName};
 })();

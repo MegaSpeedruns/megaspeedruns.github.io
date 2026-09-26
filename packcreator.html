@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <script>
-if(performance.getEntriesByType('navigation')[0]?.type==='reload'){
+window.returnToPackChoices=performance.getEntriesByType('navigation')[0]?.type==='reload';
+if(window.returnToPackChoices){
   sessionStorage.removeItem('pending-level-pack');
   sessionStorage.removeItem('selected-level-pack');
   if(location.protocol!=='file:')history.replaceState(null,'',new URL('packcreator.html',location.href));
@@ -179,6 +180,7 @@ body.squares-off .rm-tile.wily-tile{background:transparent;}
 .weblink{font-size:clamp(7px,1.1vw,10px);color:#8ac;cursor:pointer;text-decoration:underline;}
 /* form rows */
 .frow{display:flex;flex-direction:column;gap:6px;margin-top:14px;text-align:left;}
+#ed-button-label-row[hidden],#ps-wily2-bg-row[hidden],#ps-wily2-music-row[hidden]{display:none;}
 .frow label{font-size:clamp(7px,1.1vw,10px);color:#9ad;line-height:1.5;}
 .fline{display:flex;gap:8px;}
 .fline input{flex:1;}
@@ -195,7 +197,10 @@ body.squares-off .rm-tile.wily-tile{background:transparent;}
 }
 .pickbtn:hover{border-color:#fa6;}
 #ed-preview{display:block;}
-#ed-preview-status{height:3.2em;overflow-y:auto;}
+#ed-preview-status{overflow-y:auto;}
+#ed-preview-status:empty,#pick-hint-ed:empty,#ed-import-status:empty{display:none;}
+#edit-modal .frow:has(> #ed-import-status:empty){display:none;}
+#edit-modal .modal-btns{margin-top:12px;}
 .hint{font-size:clamp(6px,1vw,9px);color:#886;margin-top:8px;line-height:1.6;text-align:left;}
 .opt-row{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-top:16px;font-size:clamp(8px,1.3vw,12px);}
 .opt-row .val{color:#ffd850;cursor:pointer;border:3px solid #446;padding:8px 12px;min-width:110px;text-align:center;}
@@ -304,6 +309,7 @@ body.editing .wstage.locked{opacity:.8;cursor:pointer;}
 #tank-row{display:flex;gap:10px;flex-shrink:0;}
 #tank-row[hidden]{display:none;}
 .tank-counter{display:flex;align-items:center;gap:4px;font-size:11px;}
+.tank-counter span,.level-tank{text-shadow:-1px -1px 0 #000,0 -1px 0 #000,1px -1px 0 #000,-1px 0 0 #000,1px 0 0 #000,-1px 1px 0 #000,0 1px 0 #000,1px 1px 0 #000;}
 .tank-counter img,.level-tank img{width:24px;height:24px;object-fit:contain;}
 .tank-counter button{font:inherit;width:20px;height:24px;background:#081428;color:#fff;border:1px solid #446;cursor:pointer;}
 .tank-counter button:disabled{opacity:.35;cursor:default;}
@@ -313,7 +319,8 @@ body:not(.squares-off)[data-border-style="MM3"] .mugshot-backing{background:#fff
 @container (max-width:600px){#equipment-row{min-height:24px;margin-bottom:3px;}}
 .rm-name,#wily-label,#modal-title,.wstage,.wstage.beaten{color:#fff;}
 body[data-border-style="MM6"] .portrait-frame{clip-path:polygon(evenodd,0 0,100% 0,100% 100%,0 100%,0 0,16.666667% 16.666667%,16.666667% 83.333333%,83.333333% 83.333333%,83.333333% 16.666667%,16.666667% 16.666667%);}
-#game-choice{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max-content;max-width:100%;display:flex;flex-direction:column;align-items:center;gap:24px;}#game-choice[hidden]{display:none;}#game-choice button{background:none;border:0;box-shadow:none;color:white;font:inherit;font-size:24px;cursor:pointer;padding:8px;}#game-choice button:hover,#game-choice button:focus-visible{color:#a4e4fc;}
+#game-choice{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max-content;max-width:100%;display:flex;flex-direction:column;align-items:center;gap:24px;}#game-choice[hidden]{display:none;}#game-choice button{background:none;border:0;box-shadow:none;color:white;font:inherit;font-size:24px;cursor:pointer;padding:8px;}#game-choice button:not([aria-disabled="true"]):hover,#game-choice button:focus-visible{color:#a4e4fc;}#game-choice button[aria-disabled="true"]{color:#666;cursor:pointer;}
+#ed-mugshot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:6px;max-height:220px;overflow:auto;padding:6px;margin:12px 0;}#ed-mugshot-grid[hidden]{display:none;}#ed-mugshot-grid button{padding:4px;background:#000;border:2px solid #446;cursor:pointer;}#ed-mugshot-grid button[aria-pressed="true"]{border-color:#fff;background:#1830a0;}#ed-mugshot-grid img{display:block;width:100%;aspect-ratio:1;image-rendering:pixelated;}
 </style>
 </head>
 <body>
@@ -328,8 +335,8 @@ body[data-border-style="MM6"] .portrait-frame{clip-path:polygon(evenodd,0 0,100%
         <div class="t1" id="title-line1">LEVEL PACK</div>
       </div>
       </div>
-      <div class="press-start" id="btn-start">PRESS START</div><div id="game-choice" hidden><button type="button" id="new-game">NEW GAME</button><button type="button" id="continue-game">CONTINUE</button></div>
-<button id="browse-cloud-packs" class="mbtn plain">LOAD PACK</button>
+      <div class="press-start" id="btn-start">PRESS START</div><div id="game-choice" hidden><button type="button" id="load-pack-choice">PLAY PACK</button><button type="button" id="create-pack">CREATE PACK</button><button type="button" id="new-game">NEW GAME</button><button type="button" id="continue-game">CONTINUE</button></div>
+
 
     </div>
   </section>
@@ -393,18 +400,18 @@ body[data-border-style="MM6"] .portrait-frame{clip-path:polygon(evenodd,0 0,100%
 <div class="frow" id="ed-local-row"><label for="ed-local-file">LEVEL FILE (.MMLV)</label><input id="ed-local-file" type="file" accept=".mmlv"><div class="hint" id="ed-local-name"></div></div>
       <div class="frow"><label>FULL NAME</label><input id="ed-name" type="text" maxlength="160"></div>
       <div class="frow"><label>GRID NAME (MAX 80, AUTO-SIZED)</label><input id="ed-short" type="text" maxlength="80"></div>
+      <div class="frow" id="ed-button-label-row" hidden><label for="ed-button-label">WILY BUTTON TEXT</label><input id="ed-button-label" type="text" maxlength="80"></div>
+      <div class="frow"><label id="mugshots-heading">MUGSHOTS</label></div>
+      <div id="ed-mugshot-grid" aria-labelledby="mugshots-heading"></div>
       <div class="opt-row"><label for="ed-custom">CUSTOM MUGSHOT</label><input id="ed-custom" type="checkbox"></div>
-      <div class="frow" id="ed-number-row"><label for="ed-mugshot">MUGSHOT NUMBER</label>
-        <div class="fline"><button class="pickbtn" id="ed-prev" aria-label="Previous mugshot">◀</button><input id="ed-mugshot" type="number" min="0" max="81" step="1" value="33"><button class="pickbtn" id="ed-next" aria-label="Next mugshot">▶</button></div>
-      </div>
       <div class="frow">
         
-        <div class="hint" id="ed-import-status" role="status" style="min-height:3.2em"></div>
+        <div class="hint" id="ed-import-status" role="status"></div>
       </div>
       <div class="frow" id="ed-custom-row"><label for="ed-image">CUSTOM MUGSHOT IMAGE</label>
         <div class="fline"><input id="ed-image" type="text"><button class="pickbtn" id="ed-pick-image" type="button">PICK FILE</button><input id="ed-image-file" type="file" accept="image/*" hidden></div>
       </div>
-      <img id="ed-preview" alt="Mugshot preview" style="width:96px;height:96px;object-fit:contain;margin:16px auto 0">
+      <img id="ed-preview" alt="Mugshot preview" style="width:96px;height:96px;object-fit:contain;margin:8px auto 0">
       <div class="hint" id="ed-preview-status" role="status"></div>
       <div class="hint" id="pick-hint-ed"></div>
       <div class="modal-btns">
@@ -439,14 +446,14 @@ body[data-border-style="MM6"] .portrait-frame{clip-path:polygon(evenodd,0 0,100%
       
       
       
-      <div class="settings-tabs" role="tablist" aria-label="Pack settings"><button type="button" role="tab" id="settings-tab-0" aria-controls="settings-panel-0" aria-selected="true" tabindex="0">PACK</button><button type="button" role="tab" id="settings-tab-2" aria-controls="settings-panel-2" aria-selected="false" tabindex="-1">LEVEL GRID</button><button type="button" role="tab" id="settings-tab-3" aria-controls="settings-panel-3" aria-selected="false" tabindex="-1">WILY STAGES</button><button type="button" role="tab" id="settings-tab-4" aria-controls="settings-panel-4" aria-selected="false" tabindex="-1">BACKGROUNDS</button><button type="button" role="tab" id="settings-tab-5" aria-controls="settings-panel-5" aria-selected="false" tabindex="-1">AUDIO</button><button type="button" role="tab" id="settings-tab-weapons" aria-controls="settings-panel-weapons" aria-selected="false" tabindex="-1">WEAPONS</button><button type="button" role="tab" id="settings-tab-tanks" aria-controls="settings-panel-tanks" aria-selected="false" tabindex="-1">TANKS</button><button type="button" role="tab" id="settings-tab-victory" aria-controls="settings-panel-victory" aria-selected="false" tabindex="-1">VICTORY</button></div><section class="settings-section" role="tabpanel" id="settings-panel-0" aria-labelledby="settings-tab-0"><div class="frow"><div class="fline"><button type="button" class="pickbtn" id="ps-load-pack">LOAD PACK</button><button type="button" class="pickbtn" id="ps-default-pack">DEFAULT PACK</button><input id="ps-pack-file" type="file" accept=".js,.json" hidden></div></div><div class="frow"><label>PACK TITLE TEXT</label><input id="ps-name" type="text" maxlength="40"></div><div class="opt-row"><label for="ps-level-source">LEVEL SOURCE</label><select id="ps-level-source" class="source-select"><option value="online">ONLINE LEVEL ID</option><option value="local">MMLV</option></select></div><div class="opt-row"><label for="ps-show-title">SHOW TITLE</label><button type="button" class="val" id="ps-show-title" aria-pressed="true">ON</button></div><div class="opt-row"><label for="ps-font-size">TITLE TEXT FONT SIZE (PX)</label><input class="num" id="ps-font-size" type="number" min="6" max="120" step="1"></div><div class="opt-row"><label for="ps-title-text">TITLE TEXT COLOR</label><input class="title-color" id="ps-title-text" type="color"></div></section><section class="settings-section" role="tabpanel" id="settings-panel-2" aria-labelledby="settings-tab-2" hidden><div class="opt-row"><label for="ps-level-count">LEVEL COUNT</label><select id="ps-level-count" class="source-select"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div><div class="opt-row"><span>LEVEL NAMES</span><span class="val" id="ps-names">ON</span></div><div class="opt-row"><label for="ps-level-font-size">LEVEL NAME FONT SIZE (PX)</label><input class="num" id="ps-level-font-size" type="number" min="6" max="120" step="1"></div><div class="opt-row"><span>LEVEL BORDERS</span><span class="val" id="ps-squares">ON</span></div><div class="opt-row"><span>BORDER STYLE</span><span class="val" id="ps-border">MM2</span></div><div class="opt-row"><label for="ps-custom-border">CUSTOM LEVEL BORDER</label><input id="ps-custom-border" type="checkbox"></div><div id="custom-border-fields" hidden><p class="hint">Use 48 × 48 pixel images with a transparent center for the mugshot.</p><div class="frow"><label for="ps-border-default">DEFAULT (NOT HOVERED)</label><div class="fline"><input id="ps-border-default" type="text"><button class="pickbtn" data-pick="ps-border-default" data-kind="images">PICK FILE</button></div></div><div class="frow"><label for="ps-border-active">ACTIVE (HOVERED)</label><div class="fline"><input id="ps-border-active" type="text"><button class="pickbtn" data-pick="ps-border-active" data-kind="images">PICK FILE</button></div></div></div><div class="opt-row"><label for="ps-spacing-x">LEVEL HORIZONTAL SPACING (PX)</label><input class="num" id="ps-spacing-x" type="number" min="0" max="400" step="2"></div><div class="opt-row"><label for="ps-spacing-y">LEVEL VERTICAL SPACING (PX)</label><input class="num" id="ps-spacing-y" type="number" min="0" max="400" step="2"></div><div class="opt-row"><label for="ps-offset-y">LEVEL VERTICAL OFFSET (PX)</label><input class="num" id="ps-offset-y" type="number" min="-400" max="400" step="2"></div></section><section class="settings-section" role="tabpanel" id="settings-panel-3" aria-labelledby="settings-tab-3" hidden><div class="opt-row"><label for="ps-wily-count">WILY STAGE COUNT</label><select id="ps-wily-count" class="source-select"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div><div class="frow"><label for="ps-wily-icon">WILY ICON</label><div class="fline"><input id="ps-wily-icon" type="text"><button class="pickbtn" data-pick="ps-wily-icon" data-kind="images">PICK FILE</button></div></div><div class="frow"><label for="ps-wily-text">WILY ICON TEXT</label><input id="ps-wily-text" type="text" maxlength="80"></div><div class="opt-row"><label for="ps-show-wily-title">SHOW WILY STAGES TITLE</label><button type="button" class="val" id="ps-show-wily-title">ON</button></div><div class="frow"><label for="ps-wily-title">WILY STAGES TITLE</label><input id="ps-wily-title" type="text" maxlength="160"></div><div class="opt-row"><label for="ps-wily-color">WILY TEXT COLOR</label><input class="title-color" id="ps-wily-color" type="color"></div></section><section class="settings-section" role="tabpanel" id="settings-panel-4" aria-labelledby="settings-tab-4" hidden><div class="frow"><label>TITLE SCREEN</label>
+      <div class="settings-tabs" role="tablist" aria-label="Pack settings"><button type="button" role="tab" id="settings-tab-0" aria-controls="settings-panel-0" aria-selected="true" tabindex="0">PACK</button><button type="button" role="tab" id="settings-tab-2" aria-controls="settings-panel-2" aria-selected="false" tabindex="-1">LEVEL GRID</button><button type="button" role="tab" id="settings-tab-3" aria-controls="settings-panel-3" aria-selected="false" tabindex="-1">MISC/WILY STAGES</button><button type="button" role="tab" id="settings-tab-4" aria-controls="settings-panel-4" aria-selected="false" tabindex="-1">BACKGROUNDS</button><button type="button" role="tab" id="settings-tab-5" aria-controls="settings-panel-5" aria-selected="false" tabindex="-1">AUDIO</button><button type="button" role="tab" id="settings-tab-weapons" aria-controls="settings-panel-weapons" aria-selected="false" tabindex="-1">WEAPONS</button><button type="button" role="tab" id="settings-tab-tanks" aria-controls="settings-panel-tanks" aria-selected="false" tabindex="-1">TANKS</button><button type="button" role="tab" id="settings-tab-victory" aria-controls="settings-panel-victory" aria-selected="false" tabindex="-1">VICTORY</button></div><section class="settings-section" role="tabpanel" id="settings-panel-0" aria-labelledby="settings-tab-0"><div class="frow"><div class="fline"><button type="button" class="pickbtn" id="ps-load-pack">LOAD PACK</button><button type="button" class="pickbtn" id="ps-default-pack">DEFAULT PACK</button><input id="ps-pack-file" type="file" accept=".js,.json" hidden></div></div><div class="frow"><label for="ps-thumbnail">PACK THUMBNAIL</label><div class="fline"><input id="ps-thumbnail" type="text"><button class="pickbtn" data-pick="ps-thumbnail" data-kind="images">PICK FILE</button></div></div><div class="frow"><label>PACK TITLE TEXT</label><input id="ps-name" type="text" maxlength="40"></div><div class="opt-row"><label for="ps-level-source">LEVEL SOURCE</label><select id="ps-level-source" class="source-select"><option value="online">ONLINE LEVEL ID</option><option value="local">MMLV</option></select></div><div class="opt-row"><label for="ps-show-title">SHOW TITLE</label><button type="button" class="val" id="ps-show-title" aria-pressed="true">ON</button></div><div class="opt-row"><label for="ps-font-size">TITLE TEXT FONT SIZE (PX)</label><input class="num" id="ps-font-size" type="number" min="6" max="120" step="1"></div><div class="opt-row"><label for="ps-title-text">TITLE TEXT COLOR</label><input class="title-color" id="ps-title-text" type="color"></div></section><section class="settings-section" role="tabpanel" id="settings-panel-2" aria-labelledby="settings-tab-2" hidden><div class="opt-row"><label for="ps-level-count">LEVEL COUNT</label><select id="ps-level-count" class="source-select"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="4x4">4 × 4 (TWO SETS)</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div><div class="opt-row"><span>LEVEL NAMES</span><span class="val" id="ps-names">ON</span></div><div class="opt-row"><label for="ps-level-font-size">LEVEL NAME FONT SIZE (PX)</label><input class="num" id="ps-level-font-size" type="number" min="6" max="120" step="1"></div><div class="opt-row"><span>LEVEL BORDERS</span><span class="val" id="ps-squares">ON</span></div><div class="opt-row"><span>BORDER STYLE</span><span class="val" id="ps-border">MM2</span></div><div class="opt-row"><label for="ps-custom-border">CUSTOM LEVEL BORDER</label><input id="ps-custom-border" type="checkbox"></div><div id="custom-border-fields" hidden><p class="hint">Use 48 × 48 pixel images with a transparent center for the mugshot.</p><div class="frow"><label for="ps-border-default">DEFAULT (NOT HOVERED)</label><div class="fline"><input id="ps-border-default" type="text"><button class="pickbtn" data-pick="ps-border-default" data-kind="images">PICK FILE</button></div></div><div class="frow"><label for="ps-border-active">ACTIVE (HOVERED)</label><div class="fline"><input id="ps-border-active" type="text"><button class="pickbtn" data-pick="ps-border-active" data-kind="images">PICK FILE</button></div></div></div><div class="opt-row"><label for="ps-spacing-x">LEVEL HORIZONTAL SPACING (PX)</label><input class="num" id="ps-spacing-x" type="number" min="0" max="400" step="2"></div><div class="opt-row"><label for="ps-spacing-y">LEVEL VERTICAL SPACING (PX)</label><input class="num" id="ps-spacing-y" type="number" min="0" max="400" step="2"></div><div class="opt-row"><label for="ps-offset-y">LEVEL VERTICAL OFFSET (PX)</label><input class="num" id="ps-offset-y" type="number" min="-400" max="400" step="2"></div></section><section class="settings-section" role="tabpanel" id="settings-panel-3" aria-labelledby="settings-tab-3" hidden><div class="opt-row"><label for="ps-intro">INTRO STAGE</label><input id="ps-intro" type="checkbox"></div><div class="opt-row"><label for="ps-midway-count">MIDWAY STAGES</label><select id="ps-midway-count" class="source-select"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></div><div id="midway-settings"></div><div class="opt-row"><label for="ps-wily-count">WILY STAGE COUNT</label><select id="ps-wily-count" class="source-select"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div><div class="frow"><label for="ps-wily-icon">WILY ICON</label><div class="fline"><input id="ps-wily-icon" type="text"><button class="pickbtn" data-pick="ps-wily-icon" data-kind="images">PICK FILE</button></div></div><div class="frow"><label for="ps-wily-text">WILY ICON TEXT</label><input id="ps-wily-text" type="text" maxlength="80"></div><div class="opt-row"><label for="ps-show-wily-title">SHOW WILY STAGES TITLE</label><button type="button" class="val" id="ps-show-wily-title">ON</button></div><div class="frow"><label for="ps-wily-title">WILY STAGES TITLE</label><input id="ps-wily-title" type="text" maxlength="160"></div><div class="opt-row"><label for="ps-wily-color">WILY TEXT COLOR</label><input class="title-color" id="ps-wily-color" type="color"></div><div class="opt-row"><label for="ps-second-wily">SECOND WILY SET</label><input id="ps-second-wily" type="checkbox"></div><div id="second-wily-options" hidden><div class="opt-row"><label for="ps-wily2-count">SECOND SET STAGE COUNT</label><select id="ps-wily2-count" class="source-select"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div><div class="frow"><label for="ps-wily2-icon">SECOND SET ICON</label><div class="fline"><input id="ps-wily2-icon" type="text" placeholder="Default Wily icon"><button class="pickbtn" data-pick="ps-wily2-icon" data-kind="images">PICK FILE</button></div></div><div class="frow"><label for="ps-wily2-title">SECOND SET TITLE</label><input id="ps-wily2-title" type="text" maxlength="160"></div></div></section><section class="settings-section" role="tabpanel" id="settings-panel-4" aria-labelledby="settings-tab-4" hidden><div class="frow"><label>TITLE SCREEN</label>
         <div class="fline"><input id="ps-titlebg" type="text"><button class="pickbtn" data-pick="ps-titlebg" data-kind="images">PICK FILE</button></div></div><div class="frow"><label>LEVEL SELECT</label>
         <div class="fline"><input id="ps-selectbg" type="text"><button class="pickbtn" data-pick="ps-selectbg" data-kind="images">PICK FILE</button></div></div><div class="frow"><label>WILY STAGES</label>
-        <div class="fline"><input id="ps-wilybg" type="text"><button class="pickbtn" data-pick="ps-wilybg" data-kind="images">PICK FILE</button></div></div></section><section class="settings-section" role="tabpanel" id="settings-panel-5" aria-labelledby="settings-tab-5" hidden><div class="opt-row"><span>MUSIC</span><div class="music-controls"><button type="button" class="val" id="opt-music" aria-label="Music" aria-pressed="true">ON</button></div></div><div class="opt-row"><label for="opt-volume">MUSIC &amp; SFX VOLUME</label><div class="music-volume"><input id="opt-volume" type="range" min="0" max="100" step="1" value="10" aria-label="Music &amp; SFX volume"><output id="opt-volume-value" for="opt-volume">10%</output></div></div><div class="opt-row"><span>UI SOUNDS</span><span class="val" id="ps-sounds">ON</span></div><div class="frow"><label>TITLE MUSIC</label>
+        <div class="fline"><input id="ps-wilybg" type="text"><button class="pickbtn" data-pick="ps-wilybg" data-kind="images">PICK FILE</button></div></div><div class="frow" id="ps-wily2-bg-row" hidden><label for="ps-wily2-bg">WILY STAGES 2</label><div class="fline"><input id="ps-wily2-bg" type="text"><button class="pickbtn" data-pick="ps-wily2-bg" data-kind="images">PICK FILE</button></div></div></section><section class="settings-section" role="tabpanel" id="settings-panel-5" aria-labelledby="settings-tab-5" hidden><div class="opt-row"><span>MUSIC</span><div class="music-controls"><button type="button" class="val" id="opt-music" aria-label="Music" aria-pressed="true">ON</button></div></div><div class="opt-row"><label for="opt-volume">MUSIC &amp; SFX VOLUME</label><div class="music-volume"><input id="opt-volume" type="range" min="0" max="100" step="1" value="10" aria-label="Music &amp; SFX volume"><output id="opt-volume-value" for="opt-volume">10%</output></div></div><div class="opt-row"><span>UI SOUNDS</span><span class="val" id="ps-sounds">ON</span></div><div class="frow"><label>TITLE MUSIC</label>
         <div class="fline"><input id="ps-mus-title" type="text"><button class="pickbtn" data-pick="ps-mus-title" data-kind="music">PICK FILE</button></div></div><div class="frow"><label>LEVEL SELECT MUSIC</label>
         <div class="fline"><input id="ps-mus-select" type="text"><button class="pickbtn" data-pick="ps-mus-select" data-kind="music">PICK FILE</button></div></div><div class="frow"><label>WILY STAGES MUSIC</label>
         <div class="fline"><input id="ps-mus-wily" type="text"><button class="pickbtn" data-pick="ps-mus-wily" data-kind="music">PICK FILE</button></div></div><div class="frow"><label>GAME CLEAR MUSIC</label>
-        <div class="fline"><input id="ps-mus-clear" type="text"><button class="pickbtn" data-pick="ps-mus-clear" data-kind="music">PICK FILE</button></div></div></section><section class="settings-section" role="tabpanel" id="settings-panel-victory" aria-labelledby="settings-tab-victory" hidden><div class="frow"><label for="ps-victory-image">VICTORY SCREEN IMAGE</label><div class="fline"><input id="ps-victory-image" type="text"><button class="pickbtn" data-pick="ps-victory-image" data-kind="images">PICK FILE</button></div></div><div class="frow"><label for="ps-victory-credits">CREDITS</label><textarea id="ps-victory-credits" rows="4"></textarea></div></section><section class="settings-section" role="tabpanel" id="settings-panel-weapons" aria-labelledby="settings-tab-weapons" hidden><div class="opt-row"><label for="ps-show-weapons">SHOW WEAPONS</label><button type="button" class="val" id="ps-show-weapons">ON</button></div><div class="opt-row"><label for="ps-weapon-count">WEAPON ICON COUNT</label><input class="num" id="ps-weapon-count" type="number" min="1" max="12"></div><div id="weapon-editor"></div></section><section class="settings-section" role="tabpanel" id="settings-panel-tanks" aria-labelledby="settings-tab-tanks" hidden><div class="opt-row"><label for="ps-show-tanks">SHOW TANKS</label><button type="button" class="val" id="ps-show-tanks">OFF</button></div><div id="tank-editor"></div></section><div class="hint" id="pick-hint-ps"></div>
+        <div class="fline"><input id="ps-mus-clear" type="text"><button class="pickbtn" data-pick="ps-mus-clear" data-kind="music">PICK FILE</button></div></div><div class="frow" id="ps-wily2-music-row" hidden><label for="ps-wily2-music">WILY STAGES 2 MUSIC</label><div class="fline"><input id="ps-wily2-music" type="text"><button class="pickbtn" data-pick="ps-wily2-music" data-kind="music">PICK FILE</button></div></div></section><section class="settings-section" role="tabpanel" id="settings-panel-victory" aria-labelledby="settings-tab-victory" hidden><div class="frow"><label for="ps-victory-image">VICTORY SCREEN IMAGE</label><div class="fline"><input id="ps-victory-image" type="text"><button class="pickbtn" data-pick="ps-victory-image" data-kind="images">PICK FILE</button></div></div><div class="frow"><label for="ps-victory-credits">CREDITS</label><textarea id="ps-victory-credits" rows="4"></textarea></div></section><section class="settings-section" role="tabpanel" id="settings-panel-weapons" aria-labelledby="settings-tab-weapons" hidden><div class="opt-row"><label for="ps-show-weapons">SHOW WEAPONS</label><button type="button" class="val" id="ps-show-weapons">ON</button></div><div class="opt-row"><label for="ps-weapon-count">WEAPON ICON COUNT</label><input class="num" id="ps-weapon-count" type="number" min="1" max="12"></div><div id="weapon-editor"></div></section><section class="settings-section" role="tabpanel" id="settings-panel-tanks" aria-labelledby="settings-tab-tanks" hidden><div class="opt-row"><label for="ps-show-tanks">SHOW LEVEL TANKS</label><button type="button" class="val" id="ps-show-tanks">OFF</button></div><div class="opt-row"><label for="ps-show-tank-tracker">SHOW TANK TRACKER</label><button type="button" class="val" id="ps-show-tank-tracker">OFF</button></div><div id="tank-editor"></div></section><div class="hint" id="pick-hint-ps"></div>
       
       
       
@@ -476,8 +483,8 @@ body[data-border-style="MM6"] .portrait-frame{clip-path:polygon(evenodd,0 0,100%
 <audio id="bgm" loop></audio>
 
 <!-- ======= editable pack config (JSON inside pack.js) ======= -->
-<script src="default-pack.js?v=20260926-accounts"></script>
-<script src="cloud-service.js?v=20260926-accounts"></script>
+<script src="default-pack.js?v=20260926-progression"></script>
+<script src="cloud-service.js?v=20260926-progression"></script>
 <script>
 /* ============================ config ============================ */
 const settingsTabs=[...document.querySelectorAll('.settings-tabs [role="tab"]')];
@@ -505,6 +512,7 @@ CONFIG.stageSpacingX=CONFIG.stageSpacingX??CONFIG.stageSpacing;
 CONFIG.stageSpacingY=CONFIG.stageSpacingY??CONFIG.stageSpacing;
 CONFIG.music = Object.assign({}, DEFAULTS.music, CONFIG.music||{});
 if(CONFIG.pickerBackground && !CONFIG.selectBackground) CONFIG.selectBackground = CONFIG.pickerBackground; // old key compat
+if(CONFIG.gridMode==='4x4')CONFIG.levelCount=8;
 CONFIG.levels = (CONFIG.levels||[]).map(l=>Object.assign({id:0,name:"?",short:"?",image:""},l));
 while(CONFIG.levels.length<12) CONFIG.levels.push({id:0,name:"EMPTY SLOT "+(CONFIG.levels.length+1),short:"EMPTY",image:""});
 CONFIG.levelCount=Math.max(0,Math.min(12,Math.round(Number(CONFIG.levelCount ?? (loadedPack.levels?.length ? 8 : 0)))));
@@ -521,6 +529,44 @@ function ensureLevelSlots(){
   if(CONFIG.levelCount===0&&CONFIG.wilyStageCount===0)return;
   while(CONFIG.levels.length<18){const i=CONFIG.levels.length;CONFIG.levels.push({id:0,name:'Level '+(i+1),short:'Level '+(i+1),image:'',mugshotNumber:32,customMugshot:false});}
 }
+
+function ensureSpecialStages(){
+  CONFIG.wily2StageCount=Math.max(1,Math.min(6,Number(CONFIG.wily2StageCount)||4));
+  if(CONFIG.secondWilyEnabled){while(CONFIG.levels.length<27){const i=CONFIG.levels.length;const name=i>=21?'WILY '+(i-20):'LEVEL '+(i+1);CONFIG.levels.push({id:0,name,short:name,image:'',mugshotNumber:32,customMugshot:false});}}
+
+  CONFIG.introEnabled=!!CONFIG.introEnabled;
+  CONFIG.midwayCount=Math.max(0,Math.min(2,Number(CONFIG.midwayCount)||0));
+  CONFIG.midwayAfter=Array.from({length:2},(_,i)=>Math.max(0,Math.min(CONFIG.levelCount,Math.round(Number(CONFIG.midwayAfter?.[i]??Math.min(CONFIG.levelCount,(i+1)*3))))));
+  if(!CONFIG.introEnabled&&!CONFIG.midwayCount)return;
+  while(CONFIG.levels.length<21){const i=CONFIG.levels.length;const name=i===18?'INTRO STAGE':i>18?'MIDWAY '+(i-18):'LEVEL '+(i+1);CONFIG.levels.push({id:0,name,short:name,image:'',mugshotNumber:32,customMugshot:false});}
+}
+ensureSpecialStages();
+function specialStageIndices(){return [...(CONFIG.introEnabled?[18]:[]),...Array.from({length:CONFIG.midwayCount||0},(_,i)=>19+i)];}
+function pendingSpecialStage(){
+  ensureSpecialStages();
+  if(CONFIG.introEnabled&&!state.beaten[progressKey(CONFIG.levels[18])])return 18;
+  const pending=Array.from({length:CONFIG.midwayCount},(_,i)=>i).sort((a,b)=>CONFIG.midwayAfter[a]-CONFIG.midwayAfter[b]);
+  for(const i of pending)if(robotsBeaten()>=CONFIG.midwayAfter[i]&&!state.beaten[progressKey(CONFIG.levels[19+i])])return 19+i;
+  return null;
+}
+function chooseLevelSet(slot){
+  const overlay=document.createElement('div');overlay.className='overlay open';
+  const box=document.createElement('div');box.setAttribute('role','dialog');box.setAttribute('aria-label','Choose level set');box.style.cssText='padding:32px;background:#071328;border:4px solid #a4e4fc;display:flex;flex-direction:column;gap:18px;';
+  const close=document.createElement('button');close.textContent='×';close.setAttribute('aria-label','Close');close.onclick=()=>overlay.remove();box.append(close);
+  for(let set=0;set<2;set++){const button=document.createElement('button');button.className='pickbtn';button.textContent='SET '+(set+1);button.onclick=()=>{overlay.remove();openEditor(slot+set*4);};box.append(button);}
+  overlay.append(box);document.body.append(overlay);
+}
+function chooseSpecialEditor(){
+  ensureSpecialStages();
+  const overlay=document.createElement('div');overlay.className='overlay open';
+  const box=document.createElement('div');box.style.cssText='position:relative;padding:42px;background:#071328;border:4px solid #a4e4fc;display:flex;flex-direction:column;gap:18px;';box.setAttribute('role','dialog');box.setAttribute('aria-label','Choose stage to edit');
+  const close=document.createElement('button');close.textContent='×';close.setAttribute('aria-label','Close');close.onclick=()=>overlay.remove();box.append(close);
+  const choices=[...(CONFIG.introEnabled?[['INTRO STAGE',18]]:[]),...(CONFIG.wilyStageCount?(CONFIG.secondWilyEnabled?[['WILY SET 1',null],['WILY SET 2','wily2']]:[['WILY STAGES',null]]):[]),...Array.from({length:CONFIG.midwayCount},(_,i)=>['MIDWAY '+(i+1),19+i])];
+  if(choices.length===1){const index=choices[0][1];if(index===null||index==='wily2'){wilyEditSet=index==='wily2'?2:1;showScreen('screen-wily');}else openEditor(index);return;}
+  for(const [name,index] of choices){const button=document.createElement('button');button.className='pickbtn';button.textContent=name;button.onclick=()=>{overlay.remove();if(index===null)showScreen('screen-wily');else openEditor(index);};box.append(button);}
+  overlay.append(box);document.body.append(overlay);
+}
+
 // Editing is a session control, independent of the saved pack.
 let editMode=false;
 CONFIG.levels.forEach(l=>{
@@ -530,7 +576,7 @@ CONFIG.levels.forEach(l=>{
   if(l.customMugshot==null)l.customMugshot=!!l.image&&!match;
 });
 CONFIG.weaponCount=Math.max(1,Math.min(12,Number(CONFIG.weaponCount)||10));
-CONFIG.weapons=Array.from({length:12},(_,i)=>Object.assign({icon:i+1,levels:[]},CONFIG.weapons?.[i]));
+CONFIG.weapons=Array.from({length:12},(_,i)=>Object.assign({icon:i+1,levels:[],defaultWeapon:i===0},CONFIG.weapons?.[i]));
 const WEB='https://megamaker.webmeka.io/level-data.php?id=';
 const IMG_EXTS=['png','gif','jpg','jpeg','webp'];
 const AUD_EXTS=['mp3','ogg','wav','m4a'];
@@ -567,12 +613,20 @@ const optSounds=()=>state.sounds??CONFIG.uiSounds;
 /* ============================ helpers ============================ */
 const $=s=>document.querySelector(s);
 const robots=()=>CONFIG.levels.slice(0,CONFIG.levelCount);
-const wily  =()=>CONFIG.levels.slice(12,12+CONFIG.wilyStageCount);
+let wilyEditSet=1;
+const firstWilyClear=()=>CONFIG.levels.slice(12,12+CONFIG.wilyStageCount).every(l=>state.beaten[progressKey(l)]);
+const secondWilyActive=()=>!!CONFIG.secondWilyEnabled&&(editMode?wilyEditSet===2:firstWilyClear());
+const wily=()=>secondWilyActive()?CONFIG.levels.slice(21,21+CONFIG.wily2StageCount):CONFIG.levels.slice(12,12+CONFIG.wilyStageCount);
+const allWily=()=>[...CONFIG.levels.slice(12,12+CONFIG.wilyStageCount),...(CONFIG.secondWilyEnabled?CONFIG.levels.slice(21,21+CONFIG.wily2StageCount):[])];
 const robotsBeaten=()=>robots().filter(l=>state.beaten[progressKey(l)]).length;
 const wilyBeaten=()=>{let n=0;for(const l of wily()){if(state.beaten[progressKey(l)])n++;else break;}return n;};
-const allClear=()=>(CONFIG.levelCount+CONFIG.wilyStageCount>0)&&robotsBeaten()===CONFIG.levelCount&&wily().every(l=>state.beaten[progressKey(l)]);
+const allClear=()=>(CONFIG.levelCount+CONFIG.wilyStageCount>0)&&robotsBeaten()===CONFIG.levelCount&&allWily().every(l=>state.beaten[progressKey(l)])&&specialStageIndices().every(i=>state.beaten[progressKey(CONFIG.levels[i])]);
 function gameLink(l){ return 'megamaker://'+encodeURIComponent(l.id); }
-window.__openLink = url => { location.href = url; };
+let launchingLevel=false;
+window.__openLink = url => {
+  launchingLevel=true;
+  try{location.href=url;}finally{setTimeout(()=>{launchingLevel=false;},0);}
+};
 async function playLevel(l){
   if(CONFIG.levelSource==='local'){
     if(!l.localLevelData&&!l.localLevelUrl)return;
@@ -584,9 +638,9 @@ async function playLevel(l){
     document.body.appendChild(link);link.click();link.remove();
     setTimeout(()=>URL.revokeObjectURL(url),10000);sfx();return;
   }
-  sfx();musicFadedForPlay=true;fadeMusicVolume(2000);window.__openLink(gameLink(l));
+  sfx();if(!musicFadedForPlay){musicFadedForPlay=true;fadeMusicVolume(2000);}window.__openLink(gameLink(l));
 }
-function hasExt(p){ if(/^(data:|blob:)/i.test(p))return true; return /\.[a-z0-9]{2,5}$/i.test(p); }
+function hasExt(p){ if(/^(data:|blob:)/i.test(p))return true; try{return /\.[a-z0-9]{2,5}$/i.test(decodeURIComponent(new URL(p,document.baseURI).pathname));}catch{return false;} }
 /* resolve "images/TitleScreen" -> first extension that loads; cb(url or null) */
 function resolveAsset(path, exts, cb){
   if(!path){ cb(null); return; }
@@ -620,14 +674,17 @@ function showScreen(id){
 
 /* ============================ music (real files) ============================ */
 const bgm=$('#bgm');
-let currentTrackKey=null, interacted=false;
+let currentTrackKey=null, interacted=false, musicRequest=0;
+let playPackMusicEnabled=false;
 const SCREEN_TRACK={ 'screen-title':'title','screen-select':'select','screen-wily':'wily','screen-clear':'clear' };
 function switchMusic(screenId){
-  const key=SCREEN_TRACK[screenId];
+  const request=++musicRequest;
+  const key=screenId==='screen-wily'&&secondWilyActive()?'wily2':SCREEN_TRACK[screenId];
   currentTrackKey=key;
-  const path=(CONFIG.music||{})[key]||'';
+  const path=screenId==='screen-title'&&!editMode&&!playPackMusicEnabled?'':(CONFIG.music||{})[key]||'';
   if(!path||!optMusic()){ bgm.pause(); bgm.removeAttribute('src'); return; }
   const play=url=>{
+    if(request!==musicRequest)return;
     if(!url){ bgm.pause(); bgm.removeAttribute('src'); return; }
     const abs=new URL(url, document.baseURI).href;
     if(bgm.src!==abs){ bgm.src=url; }
@@ -638,6 +695,7 @@ function switchMusic(screenId){
     // probe audio extensions
     let i=0;
     (function tryNext(){
+      if(request!==musicRequest)return;
       if(i>=AUD_EXTS.length){ play(null); return; }
       const url=path+'.'+AUD_EXTS[i++];
       const a=new Audio();
@@ -667,7 +725,7 @@ function sfx(){
 /* ============================ apply config ============================ */
 function applyConfig(){
   document.body.classList.toggle('title-off',!CONFIG.showTitle);
-  $('.wily-title').textContent=CONFIG.wilyTitle;
+  $('.wily-title').textContent=secondWilyActive()?(CONFIG.wily2Title??CONFIG.wilyTitle):CONFIG.wilyTitle;
   $('.wily-title').style.color=CONFIG.wilyTextColor;
   $('.wily-title').style.visibility=CONFIG.showWilyTitle?'visible':'hidden';
   for(const [key,variable] of [['titleTextColor','text'],['titleBackgroundColor','background'],['titleBorderColor','border'],['titleAccentColor','accent']]){
@@ -681,7 +739,7 @@ function applyConfig(){
   setScreenBg('#screen-clear',CONFIG.victoryBackground);
   setScreenBg('#screen-title', CONFIG.titleBackground);
   setScreenBg('#screen-select', CONFIG.selectBackground);
-  setScreenBg('#screen-wily', CONFIG.wilyBackground);
+  setScreenBg('#screen-wily', secondWilyActive()?(CONFIG.wily2Background||CONFIG.wilyBackground):CONFIG.wilyBackground);
   document.documentElement.style.setProperty('--level-offset-y', (parseInt(CONFIG.stageOffsetY,10)||0)+'px');
   document.documentElement.style.setProperty('--tile-gap-x', (parseInt(CONFIG.stageSpacingX,10)||0)+'px');
   document.documentElement.style.setProperty('--tile-gap-y', (parseInt(CONFIG.stageSpacingY,10)||0)+'px');
@@ -725,8 +783,17 @@ document.addEventListener('keydown',e=>{
     toggleEditMode();
   }
 });
-function pressStart(){sfx();if(editMode){showScreen('screen-select');return;}$('#continue-game').hidden=store.read().played!==true;$('#btn-start').hidden=true;$('#game-choice').hidden=false;}
-function beginGame(resume){state=Object.assign(freshProgress(),resume?store.read():{});state.played=true;save();musicFadedForPlay=false;applyConfig();showScreen('screen-select');}
+async function pressStart(){
+  sfx();if(editMode){showScreen('screen-select');return;}
+  const loaded=!!CONFIG.cloudSlug||packWasLoaded;
+  $('#create-pack').hidden=loaded;$('#load-pack-choice').hidden=loaded;
+  $('#new-game').hidden=!loaded;$('#continue-game').hidden=!loaded||store.read().played!==true;
+  $('#create-pack').setAttribute('aria-disabled','true');$('#btn-start').hidden=true;$('#game-choice').hidden=false;
+  if(!loaded){try{$('#create-pack').setAttribute('aria-disabled',String(!(await PackCloud.permissions()).edit));}catch{}}
+}
+$('#create-pack').onclick=async()=>{sfx();if(!(await PackCloud.permissions()).edit){window.showCreateLoginMessage();return;}editMode=true;applyConfig();showScreen('screen-select');};
+$('#load-pack-choice').onclick=()=>{sfx();window.browseCloudPacks();};
+function beginGame(resume){sfx();state=Object.assign(freshProgress(),resume?store.read():{});state.played=true;save();musicFadedForPlay=false;applyConfig();showScreen('screen-select');}
 $('#new-game').onclick=()=>beginGame(false);
 $('#continue-game').onclick=()=>beginGame(true);
 $('#btn-start').addEventListener('click',pressStart);
@@ -749,27 +816,37 @@ function tileImg(l){
     : '<div class="qmark">?</div>';
 }
 function renderSelect(){
+  $('#screen-select .sel-wrap').append($('#equipment-row'));
+
   const grid=$('#sel-grid');grid.innerHTML='';
-  const count=CONFIG.levelCount,columns=count===12?5:count>=9?4:3;
+  const twoSets=CONFIG.gridMode==='4x4';
+  const count=twoSets?4:CONFIG.levelCount,columns=count===12?5:count>=9?4:3;
+  const setOffset=twoSets&&!editMode&&robots().slice(0,4).every(l=>state.beaten[progressKey(l)])?4:0;
   grid.style.setProperty('--grid-columns',columns);
   grid.dataset.columns=columns;
+  ensureSpecialStages();const special=editMode?null:pendingSpecialStage();
   const order=Array.from({length:count},(_,i)=>i);
-  if(CONFIG.wilyStageCount>0)order.splice(Math.floor(count/2),0,'W');
+  if(CONFIG.wilyStageCount>0||CONFIG.introEnabled||CONFIG.midwayCount)order.splice(Math.floor(count/2),0,'W');
   order.forEach(k=>{
     const tile=document.createElement('div');
     tile.className='rm-tile';tile.tabIndex=0;
-    if(k==='W'){
+    if(twoSets){const cell=k==='W'?5:[2,4,6,8][k];tile.style.gridColumn=String((cell-1)%3+1);tile.style.gridRow=String(Math.floor((cell-1)/3)+1);}
+    if(special!==null&&k!=='W'){tile.style.visibility='hidden';tile.tabIndex=-1;tile.setAttribute('aria-hidden','true');}
+    if(k==='W'&&special!==null){
+      const l=CONFIG.levels[special];tile.innerHTML=tileImg(l);const label=document.createElement('div');label.className='rm-name';label.textContent=l.short||l.name;tile.append(label);tile.onclick=()=>openModal(l,'rm');
+    }else if(k==='W'){
       tile.classList.add('wily-tile');
       const unlocked=robotsBeaten()===CONFIG.levelCount||editMode;
       if(!unlocked)tile.classList.add('locked');
-      if(CONFIG.wilyIcon){const icon=document.createElement('img');icon.src=CONFIG.wilyIcon;icon.alt='';tile.appendChild(icon);}
+      const wilyIcon=secondWilyActive()?(CONFIG.wily2Icon||CONFIG.wilyIcon):CONFIG.wilyIcon;
+      if(wilyIcon){const icon=document.createElement('img');icon.src=wilyIcon;icon.alt='';tile.appendChild(icon);}
       const label=document.createElement('div');label.className='rm-name';label.textContent=CONFIG.wilyText;
       tile.appendChild(label);
       tile.addEventListener('click',()=>{
-        if(unlocked){sfx();showScreen('screen-wily');}else sfx();
+        if(editMode){chooseSpecialEditor();return;}if(unlocked&&CONFIG.wilyStageCount){sfx();showScreen('screen-wily');}else sfx();
       });
     }else{
-      const l=robots()[k];
+      const levelIndex=k+setOffset;const l=robots()[levelIndex];
       tile.innerHTML=tileImg(l);
 
       const name=document.createElement('div');
@@ -779,7 +856,7 @@ function renderSelect(){
       tile.appendChild(name);
       if(state.beaten[progressKey(l)])tile.classList.add('beaten');
       tile.addEventListener('click',()=>{
-        if(editMode)openEditor(k);
+        if(editMode){if(twoSets)chooseLevelSet(k);else openEditor(k);}
         else openModal(l,'rm');
       });
     }
@@ -798,8 +875,8 @@ function fitGridNames(){
   const usual=width<=600?width*.16:Math.min(170,Math.max(48,width*.18));
   const gap=Math.min(Number(CONFIG.stageSpacingX)||0,width*.1);
   let size=Math.min(usual,(width*.92-gap*(columns-1))/columns);
-  if(CONFIG.showWeapons||CONFIG.showTanks){
-    const rows=Math.ceil((CONFIG.levelCount+1)/columns),border=selectedBorder();
+  if(CONFIG.showWeapons||(CONFIG.showTankTracker??CONFIG.showTanks)){
+    const rows=CONFIG.gridMode==='4x4'?3:Math.ceil((CONFIG.levelCount+1)/columns),border=selectedBorder();
     const height=document.querySelector('.sel-grid-holder').clientHeight;
     const gapY=Math.min(Number(CONFIG.stageSpacingY)||0,width*.1);
     const used=n=>rows*n*border.height/border.width+(rows-1)*Math.max(gapY,n*.35+12)+n*.35+24;
@@ -837,6 +914,7 @@ function openModal(l,kind){
   renderLevelTanks(l);
   updateBeatBtn();
   $('#stage-modal').classList.add('open');
+  if(local){musicFadedForPlay=true;fadeMusicVolume(2000);}
 }
 function updateBeatBtn(){
   const b=$('#modal-beat'),done=state.beaten[progressKey(modalLevel.l)];
@@ -852,15 +930,15 @@ $('#modal-beat').addEventListener('click',()=>{
   save();sfx();updateBeatBtn();
   if(modalLevel.kind==='rm')renderSelect();else renderWily();
   if(state.beaten[id]){
-    const destination=allClear()?'screen-clear':modalLevel.kind==='rm'?'screen-select':'screen-wily';
+    const finishedFirst=CONFIG.secondWilyEnabled&&CONFIG.levels.indexOf(modalLevel.l)>=12&&CONFIG.levels.indexOf(modalLevel.l)<12+CONFIG.wilyStageCount&&firstWilyClear();
+    const destination=allClear()?'screen-clear':finishedFirst||modalLevel.kind==='rm'?'screen-select':'screen-wily';
     closeModal();showScreen(destination);
   }
 });
 function closeModal(){$('#stage-modal').classList.remove('open');
-  musicFadedForPlay=false;
-  fadeMusicVolume();
+  resumeMenuMusic();
   if(modalLevel&&modalLevel.kind==='rm')renderSelect();else if(modalLevel)renderWily();}
-$('#modal-close').addEventListener('click',closeModal);
+$('#modal-close').addEventListener('click',()=>{sfx();closeModal();});
 
 /* ============================ file picking (edit mode) ============================ */
 let packDirHandle=null;
@@ -893,7 +971,8 @@ $('#ed-image-file').addEventListener('change',async e=>{
 function openEditor(i){
   editIndex=i;sfx();
   const l=CONFIG.levels[i];
-  $('#edit-title').textContent=(i<12?'EDIT ROBOT MASTER '+(i+1):'EDIT WILY STAGE '+(i-11));
+  $('#edit-title').textContent=i>=21?'EDIT WILY SET 2 STAGE '+(i-20):i===18?'EDIT INTRO STAGE':i>18?'EDIT MIDWAY '+(i-18):(i<12?'EDIT ROBOT MASTER '+(i+1):'EDIT WILY STAGE '+(i-11));
+  $('#ed-button-label-row').hidden=!((i>=12&&i<12+CONFIG.wilyStageCount)||(CONFIG.secondWilyEnabled&&i>=21&&i<21+CONFIG.wily2StageCount));$('#ed-button-label').value=l.buttonLabel||'WILY '+(i>=21?i-20:i-11);
   $('#ed-id').value=l.id;
   $('#ed-name').value=l.name;
   $('#ed-short').value=l.short;
@@ -904,7 +983,7 @@ function openEditor(i){
   refreshLevelSource();
   $('#edit-modal').classList.add('open');
 }
-[['ed-id','id'],['ed-name','name'],['ed-short','short'],['ed-image','image']].forEach(([el,key])=>{
+[['ed-button-label','buttonLabel'],['ed-id','id'],['ed-name','name'],['ed-short','short'],['ed-image','image']].forEach(([el,key])=>{
   $('#'+el).addEventListener('input',e=>{
     if(editIndex==null)return;
     let v=e.target.value;
@@ -914,14 +993,13 @@ function openEditor(i){
     markDirty();
   });
 });
+const mugshotGrid=$('#ed-mugshot-grid');
+for(let n=0;n<=81;n++){const button=document.createElement('button');button.type='button';button.setAttribute('aria-label','Mugshot '+n);const img=document.createElement('img');img.src='images/mugshots/sprLevelMugshots_'+n+'.png';img.alt='';img.loading='lazy';button.append(img);button.onclick=()=>setMugshotNumber(n);mugshotGrid.append(button);}
 function refreshMugshotEditor(){
   const l=CONFIG.levels[editIndex];
   $('#ed-custom').checked=!!l.customMugshot;
-  $('#ed-mugshot').value=l.mugshotNumber;
-  $('#ed-number-row').style.display=l.customMugshot?'none':'flex';
+  mugshotGrid.hidden=!!l.customMugshot;Array.from(mugshotGrid.children).forEach((button,n)=>button.setAttribute('aria-pressed',String(n===l.mugshotNumber)));
   $('#ed-custom-row').style.display=l.customMugshot?'flex':'none';
-  $('#ed-prev').disabled=l.mugshotNumber<=0;
-  $('#ed-next').disabled=l.mugshotNumber>=81;
   const preview=$('#ed-preview'),url=mugshotUrl(l);
   preview.style.visibility='hidden';
   $('#ed-preview-status').textContent='';
@@ -965,9 +1043,6 @@ $('#ed-local-file').addEventListener('change',async e=>{
     }
   }catch{} 
 });
-$('#ed-mugshot').addEventListener('change',e=>setMugshotNumber(e.target.value));
-$('#ed-prev').addEventListener('click',()=>setMugshotNumber(CONFIG.levels[editIndex].mugshotNumber-1));
-$('#ed-next').addEventListener('click',()=>setMugshotNumber(CONFIG.levels[editIndex].mugshotNumber+1));
 $('#ed-custom').addEventListener('change',e=>{
   CONFIG.levels[editIndex].customMugshot=e.target.checked;
   markDirty();refreshMugshotEditor();
@@ -975,13 +1050,13 @@ $('#ed-custom').addEventListener('change',e=>{
 $('#ed-test').addEventListener('click',()=>playLevel(CONFIG.levels[editIndex]));
 $('#ed-done').addEventListener('click',()=>{
   $('#edit-modal').classList.remove('open');editIndex=null;
-  musicFadedForPlay=false;fadeMusicVolume();
+  resumeMenuMusic();
   renderSelect();if($('#screen-wily').classList.contains('active'))renderWily();
 });
 
 function tankImage(type){return 'images/tanks/'+type+'-tank.png';}
 function renderTanks(){
- const row=$('#tank-row');row.hidden=!CONFIG.showTanks;row.replaceChildren();
+ const row=$('#tank-row');row.hidden=!(CONFIG.showTankTracker??CONFIG.showTanks);row.replaceChildren();
  for(const [type,max] of [['e',9],['m',1]]){const group=document.createElement('div');group.className='tank-counter';const img=document.createElement('img');img.src=tankImage(type);img.alt=type.toUpperCase()+' tank';const count=document.createElement('span');count.textContent=state.tanks[type];group.append(img,count);
  for(const [text,delta] of [['−',-1],['+',1]]){const btn=document.createElement('button');btn.type='button';btn.textContent=text;btn.setAttribute('aria-label',(delta>0?'Add ':'Remove ')+type.toUpperCase()+' tank');btn.disabled=delta<0?state.tanks[type]===0:state.tanks[type]===max;btn.onclick=()=>{state.tanks[type]=Math.max(0,Math.min(max,state.tanks[type]+delta));save();renderTanks();};group.append(btn);}row.append(group);}
  requestAnimationFrame(fitGridNames);
@@ -992,23 +1067,25 @@ function renderLevelTanks(level){
  for(const type of ['e','m']){const entry=document.createElement('span');entry.className='level-tank';const img=document.createElement('img');img.src=tankImage(type);img.alt=type.toUpperCase()+' tanks in level';entry.append(img,document.createTextNode(String(tanks[type]||0)));row.append(entry);}
 }
 function refreshTankSettings(){
+ $('#ps-show-tank-tracker').textContent=(CONFIG.showTankTracker??CONFIG.showTanks)?'ON':'OFF';$('#ps-show-tank-tracker').setAttribute('aria-pressed',String(!!(CONFIG.showTankTracker??CONFIG.showTanks)));
  $('#ps-show-tanks').textContent=CONFIG.showTanks?'ON':'OFF';$('#ps-show-tanks').setAttribute('aria-pressed',String(CONFIG.showTanks));const editor=$('#tank-editor');editor.replaceChildren();
- const indices=[...Array.from({length:CONFIG.levelCount},(_,i)=>i),...Array.from({length:CONFIG.wilyStageCount},(_,i)=>12+i)];
+ const indices=[...Array.from({length:CONFIG.levelCount},(_,i)=>i),...Array.from({length:CONFIG.wilyStageCount},(_,i)=>12+i),...(CONFIG.secondWilyEnabled?Array.from({length:CONFIG.wily2StageCount},(_,n)=>21+n):[]),...specialStageIndices()];
  indices.forEach(index=>{const data=CONFIG.tankLevels[index]||{e:0,m:0};const section=document.createElement('div');section.className='weapon-setting';const label=document.createElement('div');label.className='weapon-reward';label.textContent=CONFIG.levels[index].name;section.append(label);
  for(const [type,max] of [['e',9],['m',1]]){const row=document.createElement('div');row.className='opt-row';const text=document.createElement('label');text.textContent=type.toUpperCase()+' TANKS';const input=document.createElement('input');input.type='number';input.className='num';input.min=0;input.max=max;input.value=data[type]||0;input.id='tank-'+index+'-'+type;text.htmlFor=input.id;input.oninput=()=>{data[type]=Math.max(0,Math.min(max,Math.floor(Number(input.value)||0)));CONFIG.tankLevels[index]=data;markDirty();};row.append(text,input);section.append(row);}editor.append(section);});
 }
-$('#ps-show-tanks').onclick=()=>{CONFIG.showTanks=!CONFIG.showTanks;markDirty();refreshTankSettings();renderTanks();};
+$('#ps-show-tank-tracker').onclick=()=>{CONFIG.showTankTracker=!(CONFIG.showTankTracker??CONFIG.showTanks);markDirty();refreshTankSettings();renderTanks();};
+$('#ps-show-tanks').onclick=()=>{CONFIG.showTankTracker=CONFIG.showTankTracker??CONFIG.showTanks;CONFIG.showTanks=!CONFIG.showTanks;markDirty();refreshTankSettings();renderTanks();};
 function weaponImage(n){return 'images/weaponicons/sprWeaponIconsColor/sprWeaponIconsColor_'+n+'.png';}
 function weaponEarned(w){return w.levels.some(index=>CONFIG.levels[index]&&state.beaten[progressKey(CONFIG.levels[index])]);}
 function renderWeapons(){
   const row=$('#weapon-row');row.hidden=!CONFIG.showWeapons;row.replaceChildren();
   requestAnimationFrame(fitGridNames);
   CONFIG.weapons.slice(0,CONFIG.weaponCount).forEach((weapon,i)=>{
-    const locked=weaponEarned(weapon),lit=locked||(state.weapons[i]??(i===0));
+    const locked=!!weapon.defaultWeapon||weaponEarned(weapon),lit=locked||!!state.weapons[i];
     const button=document.createElement('button');button.className='weapon-icon'+(lit?' earned':'');button.type='button';
     button.setAttribute('aria-label','Weapon '+(i+1)+(locked?' — earned from cleared level':''));button.setAttribute('aria-pressed',String(lit));
     const image=document.createElement('img');image.src=weaponImage(weapon.icon);image.alt='';button.append(image);
-    button.addEventListener('click',()=>{if(weaponEarned(weapon))return;state.weapons[i]=!lit;save();renderWeapons();});row.append(button);
+    button.addEventListener('click',()=>{if(weapon.defaultWeapon||weaponEarned(weapon))return;state.weapons[i]=!lit;save();renderWeapons();});row.append(button);
   });
 }
 function refreshWeaponSettings(){
@@ -1024,8 +1101,9 @@ function refreshWeaponSettings(){
     const prev=document.createElement('button'),next=document.createElement('button');prev.type=next.type='button';prev.className=next.className='pickbtn';prev.textContent='◀';next.textContent='▶';prev.setAttribute('aria-label','Previous weapon sprite');next.setAttribute('aria-label','Next weapon sprite');
     prev.onclick=()=>{number.value=(weapon.icon+123)%124;number.dispatchEvent(new Event('input'));};next.onclick=()=>{number.value=(weapon.icon+1)%124;number.dispatchEvent(new Event('input'));};
     row.append(label,prev,preview,next,number);section.append(row);
+    const defaultLabel=document.createElement('label');defaultLabel.className='weapon-reward';const defaultCheck=document.createElement('input');defaultCheck.type='checkbox';defaultCheck.checked=!!weapon.defaultWeapon;defaultCheck.onchange=()=>{weapon.defaultWeapon=defaultCheck.checked;delete state.weapons[i];markDirty();renderWeapons();};defaultLabel.append(defaultCheck,document.createTextNode('DEFAULT WEAPON'));section.append(defaultLabel);
     const rewards=document.createElement('details'),summary=document.createElement('summary');summary.textContent='EARNED FROM LEVEL';rewards.append(summary);
-    const indices=[...Array.from({length:CONFIG.levelCount},(_,n)=>n),...Array.from({length:CONFIG.wilyStageCount},(_,n)=>12+n)];
+    const indices=[...Array.from({length:CONFIG.levelCount},(_,n)=>n),...Array.from({length:CONFIG.wilyStageCount},(_,n)=>12+n),...specialStageIndices()];
     indices.forEach(index=>{const label=document.createElement('label');label.className='weapon-reward';const check=document.createElement('input');check.type='checkbox';check.checked=weapon.levels.includes(index);check.addEventListener('change',()=>{weapon.levels=check.checked?[...new Set([...weapon.levels,index])]:weapon.levels.filter(n=>n!==index);markDirty();renderWeapons();});label.append(check,document.createTextNode((index>=12?'WILY '+(index-11)+': ':'LEVEL '+(index+1)+': ')+CONFIG.levels[index].name));rewards.append(label);});
     section.append(rewards);editor.append(section);
   });
@@ -1057,13 +1135,15 @@ function refreshPackModal(){
   refreshWeaponSettings();
   $('#ps-victory-image').value=CONFIG.victoryBackground;
   $('#ps-victory-credits').value=CONFIG.victoryCredits;
-  $('#ps-wily-count').value=CONFIG.wilyStageCount;
-  $('#ps-level-count').value=CONFIG.levelCount;
+  ensureSpecialStages();$('#ps-intro').checked=CONFIG.introEnabled;$('#ps-midway-count').value=CONFIG.midwayCount;renderMidwaySettings();
+  $('#ps-wily-count').value=CONFIG.wilyStageCount;$('#ps-wily-count').disabled=false;$('#ps-wily2-count').value=CONFIG.wily2StageCount;$('#ps-wily2-icon').value=CONFIG.wily2Icon||'';$('#ps-wily2-title').value=CONFIG.wily2Title??CONFIG.wilyTitle;$('#ps-second-wily').checked=!!CONFIG.secondWilyEnabled;$('#second-wily-options').hidden=!CONFIG.secondWilyEnabled;$('#ps-wily2-bg-row').hidden=!CONFIG.secondWilyEnabled;$('#ps-wily2-music-row').hidden=!CONFIG.secondWilyEnabled;$('#ps-wily2-bg').value=CONFIG.wily2Background||'';$('#ps-wily2-music').value=CONFIG.music.wily2||'';
+  $('#ps-level-count').value=CONFIG.gridMode==='4x4'?'4x4':CONFIG.levelCount;
   for(const [id,key] of [['ps-border-default','customBorderDefault'],['ps-border-active','customBorderActive'],['ps-victory-image','victoryBackground'],['ps-victory-credits','victoryCredits'],['ps-wily-icon','wilyIcon'],['ps-wily-text','wilyText'],['ps-wily-title','wilyTitle']])$('#'+id).value=CONFIG[key];
   for(const [id,key] of [['ps-show-wily-title','showWilyTitle']]){ $('#'+id).textContent=CONFIG[key]?'ON':'OFF';$('#'+id).setAttribute('aria-pressed',String(CONFIG[key])); }
 
   $('#ps-level-source').value=CONFIG.levelSource;
   $('#ps-name').value=CONFIG.packName;
+  $('#ps-thumbnail').value=CONFIG.packThumbnail||'';
   $('#ps-font-size').value=CONFIG.packFontSizePx;
   $('#ps-level-font-size').value=CONFIG.levelNameFontSizePx;
   $('#ps-show-title').textContent=CONFIG.showTitle?'ON':'OFF';
@@ -1088,7 +1168,7 @@ function refreshPackModal(){
   setHint('pick-hint-ps','');
 }
 $('#btn-pack-settings').addEventListener('click',()=>{refreshPackModal();$('#pack-modal').classList.add('open');});
-[['ps-victory-image','victoryBackground'],['ps-victory-credits','victoryCredits'],['ps-wily-icon','wilyIcon'],['ps-wily-text','wilyText'],['ps-wily-title','wilyTitle'],['ps-name','packName'],['ps-titlebg','titleBackground'],['ps-selectbg','selectBackground'],
+[['ps-thumbnail','packThumbnail'],['ps-victory-image','victoryBackground'],['ps-victory-credits','victoryCredits'],['ps-wily-icon','wilyIcon'],['ps-wily-text','wilyText'],['ps-wily-title','wilyTitle'],['ps-name','packName'],['ps-titlebg','titleBackground'],['ps-selectbg','selectBackground'],
  ['ps-wilybg','wilyBackground']].forEach(([el,key])=>{
   $('#'+el).addEventListener('input',e=>{CONFIG[key]=e.target.value;markDirty();applyConfig();});
 });
@@ -1099,8 +1179,17 @@ $('#ps-font-size').addEventListener('input',e=>{
   CONFIG.packFontSizePx=Math.max(6,Math.min(120,Number(e.target.value)||26));
   markDirty();applyConfig();
 });
+function renderMidwaySettings(){const holder=$('#midway-settings');holder.replaceChildren();for(let i=0;i<CONFIG.midwayCount;i++){const row=document.createElement('div');row.className='opt-row';const label=document.createElement('label');label.textContent='MIDWAY '+(i+1)+' AFTER LEVELS CLEARED';const input=document.createElement('input');input.type='number';input.className='num';input.min=0;input.max=CONFIG.levelCount;input.value=CONFIG.midwayAfter[i];input.onchange=()=>{CONFIG.midwayAfter[i]=Math.max(0,Math.min(CONFIG.levelCount,Math.round(Number(input.value)||0)));input.value=CONFIG.midwayAfter[i];markDirty();applyConfig();};label.append(input);row.append(label);holder.append(row);}}
+$('#ps-intro').onchange=e=>{CONFIG.introEnabled=e.target.checked;ensureSpecialStages();markDirty();applyConfig();};
+$('#ps-midway-count').onchange=e=>{CONFIG.midwayCount=Number(e.target.value);ensureSpecialStages();renderMidwaySettings();markDirty();applyConfig();};
+$('#ps-wily2-icon').oninput=e=>{CONFIG.wily2Icon=e.target.value;markDirty();applyConfig();};
+$('#ps-wily2-title').oninput=e=>{CONFIG.wily2Title=e.target.value;markDirty();applyConfig();};
+$('#ps-wily2-count').onchange=e=>{CONFIG.wily2StageCount=Number(e.target.value);ensureSpecialStages();markDirty();applyConfig();};
+$('#ps-second-wily').onchange=e=>{CONFIG.secondWilyEnabled=e.target.checked;wilyEditSet=1;ensureSpecialStages();markDirty();refreshPackModal();applyConfig();};
+$('#ps-wily2-bg').oninput=e=>{CONFIG.wily2Background=e.target.value;markDirty();applyConfig();};
+$('#ps-wily2-music').oninput=e=>{CONFIG.music.wily2=e.target.value;markDirty();applyConfig();};
 $('#ps-wily-count').addEventListener('change',e=>{CONFIG.wilyStageCount=Math.max(0,Math.min(6,Number(e.target.value)||0));ensureLevelSlots();markDirty();applyConfig();});
-$('#ps-level-count').addEventListener('change',e=>{CONFIG.levelCount=Math.max(0,Math.min(12,Number(e.target.value)||0));markDirty();applyConfig();});
+$('#ps-level-count').addEventListener('change',e=>{CONFIG.gridMode=e.target.value==='4x4'?'4x4':'standard';CONFIG.levelCount=CONFIG.gridMode==='4x4'?8:Math.max(0,Math.min(12,Number(e.target.value)||0));ensureLevelSlots();ensureSpecialStages();renderMidwaySettings();markDirty();applyConfig();});
 $('#ps-level-font-size').addEventListener('input',e=>{
   CONFIG.levelNameFontSizePx=Math.max(6,Math.min(120,Number(e.target.value)||20));
   markDirty();applyConfig();
@@ -1137,13 +1226,13 @@ function serializePack(){
     titleBackground:CONFIG.titleBackground, selectBackground:CONFIG.selectBackground, wilyBackground:CONFIG.wilyBackground,
     stageOffsetY:CONFIG.stageOffsetY,
     stageSpacingX:CONFIG.stageSpacingX, stageSpacingY:CONFIG.stageSpacingY, showTileSquares:CONFIG.showTileSquares, showLevelNames:CONFIG.showLevelNames,
-    customBorder:!!CONFIG.customBorder,customBorderDefault:CONFIG.customBorderDefault||'',customBorderActive:CONFIG.customBorderActive||'',borderStyle:CONFIG.borderStyle, uiSounds:CONFIG.uiSounds,
-    music:{title:CONFIG.music.title,select:CONFIG.music.select,wily:CONFIG.music.wily,clear:CONFIG.music.clear},
-    showTanks:CONFIG.showTanks, tankLevels:CONFIG.tankLevels,
+    packThumbnail:CONFIG.packThumbnail||'',customBorder:!!CONFIG.customBorder,customBorderDefault:CONFIG.customBorderDefault||'',customBorderActive:CONFIG.customBorderActive||'',borderStyle:CONFIG.borderStyle, uiSounds:CONFIG.uiSounds,
+    wily2Icon:CONFIG.wily2Icon||'',wily2Title:CONFIG.wily2Title??CONFIG.wilyTitle,wily2StageCount:CONFIG.wily2StageCount,secondWilyEnabled:!!CONFIG.secondWilyEnabled,wily2Background:CONFIG.wily2Background||'',music:{wily2:CONFIG.music.wily2||'',title:CONFIG.music.title,select:CONFIG.music.select,wily:CONFIG.music.wily,clear:CONFIG.music.clear},
+    showTankTracker:CONFIG.showTankTracker??CONFIG.showTanks,showTanks:CONFIG.showTanks, tankLevels:CONFIG.tankLevels,
     showWeapons:CONFIG.showWeapons, weaponCount:CONFIG.weaponCount, weapons:CONFIG.weapons,
     victoryBackground:CONFIG.victoryBackground, victoryCredits:CONFIG.victoryCredits,
-    levelCount:CONFIG.levelCount, wilyStageCount:CONFIG.wilyStageCount, gridSlotsVersion:1,
-    levels:CONFIG.levels.map(l=>({id:l.id,name:l.name,short:l.short,image:l.image,mugshotNumber:l.mugshotNumber,customMugshot:l.customMugshot,localFileName:l.localFileName,localLevelData:l.localLevelData,localLevelUrl:l.localLevelUrl}))
+    gridMode:CONFIG.gridMode||'standard',introEnabled:!!CONFIG.introEnabled,midwayCount:CONFIG.midwayCount||0,midwayAfter:CONFIG.midwayAfter,levelCount:CONFIG.levelCount, wilyStageCount:CONFIG.wilyStageCount, gridSlotsVersion:1,
+    levels:CONFIG.levels.map(l=>({buttonLabel:l.buttonLabel,id:l.id,name:l.name,short:l.short,image:l.image,mugshotNumber:l.mugshotNumber,customMugshot:l.customMugshot,localFileName:l.localFileName,localLevelData:l.localLevelData,localLevelUrl:l.localLevelUrl}))
   };
   return 'window.LEVEL_PACK = '+JSON.stringify(cfg,null,2)+';\n';
 }
@@ -1151,30 +1240,60 @@ async function savePack(){await window.saveCloudPack();}
 $('#btn-save-pack').addEventListener('click',savePack);
 $('#btn-wily-save').addEventListener('click',savePack);
 $('#btn-wily-settings').addEventListener('click',()=>{refreshPackModal();$('#pack-modal').classList.add('open');});
-$('#btn-select-back').addEventListener('click',()=>showScreen('screen-title'));
+function returnToTitle(){
+  if(editMode){showScreen('screen-title');return;}
+  if(document.getElementById('return-title-confirm'))return;
+  const overlay=document.createElement('div');overlay.id='return-title-confirm';overlay.className='overlay open';
+  const box=document.createElement('div');box.className='modal-box';box.setAttribute('role','dialog');box.setAttribute('aria-label','Return to title screen?');
+  const question=document.createElement('h2');question.textContent='Return to title screen?';
+  const yes=document.createElement('button');yes.className='mbtn';yes.textContent='YES';yes.onclick=()=>{sfx();overlay.remove();showScreen('screen-title');};
+  const no=document.createElement('button');no.className='mbtn plain';no.textContent='CANCEL';no.onclick=()=>{sfx();overlay.remove();};
+  const buttons=document.createElement('div');buttons.className='modal-btns';buttons.append(yes,no);box.append(question,buttons);overlay.append(box);document.body.append(overlay);no.focus();
+}
+function backFromCurrentScreen(){
+  const menus=[...document.querySelectorAll('.overlay.open,.cloud-dialog')];
+  if(menus.length){const menu=menus[menus.length-1];
+    if(menu.id==='stage-modal'){sfx();closeModal();}
+    else if(menu.id==='edit-modal'){$('#ed-done').click();}
+    else if(menu.id==='pack-modal'){sfx();menu.classList.remove('open');}
+    else if(menu.classList.contains('cloud-dialog')){menu.querySelector('.cloud-close')?.click();}
+    else{sfx();menu.remove();}
+    return;
+  }
+  if($('#screen-wily').classList.contains('active')){sfx();showScreen('screen-select');}
+  else if($('#screen-select').classList.contains('active')||$('#screen-clear').classList.contains('active'))returnToTitle();
+  else if(!$('#game-choice').hidden){sfx();$('#game-choice').hidden=true;$('#btn-start').hidden=false;}
+}
+document.addEventListener('contextmenu',e=>{e.preventDefault();backFromCurrentScreen();});
+$('#btn-select-back').addEventListener('click',returnToTitle);
 $('#btn-wily-back').addEventListener('click',()=>showScreen('screen-select'));
 $('#ps-save').addEventListener('click',savePack);
-window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
+window.addEventListener('beforeunload',e=>{if(dirty&&!launchingLevel){e.preventDefault();e.returnValue='';}});
 
 /* ============================ wily screen ============================ */
 function renderWily(){
+  $('#screen-wily .wily-wrap').append($('#equipment-row'));
+  renderWeapons();renderTanks();
+
+  $('.wily-title').textContent=secondWilyActive()?(CONFIG.wily2Title??CONFIG.wilyTitle):CONFIG.wilyTitle;
+  setScreenBg('#screen-wily',secondWilyActive()?(CONFIG.wily2Background||CONFIG.wilyBackground):CONFIG.wilyBackground);
   const holder=$('#wily-stages');holder.innerHTML='';
   const prog=wilyBeaten();
   wily().forEach((l,i)=>{
     const d=document.createElement('div');
     d.className='wstage';
-    d.innerHTML='WILY '+(i+1)+(state.beaten[progressKey(l)]?' ★':'');
+    d.textContent=(l.buttonLabel||'WILY '+(i+1))+(state.beaten[progressKey(l)]?' ★':'');
     if(state.beaten[progressKey(l)])d.classList.add('beaten');
     else if(i===prog)d.classList.add('current');
     else d.classList.add('locked');
     d.addEventListener('click',()=>{
-      if(editMode){openEditor(12+i);return;}
+      if(editMode){openEditor(CONFIG.levels.indexOf(l));return;}
       if(i>prog&&!state.beaten[progressKey(l)]){sfx();return;}
       openModal(l,'wily');
     });
     holder.appendChild(d);
   });
-  sizeLevelHeading($('#wily-label'),String(wily()[Math.min(prog,CONFIG.wilyStageCount-1)]?.name||'').toUpperCase());
+  sizeLevelHeading($('#wily-label'),String(wily()[Math.min(prog,wily().length-1)]?.short||wily()[Math.min(prog,CONFIG.wilyStageCount-1)]?.name||'').toUpperCase());
 }
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
@@ -1185,7 +1304,7 @@ document.addEventListener('keydown',e=>{
       }
     }
     if($('#screen-wily').classList.contains('active'))showScreen('screen-select');
-    else if($('#screen-select').classList.contains('active'))showScreen('screen-title');
+    else if($('#screen-select').classList.contains('active'))returnToTitle();
   }
 });
 
@@ -1195,17 +1314,31 @@ function startClearShow(){
   $('#clear-tag').textContent=CONFIG.victoryCredits;
   $('#clear-tag').hidden=!CONFIG.victoryCredits;
 }
-$('#btn-clear-back').addEventListener('click',()=>showScreen('screen-title'));
+$('#btn-clear-back').addEventListener('click',returnToTitle);
 
 /* ============================ player options ============================ */
-let volumeFade=null, musicFadedForPlay=false;
+let volumeFade=null, musicFadedForPlay=false, fadeGeneration=0;
+function resumeMenuMusic(){
+  musicFadedForPlay=false;
+  if(!optMusic())return;
+  // Restore an audible volume before asking a browser-suspended track to resume.
+  const target=optVolume()/100;
+  if(target>0&&bgm.volume===0)bgm.volume=Math.min(target,0.001);
+  fadeMusicVolume(2000);
+  const active=document.querySelector('.screen.active');
+  if(active)switchMusic(active.id);
+}
+window.addEventListener('focus',()=>{if(!$('#stage-modal').classList.contains('open')&&!musicFadedForPlay&&optMusic()&&bgm.paused&&bgm.getAttribute('src'))resumeMenuMusic();});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!$('#stage-modal').classList.contains('open')&&!musicFadedForPlay&&optMusic()&&bgm.paused&&bgm.getAttribute('src'))resumeMenuMusic();});
 function musicVolumeTarget(){
   return musicFadedForPlay?0:optVolume()/100;
 }
 function fadeMusicVolume(duration=350){
   cancelAnimationFrame(volumeFade);
+  const generation=++fadeGeneration;
   const from=bgm.volume,to=musicVolumeTarget(),start=performance.now();
   function step(now){
+    if(generation!==fadeGeneration)return;
     const progress=Math.min(1,(now-start)/duration);
     bgm.volume=from+(to-from)*progress;
     volumeFade=progress<1?requestAnimationFrame(step):null;
@@ -1216,6 +1349,7 @@ function applyMusicVolume(){
   const volume=optVolume();
   selectSound.volume=volume/100;
   cancelAnimationFrame(volumeFade);
+  fadeGeneration++;
   bgm.volume=musicVolumeTarget();
   $('#opt-volume').value=volume;
   $('#opt-volume-value').textContent=volume+'%';
@@ -1230,6 +1364,6 @@ $('#opt-music').addEventListener('click',()=>{state.music=!optMusic();save();app
 
 applyConfig();
 </script>
-<script src="cloud-ui.js?v=20260926-accounts"></script>
+<script src="cloud-ui.js?v=20260926-progression"></script>
 </body>
 </html>

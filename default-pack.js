@@ -37,51 +37,63 @@ window.LEVEL_PACK = {
   "weapons": [
     {
       "icon": 1,
-      "levels": []
+      "levels": [],
+      "defaultWeapon": true
     },
     {
       "icon": 2,
-      "levels": []
+      "levels": [],
+      "defaultWeapon": false
     },
     {
       "icon": 3,
-      "levels": []
+      "levels": [],
+      "defaultWeapon": false
     },
     {
       "icon": 4,
-      "levels": []
+      "levels": [],
+      "defaultWeapon": false
     },
     {
       "icon": 5,
-      "levels": []
+      "levels": [],
+      "defaultWeapon": false
     },
     {
       "icon": 6,
-      "levels": []
+      "levels": [],
+      "defaultWeapon": false
     },
     {
       "icon": 7,
-      "levels": []
+      "levels": [],
+      "defaultWeapon": false
     },
     {
       "icon": 8,
-      "levels": []
+      "levels": [],
+      "defaultWeapon": false
     },
     {
       "icon": 9,
-      "levels": []
+      "levels": [],
+      "defaultWeapon": false
     },
     {
       "icon": 10,
-      "levels": []
+      "levels": [],
+      "defaultWeapon": false
     },
     {
       "icon": 11,
-      "levels": []
+      "levels": [],
+      "defaultWeapon": false
     },
     {
       "icon": 12,
-      "levels": []
+      "levels": [],
+      "defaultWeapon": false
     }
   ],
   "victoryBackground": "images/default-assets/8e328a54756cb411bb406abf5d971a135296591c818269cc3d7af87c1ef62cd4.png",
@@ -234,5 +246,6 @@ window.LEVEL_PACK = {
       "mugshotNumber": 32,
       "customMugshot": false
     }
-  ]
+  ],
+  "showTankTracker": true
 };
