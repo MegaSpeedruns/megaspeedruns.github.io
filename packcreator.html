@@ -681,14 +681,17 @@ function switchMusic(screenId){
   const request=++musicRequest;
   const key=screenId==='screen-wily'&&secondWilyActive()?'wily2':SCREEN_TRACK[screenId];
   currentTrackKey=key;
-  const path=screenId==='screen-title'&&!editMode&&!playPackMusicEnabled?'':(CONFIG.music||{})[key]||'';
+  const defaultIntro=screenId==='screen-title'&&!editMode&&!CONFIG.cloudSlug&&!packWasLoaded&&!window.directPack;
+  const path=defaultIntro?'music/Introduction.mp3':screenId==='screen-title'&&!editMode&&!playPackMusicEnabled?'':(CONFIG.music||{})[key]||'';
+  if(defaultIntro){cancelAnimationFrame(volumeFade);fadeGeneration++;bgm.volume=optVolume()/200;}
+  else if(bgm.getAttribute('src')==='music/Introduction.mp3')bgm.volume=musicVolumeTarget();
   if(!path||!optMusic()){ bgm.pause(); bgm.removeAttribute('src'); return; }
   const play=url=>{
     if(request!==musicRequest)return;
     if(!url){ bgm.pause(); bgm.removeAttribute('src'); return; }
     const abs=new URL(url, document.baseURI).href;
     if(bgm.src!==abs){ bgm.src=url; }
-    if(interacted) bgm.play().catch(()=>{});
+    if(interacted||defaultIntro) bgm.play().catch(()=>{});
   };
   if(hasExt(path)) play(path);
   else{
