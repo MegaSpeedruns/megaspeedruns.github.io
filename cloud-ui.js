@@ -61,7 +61,6 @@
   }
   window.browseCloudPacks=async()=>{
     if(window.directPack)return;
-    playPackMusicEnabled=false;musicRequest++;bgm.pause();bgm.removeAttribute('src');
     const {box,overlay}=dialog('PLAY PACK');
     box.style.width='min(960px,92vw)';status(box,'Loading packs…');const grid=document.createElement('div');grid.className='pack-grid';box.append(grid);
     box.classList.add('hide-creator-assignment');
