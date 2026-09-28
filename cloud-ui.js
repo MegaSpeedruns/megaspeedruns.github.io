@@ -97,7 +97,7 @@
       const likeCount=document.createElement('span');likeCount.textContent='…';like.append(likeImage,likeCount);const footer=document.createElement('div');footer.className='pack-footer';footer.append(like);if(button._clearStar){footer.append(button._clearStar);delete button._clearStar;}shell.append(footer);
       const updateLike=entry=>{likeCount.textContent=String(entry.count);like.setAttribute('aria-pressed',String(entry.liked));like.setAttribute('aria-label',(entry.liked?'Liked ':'Like ')+pack.name+' ('+entry.count+' likes)');like.disabled=entry.liked;};
       likeButtons.set(pack.slug,updateLike);
-      like.onclick=async()=>{like.disabled=true;try{updateLike(await PackCloud.like(pack.slug));}catch(e){like.disabled=false;status(box,e.message==='Sign in to like packs.'?e.message:'Unable to save like.');}};
+      like.onclick=async()=>{like.disabled=true;try{updateLike(await PackCloud.like(pack.slug));}catch(e){like.disabled=false;status(box,e.message==='Sign in to like packs.'?(location.protocol==='file:'?'Likes need your real online login. The local user file only enables editing.':e.message):(/permission|denied/i.test(e.code||e.message)?'Likes are blocked by the database rules. Publish the updated Realtime Database rules.':typeof PackCloud.like!=='function'?'Update cloud-service.js and refresh the page.':'Unable to save like. Please try again.'));}};
       const access=await PackCloud.permissions(pack.slug);
       if(access.edit||access.admin){
         const remove=document.createElement('button');remove.textContent='×';if(!access.edit)remove.classList.add('admin-pack-delete');remove.setAttribute('aria-label','Delete '+pack.name);remove.style.cssText='position:absolute;right:8px;top:8px;background:none;border:0;color:white;font-size:24px;cursor:pointer;';
@@ -111,7 +111,7 @@
       }
       if(access.admin){const assign=document.createElement('button');assign.className='cloud-pack creator-assignment';assign.textContent='ASSIGN CREATOR';assign.onclick=async()=>{const d=dialog('ASSIGN CREATOR');try{const select=document.createElement('select');select.style.maxWidth='100%';for(const person of await PackCloud.users()){const option=document.createElement('option');option.value=person.uid;option.textContent=person.name;option.selected=person.uid===pack.owner;select.append(option);}const apply=document.createElement('button');apply.className='cloud-pack';apply.textContent='SAVE CREATOR';apply.onclick=async()=>{try{await PackCloud.assign(pack.slug,select.value);d.overlay.remove();}catch(e){status(d.box,friendly(e));}};d.box.append(select,apply);}catch(e){status(d.box,friendly(e));}};row.append(assign);}
       grid.append(row);}
-      likesReady.then(result=>{if(!overlay.isConnected)return;if(result.error){for(const button of grid.querySelectorAll(".pack-like")){button.querySelector("span").textContent="—";button.title="Likes unavailable";}return;}for(const [slug,update] of likeButtons)update(result.data[slug]||{count:0,liked:false});});}
+      likesReady.then(result=>{if(!overlay.isConnected)return;if(result.error){for(const button of grid.querySelectorAll(".pack-like")){button.querySelector("span").textContent="—";button.title="Click to retry liking this pack";button.disabled=false;button.setAttribute("aria-label","Like pack");}return;}for(const [slug,update] of likeButtons)update(result.data[slug]||{count:0,liked:false});});}
     catch(e){status(box,friendly(e));}
   };
 

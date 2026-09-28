@@ -13,8 +13,20 @@ window.PackCloud = (() => {
   }
   const ADMIN_UID='rVntW7XRN3Xtud9v6xMEFeWTKDh2';
   async function account(){const s=await sdk();await s.userAuth.authStateReady();return s.userAuth.currentUser;}
-  async function permissions(slug){const user=await account();if(!user||user.isAnonymous)return {edit:false,admin:false};const s=await sdk();const record=slug?(await s.db.get(s.db.ref(s.database,'levelPackCreator/packs/'+slug))).val():null;return {edit:!slug||record?.owner===user.uid,admin:user.uid===ADMIN_UID};}
+  async function permissions(slug){if(location.protocol==='file:'&&window.localPackUser?.name)return {edit:true,admin:false};const user=await account();if(!user||user.isAnonymous)return {edit:false,admin:false};const s=await sdk();const record=slug?(await s.db.get(s.db.ref(s.database,'levelPackCreator/packs/'+slug))).val():null;return {edit:!slug||record?.owner===user.uid,admin:user.uid===ADMIN_UID};}
   async function creatorName(uid){if(!uid)return 'Unassigned';const s=await sdk();const profile=(await s.db.get(s.db.ref(s.database,'users/'+uid))).val();return profile?.username||'Unknown creator';}
+  async function likes(){
+    const s=await sdk(),user=await account();
+    const snapshot=await s.db.get(s.db.ref(s.database,'levelPackCreatorLikes'));
+    return Object.fromEntries(Object.entries(snapshot.val()||{}).map(([slug,votes])=>[slug,{count:Object.values(votes||{}).filter(v=>v===true).length,liked:!!user&&votes?.[user.uid]===true}]));
+  }
+  async function like(slug){
+    const user=await account();if(!user||user.isAnonymous)throw Error('Sign in to like packs.');
+    const s=await sdk(),ref=s.db.ref(s.database,'levelPackCreatorLikes/'+slug+'/'+user.uid);
+    await s.db.set(ref,true);
+    const snapshot=await s.db.get(s.db.ref(s.database,'levelPackCreatorLikes/'+slug));
+    return {count:Object.values(snapshot.val()||{}).filter(v=>v===true).length,liked:true};
+  }
   async function users(){const user=await account();if(user?.uid!==ADMIN_UID)throw Error('Not allowed');const s=await sdk();const data=(await s.db.get(s.db.ref(s.database,'users'))).val()||{};return Object.entries(data).map(([uid,p])=>({uid,name:p.username||uid})).sort((a,b)=>a.name.localeCompare(b.name));}
   async function assign(slug,uid){if(!(await permissions(slug)).admin)throw Error('Not allowed');const s=await sdk();await s.db.update(s.db.ref(s.database,'levelPackCreator/packs/'+slug),{owner:uid});}
   const slugify=name=>name.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70);
@@ -120,5 +132,5 @@ window.PackCloud = (() => {
     }
     if(!obsolete)await s.db.remove(s.db.ref(s.database,'levelPackCreator/packs/'+slug));
   }
-  return {list,load,publish,slugify,remove,olderVersions,canDelete,account,permissions,users,assign,creatorName};
+  return {likes,like,list,load,publish,slugify,remove,olderVersions,canDelete,account,permissions,users,assign,creatorName};
 })();
