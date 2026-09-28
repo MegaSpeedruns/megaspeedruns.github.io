@@ -4,11 +4,18 @@
   .hide-creator-assignment .creator-assignment,.hide-creator-assignment .admin-pack-delete{display:none;}
   .pack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:16px;}
   .pack-grid .cloud-pack{word-break:break-word;box-sizing:border-box;}
-  .pack-grid .pack-card{display:flex;flex-direction:column;margin-top:0;padding:12px;width:100%;}
-  .pack-name{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;line-height:1.8;height:5.4em;flex-shrink:0;}
-  .pack-creator{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;height:3.2em;flex-shrink:0;}
+  .pack-shell{border:2px solid #468;background:#183060;padding:10px;}
+  .pack-grid .pack-card{display:flex;flex-direction:column;margin-top:0;padding:0;width:100%;border:0;background:transparent;}
+  .pack-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:30px;margin-top:6px;}
+  .pack-like{display:flex;align-items:center;justify-content:flex-start;gap:8px;background:transparent;border:0;padding:0;color:#fff;}
+  .pack-like img{width:24px;height:24px;object-fit:contain;image-rendering:pixelated;}
+  .pack-like[aria-pressed="true"]{color:#ffd850;border-color:#a4e4fc;}
+  .pack-clear-star{color:#071328;font-size:28px;line-height:1;vertical-align:middle;}
+  .pack-clear-star.cleared{color:#ffd850;}
+  .pack-name{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:11px;line-height:1.5;height:3em;flex-shrink:0;}
+  .pack-creator{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;height:2.8em;flex-shrink:0;}
   .pack-grid .pack-thumbnail{flex-shrink:0;height:auto;}
-  .pack-thumbnail{display:block;width:100%;aspect-ratio:8/7;object-fit:cover;background:#000;margin-bottom:12px;image-rendering:pixelated;}
+  .pack-thumbnail{display:block;width:100%;aspect-ratio:8/7;object-fit:cover;background:#000;margin-bottom:8px;image-rendering:pixelated;}
   .cloud-dialog{position:fixed;inset:0;z-index:100;background:#000c;display:flex;align-items:center;justify-content:center;}
   .cloud-box{position:relative;width:min(600px,92vw);max-height:85vh;overflow:auto;padding:38px 24px 24px;border:4px solid #a4e4fc;background:#071328;color:#fff;font-size:12px;line-height:1.8;}
   .cloud-box button{font:inherit;cursor:pointer;}.cloud-close{position:absolute;right:8px;top:6px;background:none;border:0;color:#fff;font-size:24px!important;}
@@ -18,7 +25,7 @@
   `;document.head.append(style);
   const login=document.createElement('a');login.href='Login.html';login.textContent='Must be logged in to create pack';login.hidden=true;login.style.cssText='position:absolute;bottom:2%;color:#a4e4fc;font-size:10px;';document.querySelector('.title-inner').append(login);
   window.showCreateLoginMessage=()=>{login.hidden=false;};
-  if(window.returnToPackChoices)pressStart();
+
   document.addEventListener('keydown',e=>{
     if(!e.shiftKey||e.key.toLowerCase()!=='e'||e.repeat||e.ctrlKey||e.altKey||e.metaKey||e.isComposing)return;
     if(e.target.closest('input,textarea,select,[contenteditable]'))return;
@@ -29,6 +36,21 @@
   },true);
   let busy=false;
   function dialog(title,closable=true){const overlay=document.createElement('div');overlay.className='cloud-dialog';const box=document.createElement('div');box.className='cloud-box';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');const heading=document.createElement('h2');heading.textContent=title;heading.style.fontSize='14px';box.append(heading);overlay.append(box);document.body.append(overlay);if(closable){const close=document.createElement('button');close.className='cloud-close';close.textContent='×';close.setAttribute('aria-label','Close');close.onclick=()=>overlay.remove();box.append(close);}return {overlay,box};}
+  document.getElementById('main-options').onclick=()=>{
+    sfx();const {overlay,box}=dialog('OPTIONS');
+    const update=()=>{applyMusicVolume();switchMusic(document.querySelector('.screen.active').id);};
+    for(const [key,label,get] of [['music','MUSIC',optMusic],['sounds','SOUND EFFECTS',optSounds]]){
+      const button=document.createElement('button');button.type='button';button.className='cloud-pack';
+      const refresh=()=>{button.textContent=label+': '+(get()?'ON':'OFF');button.setAttribute('aria-pressed',String(!!get()));};
+      button.onclick=()=>{playerAudio[key]=!get();savePlayerAudio();refresh();if(key==='music')update();};refresh();box.append(button);
+    }
+    const label=document.createElement('label');label.htmlFor='main-audio-volume';label.textContent='MUSIC & SFX VOLUME';
+    const volume=document.createElement('input');volume.id=label.htmlFor;volume.type='range';volume.min=0;volume.max=100;volume.step=1;volume.value=optVolume();
+    const value=document.createElement('output');value.htmlFor=volume.id;value.textContent=volume.value+'%';
+    volume.oninput=()=>{playerAudio.volume=Number(volume.value);savePlayerAudio();value.textContent=volume.value+'%';update();};
+    box.append(label,volume,value);box.querySelector('.cloud-close').focus();
+    overlay.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();overlay.remove();document.getElementById('main-options').focus();}});
+  };
   function status(box,text){let p=box.querySelector('.cloud-status');if(!p){p=document.createElement('p');p.className='cloud-status';p.setAttribute('role','status');box.append(p);}p.textContent=text;}
   function friendly(error){if(/permission|unauthorized/i.test(error.code||error.message))return 'Firebase access is not enabled yet. Apply the Level Pack Creator rules.';return error.message||'Unable to connect to Firebase. Please try again.';}
   function valid(pack){
@@ -61,12 +83,21 @@
   }
   window.browseCloudPacks=async()=>{
     if(window.directPack)return;
+    let clearedPacks={};try{clearedPacks=JSON.parse(localStorage.getItem('level-pack-cleared-v1')||'{}')||{};}catch{}
     const {box,overlay}=dialog('PLAY PACK');
     box.style.width='min(960px,92vw)';status(box,'Loading packs…');const grid=document.createElement('div');grid.className='pack-grid';box.append(grid);
+    const likeButtons=new Map();
+    const likesReady=PackCloud.likes?PackCloud.likes().then(data=>({data})).catch(()=>({error:true})):Promise.resolve({error:true});
     box.classList.add('hide-creator-assignment');
     try{box.dataset.creatorAdmin=String((await PackCloud.permissions()).admin);}catch{}
 
-    try{const packs=await PackCloud.list();status(box,packs.length?'Choose a pack.':'No packs published yet.');for(const pack of packs){const button=document.createElement('button');button.className='cloud-pack pack-card';const name=document.createElement('span');name.className='pack-name';name.textContent=pack.name;name.title=pack.name;button.append(name);const thumbnail=document.createElement('img');thumbnail.className='pack-thumbnail';thumbnail.alt='';button.prepend(thumbnail);PackCloud.load(pack.slug).then(data=>{valid(data);const paths=[data.packThumbnail,data.titleBackground].filter(Boolean).flatMap(p=>/^(data:|https:)/.test(p)||/\.[a-z0-9]+$/i.test(p)?[p]:[p+'.png',p+'.jpg',p+'.gif',p+'.webp']);let i=0;thumbnail.onerror=()=>{if(i<paths.length)thumbnail.src=paths[i++];else thumbnail.removeAttribute('src');};if(paths.length)thumbnail.src=paths[i++];}).catch(()=>{});button.onclick=async()=>{sfx();button.disabled=true;status(box,'Loading pack…');try{install(await PackCloud.load(pack.slug));}catch(e){button.disabled=false;status(box,friendly(e));}};const row=document.createElement('div');row.style.position='relative';row.append(button);const creator=document.createElement('div');creator.className='pack-creator';creator.style.cssText='font-size:10px;line-height:1.6;margin-top:8px;overflow-wrap:anywhere;color:#a4e4fc;';creator.textContent=pack.owner?'Creator: …':'Creator: Unassigned';button.append(creator);if(pack.owner)PackCloud.creatorName(pack.owner).then(name=>{creator.textContent='Creator: '+name;}).catch(()=>{creator.textContent='Creator: Unknown';});
+    try{const packs=await PackCloud.list();status(box,packs.length?'Choose a pack.':'No packs published yet.');for(const pack of packs){const button=document.createElement('button');button.className='cloud-pack pack-card';const name=document.createElement('span');name.className='pack-name';name.textContent=pack.name;name.title=pack.name;{const cleared=clearedPacks[pack.slug]===true;const star=document.createElement('span');star.className='pack-clear-star'+(cleared?' cleared':'');star.textContent='★';star.setAttribute('role','img');star.setAttribute('aria-label',cleared?'Pack cleared':'Pack not cleared');button._clearStar=star;}button.append(name);const thumbnail=document.createElement('img');thumbnail.className='pack-thumbnail';thumbnail.alt='';button.prepend(thumbnail);PackCloud.load(pack.slug).then(data=>{valid(data);const paths=[data.packThumbnail,data.titleBackground].filter(Boolean).flatMap(p=>/^(data:|https:)/.test(p)||/\.[a-z0-9]+$/i.test(p)?[p]:[p+'.png',p+'.jpg',p+'.gif',p+'.webp']);let i=0;thumbnail.onerror=()=>{if(i<paths.length)thumbnail.src=paths[i++];else thumbnail.removeAttribute('src');};if(paths.length)thumbnail.src=paths[i++];}).catch(()=>{});button.onclick=async()=>{sfx();button.disabled=true;status(box,'Loading pack…');try{install(await PackCloud.load(pack.slug));}catch(e){button.disabled=false;status(box,friendly(e));}};const row=document.createElement('div');row.style.position='relative';const shell=document.createElement('div');shell.className='pack-shell';shell.append(button);row.append(shell);const creator=document.createElement('div');creator.className='pack-creator';creator.style.cssText='font-size:9px;line-height:1.4;margin-top:4px;overflow-wrap:anywhere;color:#a4e4fc;';creator.textContent=pack.owner?'Creator: …':'Creator: Unassigned';button.append(creator);if(pack.owner)PackCloud.creatorName(pack.owner).then(name=>{creator.textContent='Creator: '+name;}).catch(()=>{creator.textContent='Creator: Unknown';});
+      const like=document.createElement('button');like.type='button';like.className='pack-like';like.disabled=true;
+      const likeImage=document.createElement('img');likeImage.src='images/Like.png';likeImage.alt='';
+      const likeCount=document.createElement('span');likeCount.textContent='…';like.append(likeImage,likeCount);const footer=document.createElement('div');footer.className='pack-footer';footer.append(like);if(button._clearStar){footer.append(button._clearStar);delete button._clearStar;}shell.append(footer);
+      const updateLike=entry=>{likeCount.textContent=String(entry.count);like.setAttribute('aria-pressed',String(entry.liked));like.setAttribute('aria-label',(entry.liked?'Liked ':'Like ')+pack.name+' ('+entry.count+' likes)');like.disabled=entry.liked;};
+      likeButtons.set(pack.slug,updateLike);
+      like.onclick=async()=>{like.disabled=true;try{updateLike(await PackCloud.like(pack.slug));}catch(e){like.disabled=false;status(box,e.message==='Sign in to like packs.'?e.message:'Unable to save like.');}};
       const access=await PackCloud.permissions(pack.slug);
       if(access.edit||access.admin){
         const remove=document.createElement('button');remove.textContent='×';if(!access.edit)remove.classList.add('admin-pack-delete');remove.setAttribute('aria-label','Delete '+pack.name);remove.style.cssText='position:absolute;right:8px;top:8px;background:none;border:0;color:white;font-size:24px;cursor:pointer;';
@@ -79,7 +110,8 @@
         };row.append(remove);
       }
       if(access.admin){const assign=document.createElement('button');assign.className='cloud-pack creator-assignment';assign.textContent='ASSIGN CREATOR';assign.onclick=async()=>{const d=dialog('ASSIGN CREATOR');try{const select=document.createElement('select');select.style.maxWidth='100%';for(const person of await PackCloud.users()){const option=document.createElement('option');option.value=person.uid;option.textContent=person.name;option.selected=person.uid===pack.owner;select.append(option);}const apply=document.createElement('button');apply.className='cloud-pack';apply.textContent='SAVE CREATOR';apply.onclick=async()=>{try{await PackCloud.assign(pack.slug,select.value);d.overlay.remove();}catch(e){status(d.box,friendly(e));}};d.box.append(select,apply);}catch(e){status(d.box,friendly(e));}};row.append(assign);}
-      grid.append(row);}}
+      grid.append(row);}
+      likesReady.then(result=>{if(!overlay.isConnected)return;if(result.error){for(const button of grid.querySelectorAll(".pack-like")){button.querySelector("span").textContent="—";button.title="Likes unavailable";}return;}for(const [slug,update] of likeButtons)update(result.data[slug]||{count:0,liked:false});});}
     catch(e){status(box,friendly(e));}
   };
 
