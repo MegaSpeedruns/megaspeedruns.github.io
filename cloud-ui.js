@@ -1,5 +1,7 @@
 (() => {
   const style=document.createElement('style');style.textContent=`
+  #owner-edit-reminder{position:absolute;left:12px;bottom:8px;z-index:5;pointer-events:none;color:#fff;font-size:clamp(7px,1.1vw,11px);line-height:1.5;text-shadow:-2px -2px 0 #000,-2px -1px 0 #000,-2px 0px 0 #000,-2px 1px 0 #000,-2px 2px 0 #000,-1px -2px 0 #000,-1px -1px 0 #000,-1px 0px 0 #000,-1px 1px 0 #000,-1px 2px 0 #000,0px -2px 0 #000,0px -1px 0 #000,0px 1px 0 #000,0px 2px 0 #000,1px -2px 0 #000,1px -1px 0 #000,1px 0px 0 #000,1px 1px 0 #000,1px 2px 0 #000,2px -2px 0 #000,2px -1px 0 #000,2px 0px 0 #000,2px 1px 0 #000,2px 2px 0 #000;}
+  body.editing #owner-edit-reminder{display:none;}
   #browse-cloud-packs{position:absolute;bottom:7%;font-size:12px;}
   .hide-creator-assignment .creator-assignment,.hide-creator-assignment .admin-pack-delete{display:none;}
   .pack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:16px;}
@@ -59,8 +61,16 @@
     if(assets.some(v=>v&&(typeof v!=='string'||/["'<>\r\n]/.test(v)||(!/^(https:\/\/|data:(image|audio)\/|images\/|music\/|sounds\/|border\/)/.test(v)))))throw Error('Pack contains an unsupported asset path.');
     return pack;
   }
+  const ownerReminder=document.createElement('div');ownerReminder.id='owner-edit-reminder';ownerReminder.textContent='SHIFT + E TO EDIT';ownerReminder.hidden=true;document.getElementById('screen-select').append(ownerReminder);
+  let ownerReminderRequest=0;
+  function refreshOwnerReminder(pack){
+    const request=++ownerReminderRequest;ownerReminder.hidden=true;
+    if(!pack.cloudSlug||!pack.cloudOwner)return;
+    PackCloud.account().then(user=>{if(request!==ownerReminderRequest||CONFIG.cloudSlug!==pack.cloudSlug)return;ownerReminder.hidden=!(user&&!user.isAnonymous&&user.uid===pack.cloudOwner);}).catch(()=>{});
+  }
   function install(pack){
     valid(pack);
+    refreshOwnerReminder(pack);
     playPackMusicEnabled=true;
     CONFIG=Object.assign({},DEFAULTS,window.LEVEL_PACK||{},pack);
     CONFIG.music=Object.assign({},DEFAULTS.music,pack.music||{});
