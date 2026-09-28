@@ -20,12 +20,12 @@ window.PackCloud = (() => {
     const snapshot=await s.db.get(s.db.ref(s.database,'levelPackCreatorLikes'));
     return Object.fromEntries(Object.entries(snapshot.val()||{}).map(([slug,votes])=>[slug,{count:Object.values(votes||{}).filter(v=>v===true).length,liked:!!user&&votes?.[user.uid]===true}]));
   }
-  async function like(slug){
+  async function like(slug,liked=true){
     const user=await account();if(!user||user.isAnonymous)throw Error('Sign in to like packs.');
     const s=await sdk(),ref=s.db.ref(s.database,'levelPackCreatorLikes/'+slug+'/'+user.uid);
-    await s.db.set(ref,true);
+    await s.db.set(ref,liked?true:null);
     const snapshot=await s.db.get(s.db.ref(s.database,'levelPackCreatorLikes/'+slug));
-    return {count:Object.values(snapshot.val()||{}).filter(v=>v===true).length,liked:true};
+    return {count:Object.values(snapshot.val()||{}).filter(v=>v===true).length,liked:!!liked};
   }
   async function users(){const user=await account();if(user?.uid!==ADMIN_UID)throw Error('Not allowed');const s=await sdk();const data=(await s.db.get(s.db.ref(s.database,'users'))).val()||{};return Object.entries(data).map(([uid,p])=>({uid,name:p.username||uid})).sort((a,b)=>a.name.localeCompare(b.name));}
   async function assign(slug,uid){if(!(await permissions(slug)).admin)throw Error('Not allowed');const s=await sdk();await s.db.update(s.db.ref(s.database,'levelPackCreator/packs/'+slug),{owner:uid});}
