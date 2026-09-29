@@ -38,13 +38,6 @@
   },true);
   let busy=false;
   function dialog(title,closable=true){const overlay=document.createElement('div');overlay.className='cloud-dialog';const box=document.createElement('div');box.className='cloud-box';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');const heading=document.createElement('h2');heading.textContent=title;heading.style.fontSize='14px';box.append(heading);overlay.append(box);document.body.append(overlay);if(closable){const close=document.createElement('button');close.className='cloud-close';close.textContent='×';close.setAttribute('aria-label','Close');close.onclick=()=>overlay.remove();box.append(close);}return {overlay,box};}
-  document.getElementById('main-spacing-update').onclick=async()=>{
-    sfx();const {box,overlay}=dialog('UPDATE DEFAULT PACK SPACING',false);
-    status(box,'Checking admin login…');
-    try{const result=await PackCloud.updateDefaultSpacing(message=>status(box,message));status(box,'Updated '+result.updated.length+' packs. Left '+result.skipped.length+' unchanged.'+(result.failed.length?' Failed: '+result.failed.join(', ')+'.':''));}
-    catch(e){status(box,e.message||'Error updating pack spacing.');}
-    finally{const close=document.createElement('button');close.className='cloud-pack';close.textContent='CLOSE';close.onclick=()=>overlay.remove();box.append(close);}
-  };
   document.getElementById('main-options').onclick=()=>{
     sfx();const {overlay,box}=dialog('OPTIONS');
     const update=()=>{applyMusicVolume();switchMusic(document.querySelector('.screen.active').id);};

@@ -357,7 +357,7 @@ body[data-border-style="MM6"] .portrait-frame{clip-path:polygon(evenodd,0 0,100%
         <div class="t1" id="title-line1">LEVEL PACK</div>
       </div>
       </div>
-      <div class="press-start" id="btn-start">PRESS START</div><div id="game-choice" hidden><button type="button" id="load-pack-choice">PLAY PACK</button><button type="button" id="create-pack">CREATE PACK</button><button type="button" id="main-options">OPTIONS</button><button type="button" id="main-spacing-update" hidden>UPDATE DEFAULT PACK SPACING</button><button type="button" id="new-game">NEW GAME</button><button type="button" id="continue-game">CONTINUE</button></div>
+      <div class="press-start" id="btn-start">PRESS START</div><div id="game-choice" hidden><button type="button" id="load-pack-choice">PLAY PACK</button><button type="button" id="create-pack">CREATE PACK</button><button type="button" id="main-options">OPTIONS</button><button type="button" id="new-game">NEW GAME</button><button type="button" id="continue-game">CONTINUE</button></div>
 
 
     </div>
@@ -888,10 +888,10 @@ document.addEventListener('keydown',e=>{
 async function pressStart(){
   sfx();if(editMode){showScreen('screen-select');return;}
   const loaded=!!CONFIG.cloudSlug||packWasLoaded;
-  $('#main-spacing-update').hidden=true;$('#main-options').hidden=loaded;$('#create-pack').hidden=loaded;$('#load-pack-choice').hidden=loaded;
+  $('#main-options').hidden=loaded;$('#create-pack').hidden=loaded;$('#load-pack-choice').hidden=loaded;
   $('#new-game').hidden=!loaded;$('#continue-game').hidden=!loaded||store.read().played!==true;
   $('#create-pack').setAttribute('aria-disabled','true');$('#btn-start').hidden=true;$('#game-choice').hidden=false;
-  if(!loaded){try{const access=await PackCloud.permissions();$('#create-pack').setAttribute('aria-disabled',String(!access.edit));$('#main-spacing-update').hidden=!(access.admin||(location.protocol==='file:'&&window.localPackUser?.name==='SkyPilotSamurai'));}catch{$('#main-spacing-update').hidden=!(location.protocol==='file:'&&window.localPackUser?.name==='SkyPilotSamurai');}}
+  if(!loaded){try{const access=await PackCloud.permissions();$('#create-pack').setAttribute('aria-disabled',String(!access.edit));}catch{}}
 }
 $('#create-pack').onclick=async()=>{sfx();if(!(await PackCloud.permissions()).edit){window.showCreateLoginMessage();return;}editMode=true;applyConfig();showScreen('screen-select');};
 $('#load-pack-choice').onclick=()=>{sfx();window.browseCloudPacks();};
@@ -1557,6 +1557,6 @@ $('#opt-music').addEventListener('click',()=>{state.music=!optMusic();playerAudi
 
 applyConfig();
 </script>
-<script src="cloud-ui.js?v=20260929-main-spacing"></script>
+<script src="cloud-ui.js?v=20260929-remove-spacing-menu"></script>
 </body>
 </html>
