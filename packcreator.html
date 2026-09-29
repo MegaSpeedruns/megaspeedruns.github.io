@@ -334,6 +334,7 @@ body[data-border-style="MM6"] .portrait-frame{clip-path:polygon(evenodd,0 0,100%
 .stage-background-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;}
 .stage-background-heading .stage-background-custom{display:flex;align-items:center;gap:8px;margin:0;}
 .stage-background-heading input[type="checkbox"]{width:auto;margin:0;flex-shrink:0;}
+.music-preset{width:100%;margin-top:8px;}.music-preset[hidden]{display:none;}
 .stage-background-thumb{align-self:flex-start;width:fit-content;padding:2px;border:2px solid #a4e4fc;background:#071328;cursor:pointer;}
 .stage-background-thumb img{display:block;width:80px;aspect-ratio:8/7;object-fit:cover;image-rendering:pixelated;}
 .stage-background-dialog{position:relative;padding:36px 20px 20px;background:#071328;border:4px solid #a4e4fc;width:min(620px,92vw);max-height:85vh;overflow:auto;}
@@ -504,7 +505,7 @@ body[data-border-style="MM6"] .portrait-frame{clip-path:polygon(evenodd,0 0,100%
 <audio id="bgm" loop></audio>
 
 <!-- ======= editable pack config (JSON inside pack.js) ======= -->
-<script src="default-pack.js?v=20260929-mmm-wily"></script>
+<script src="default-pack.js?v=20260929-mm1-wily-ii"></script>
 <script>if(location.protocol==='file:')document.write('<script src="user"><\/script>');</script>
 <script src="cloud-service.js?v=20260929-main-spacing"></script>
 <script>
@@ -522,7 +523,7 @@ const DEFAULTS = {
   packName:"Level Pack Creator", linkFormat:"megamaker://{id}",
   titleBackground:"images/title-screens/MM2-TitleScreen.png", selectBackground:"images/stage-select/MM2-StageSelect.png", wilyBackground:"images/wily-castles/MMM-WilyCastle.png",
   stageSpacing:12, stageOffsetY:0, showTileSquares:true, showLevelNames:true, borderStyle:"MM2",
-  uiSounds:true, music:{title:"music/TitleScreen.mp3",select:"",wily:"music/WilyStages.mp3",clear:"music/Epilogue.mp3"}, levels:[]
+  uiSounds:true, music:{"title":"music/MM2-TitleScreen.mp3","select":"music/MM2-StageSelect.mp3","wily":"music/MM1-Wily-Castle-II.mp3","clear":"music/MM2-Epilogue.mp3"}, levels:[]
 };
 let loadedPack=window.LEVEL_PACK||{};
 let packWasLoaded=false;
@@ -761,7 +762,20 @@ const bgm=$('#bgm');
 let currentTrackKey=null, interacted=false, musicRequest=0;
 let playPackMusicEnabled=false;
 const SCREEN_TRACK={ 'screen-title':'title','screen-select':'select','screen-wily':'wily','screen-clear':'clear' };
+let trackPreview=null;
+function stopTrackPreview(){if(trackPreview){trackPreview.pause();trackPreview.removeAttribute('src');trackPreview=null;}}
+function testMusicTrack(key){
+  stopTrackPreview();++musicRequest;cancelAnimationFrame(volumeFade);fadeGeneration++;bgm.pause();
+  const audio=new Audio();trackPreview=audio;audio.volume=optVolume()/100;
+  const path=CONFIG.music[key]||'';
+  if(path)resolveAsset(path,AUD_EXTS,url=>{if(trackPreview!==audio||!url)return;audio.src=url;audio.play().catch(()=>{});});
+}
+function closePackSettings(){
+  stopTrackPreview();$('#pack-modal').classList.remove('open');
+  bgm.volume=musicVolumeTarget();const active=document.querySelector('.screen.active');if(active)switchMusic(active.id);
+}
 function switchMusic(screenId){
+  if(trackPreview){bgm.pause();return;}
   const request=++musicRequest;
   const key=screenId==='screen-wily'&&secondWilyActive()?'wily2':SCREEN_TRACK[screenId];
   currentTrackKey=key;
@@ -1282,6 +1296,27 @@ createBackgroundPicker('ps-wily2-bg','wily2Background','wily2-background-picker'
 ];
 function refreshBackgroundControls(){backgroundControls.forEach(refresh=>refresh());}
 
+
+const musicPresetGroups={"title":[["MEGA MAN 1 - SILENT",""],["MEGA MAN 2 (DEFAULT)","music/MM2-TitleScreen.mp3"],["MEGA MAN 3","music/MM3-TitleScreen.mp3"],["MEGA MAN 4","music/MM4-TitleScreen.mp3"],["MEGA MAN 5","music/MM5-TitleScreen.mp3"],["MEGA MAN 6","music/MM6-TitleScreen.mp3"]],"select":[["MEGA MAN 1","music/MM1-StageSelect.mp3"],["MEGA MAN 2 (DEFAULT)","music/MM2-StageSelect.mp3"],["MEGA MAN 3","music/MM3-StageSelect.mp3"],["MEGA MAN 4","music/MM4-StageSelect.mp3"],["MEGA MAN 5","music/MM5-StageSelect.mp3"],["MEGA MAN 6","music/MM6-StageSelect.mp3"]],"clear":[["MEGA MAN 1","music/MM1-Epilogue.mp3"],["MEGA MAN 2 (DEFAULT)","music/MM2-Epilogue.mp3"],["MEGA MAN 3 - PROTO MAN","music/MM3-Epilogue-ProtoMan.mp3"],["MEGA MAN 3 - CREDITS","music/MM3-Ending-Credits.mp3"],["MEGA MAN 4","music/MM4-Epilogue.mp3"],["MEGA MAN 5 - CREDITS","music/MM5-Ending-Credits.mp3"],["MEGA MAN 6 - CREDITS","music/MM6-Ending-Credits.mp3"]],"wily":[["MEGA MAN 1 - WILY CASTLE","music/MM1-Wily-Castle.mp3"],["MEGA MAN 1 - WILY CASTLE II (DEFAULT)","music/MM1-Wily-Castle-II.mp3"],["MEGA MAN 2 - WILY MAP","music/MM2-Wily-Map.mp3"],["MEGA MAN 2 - WILY CASTLE","music/MM2-Wily-Castle.mp3"],["MEGA MAN 2 - WILY CASTLE II","music/MM2-Wily-Castle-II.mp3"],["MEGA MAN 3 - WILY MAP","music/MM3-Wily-Map.mp3"],["MEGA MAN 3 - WILY CASTLE","music/MM3-Wily-Castle.mp3"],["MEGA MAN 3 - WILY CASTLE II","music/MM3-Wily-Castle-II.mp3"],["MEGA MAN 3 - WILY CASTLE III","music/MM3-Wily-Castle-III.mp3"],["MEGA MAN 4 - COSSACK FORTRESS INTRO","music/MM4-Cossack-Fortress-Intro.mp3"],["MEGA MAN 4 - COSSACK FORTRESS","music/MM4-Cossack-Fortress.mp3"],["MEGA MAN 4 - COSSACK FORTRESS II","music/MM4-Cossack-Fortress-II.mp3"],["MEGA MAN 4 - WILY CASTLE INTRO","music/MM4-Wily-Castle-Intro.mp3"],["MEGA MAN 4 - WILY CASTLE","music/MM4-Wily-Castle.mp3"],["MEGA MAN 4 - WILY CASTLE II","music/MM4-Wily-Castle-II.mp3"],["MEGA MAN 5 - PROTOMAN FORTRESS MAP","music/MM5-ProtoMan-Fortress-Map.mp3"],["MEGA MAN 5 - PROTOMAN FORTRESS STAGE","music/MM5-ProtoMan-Fortress-Stage.mp3"],["MEGA MAN 5 - WILY CASTLE MAP","music/MM5-Wily-Castle-Map.mp3"],["MEGA MAN 5 - WILY CASTLE STAGE","music/MM5-Wily-Castle-Stage.mp3"],["MEGA MAN 6 - MR. X STAGE MAP","music/MM6-Mr.-X-Stage-Map.mp3"],["MEGA MAN 6 - MR. X STAGE","music/MM6-Mr.-X-Stage.mp3"],["MEGA MAN 6 - WILY STAGE MAP","music/MM6-Wily-Stage-Map.mp3"],["MEGA MAN 6 - WILY STAGE","music/MM6-Wily-Stage.mp3"]],"wily2":[["NONE",""],["MEGA MAN 1 - WILY CASTLE","music/MM1-Wily-Castle.mp3"],["MEGA MAN 1 - WILY CASTLE II (DEFAULT)","music/MM1-Wily-Castle-II.mp3"],["MEGA MAN 2 - WILY MAP","music/MM2-Wily-Map.mp3"],["MEGA MAN 2 - WILY CASTLE","music/MM2-Wily-Castle.mp3"],["MEGA MAN 2 - WILY CASTLE II","music/MM2-Wily-Castle-II.mp3"],["MEGA MAN 3 - WILY MAP","music/MM3-Wily-Map.mp3"],["MEGA MAN 3 - WILY CASTLE","music/MM3-Wily-Castle.mp3"],["MEGA MAN 3 - WILY CASTLE II","music/MM3-Wily-Castle-II.mp3"],["MEGA MAN 3 - WILY CASTLE III","music/MM3-Wily-Castle-III.mp3"],["MEGA MAN 4 - COSSACK FORTRESS INTRO","music/MM4-Cossack-Fortress-Intro.mp3"],["MEGA MAN 4 - COSSACK FORTRESS","music/MM4-Cossack-Fortress.mp3"],["MEGA MAN 4 - COSSACK FORTRESS II","music/MM4-Cossack-Fortress-II.mp3"],["MEGA MAN 4 - WILY CASTLE INTRO","music/MM4-Wily-Castle-Intro.mp3"],["MEGA MAN 4 - WILY CASTLE","music/MM4-Wily-Castle.mp3"],["MEGA MAN 4 - WILY CASTLE II","music/MM4-Wily-Castle-II.mp3"],["MEGA MAN 5 - PROTOMAN FORTRESS MAP","music/MM5-ProtoMan-Fortress-Map.mp3"],["MEGA MAN 5 - PROTOMAN FORTRESS STAGE","music/MM5-ProtoMan-Fortress-Stage.mp3"],["MEGA MAN 5 - WILY CASTLE MAP","music/MM5-Wily-Castle-Map.mp3"],["MEGA MAN 5 - WILY CASTLE STAGE","music/MM5-Wily-Castle-Stage.mp3"],["MEGA MAN 6 - MR. X STAGE MAP","music/MM6-Mr.-X-Stage-Map.mp3"],["MEGA MAN 6 - MR. X STAGE","music/MM6-Mr.-X-Stage.mp3"],["MEGA MAN 6 - WILY STAGE MAP","music/MM6-Wily-Stage-Map.mp3"],["MEGA MAN 6 - WILY STAGE","music/MM6-Wily-Stage.mp3"]]};
+const musicControls=['title','select','wily','clear','wily2'].map(key=>{
+  const input=$('#'+(key==='wily2'?'ps-wily2-music':'ps-mus-'+key)),fields=input.closest('.fline'),holder=fields.parentElement;
+  const heading=document.createElement('div');heading.className='stage-background-heading';
+  const title=holder.querySelector('label');holder.insertBefore(heading,title);heading.append(title);
+  const label=document.createElement('label');label.className='stage-background-custom';label.textContent='CUSTOM MUSIC';
+  const custom=document.createElement('input');custom.type='checkbox';custom.id=input.id+'-custom';label.htmlFor=custom.id;label.append(custom);heading.append(label);
+  const select=document.createElement('select');select.className='source-select music-preset';select.id=input.id+'-preset';select.setAttribute('aria-label',title.textContent);
+  for(const [name,path] of musicPresetGroups[key]){const option=document.createElement('option');option.textContent=name;option.value=path;select.append(option);}holder.insertBefore(select,fields);
+  const test=document.createElement('button');test.type='button';test.className='pickbtn';test.textContent='TEST TRACK';test.setAttribute('aria-label','Test '+title.textContent.toLowerCase());test.onclick=()=>testMusicTrack(key);holder.append(test);
+  let lastPreset=musicPresetGroups[key].find(([name])=>name.includes('(DEFAULT)'))?.[1]??musicPresetGroups[key][0][1],lastCustom='';
+  const save=path=>{CONFIG.music[key]=path;input.value=path;markDirty();applyConfig();};
+  const refresh=()=>{const savedPath=CONFIG.music[key]||'';const aliases={'music/TitleScreen':'music/MM2-TitleScreen.mp3','music/TitleScreen.mp3':'music/MM2-TitleScreen.mp3','music/StageSelect':'music/MM2-StageSelect.mp3','music/StageSelect.mp3':'music/MM2-StageSelect.mp3','music/WilyStages':'music/MM1-Wily-Castle-II.mp3','music/WilyStages.mp3':'music/MM1-Wily-Castle-II.mp3','music/Epilogue':'music/MM2-Epilogue.mp3','music/Epilogue.mp3':'music/MM2-Epilogue.mp3'};const path=aliases[savedPath]||savedPath;const preset=musicPresetGroups[key].find(([,p])=>p===path||(path&&p===path+'.mp3'));custom.checked=!preset;fields.hidden=!!preset;select.hidden=!preset;if(preset){select.value=preset[1];lastPreset=preset[1];}else lastCustom=path;};
+  select.onchange=()=>{lastPreset=select.value;save(select.value);};
+  custom.onchange=()=>{fields.hidden=!custom.checked;select.hidden=custom.checked;if(custom.checked){if(lastCustom)save(lastCustom);}else{lastCustom=input.value;save(lastPreset);select.value=lastPreset;}};
+  input.addEventListener('input',()=>{lastCustom=input.value;});
+  return refresh;
+});
+function refreshMusicControls(){musicControls.forEach(refresh=>refresh());}
+
 function refreshPackModal(){
   refreshTankSettings();
   refreshWeaponSettings();
@@ -1318,6 +1353,7 @@ function refreshPackModal(){
   $('#ps-sounds').textContent=CONFIG.uiSounds?'ON':'OFF';
 
   refreshBackgroundControls();
+  refreshMusicControls();
   setHint('pick-hint-ps','');
 }
 $('#btn-pack-settings').addEventListener('click',()=>{refreshPackModal();$('#pack-modal').classList.add('open');});
@@ -1367,7 +1403,7 @@ $('#ps-custom-border').addEventListener('change',e=>{CONFIG.customBorder=e.targe
 $('#ps-border').addEventListener('click',()=>{if(CONFIG.customBorder)CONFIG.customBorder=false;else CONFIG.borderStyle=nextBorder(CONFIG.borderStyle);state.border=null;save();markDirty();refreshPackModal();applyConfig();});
 $('#ps-sounds').addEventListener('click',()=>{CONFIG.uiSounds=!CONFIG.uiSounds;delete playerAudio.sounds;savePlayerAudio();state.sounds=null;save();markDirty();refreshPackModal();applyConfig();});
 
-$('#ps-done').addEventListener('click',()=>$('#pack-modal').classList.remove('open'));
+$('#ps-done').addEventListener('click',closePackSettings);
 
 /* ============================ save pack file ============================ */
 function serializePack(){
@@ -1412,7 +1448,7 @@ function backFromCurrentScreen(){
   if(menus.length){const menu=menus[menus.length-1];
     if(menu.id==='stage-modal'){sfx();closeModal();}
     else if(menu.id==='edit-modal'){$('#ed-done').click();}
-    else if(menu.id==='pack-modal'){sfx();menu.classList.remove('open');}
+    else if(menu.id==='pack-modal'){sfx();closePackSettings();}
     else if(menu.classList.contains('cloud-dialog')){menu.querySelector('.cloud-close')?.click();}
     else{sfx();menu.remove();}
     return;
@@ -1456,7 +1492,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
     for(const id of['stage-modal','edit-modal','pack-modal']){
       if($('#'+id).classList.contains('open')){
-        if(id==='stage-modal'){closeModal();}else if(id==='edit-modal'){$('#ed-done').click();}else $('#'+id).classList.remove('open');
+        if(id==='stage-modal'){closeModal();}else if(id==='edit-modal'){$('#ed-done').click();}else closePackSettings();
         return;
       }
     }

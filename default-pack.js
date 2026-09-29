@@ -25,10 +25,10 @@ window.LEVEL_PACK = {
   "borderStyle": "MM1",
   "uiSounds": true,
   "music": {
-    "title": "music/TitleScreen.mp3",
-    "select": "music/StageSelect",
-    "wily": "music/WilyStages.mp3",
-    "clear": "music/Epilogue.mp3"
+    "title": "music/MM2-TitleScreen.mp3",
+    "select": "music/MM2-StageSelect.mp3",
+    "wily": "music/MM1-Wily-Castle-II.mp3",
+    "clear": "music/MM2-Epilogue.mp3"
   },
   "showTanks": true,
   "tankLevels": {},
