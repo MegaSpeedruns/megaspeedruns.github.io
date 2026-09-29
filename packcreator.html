@@ -622,7 +622,7 @@ const BORDER_STYLES={
 const normalizeBorder=value=>Object.hasOwn(BORDER_STYLES,value)?value:'MM2';
 CONFIG.borderStyle=normalizeBorder(CONFIG.borderStyle);
 const optBorder=()=>normalizeBorder(state.border??CONFIG.borderStyle);
-const selectedBorder=()=>CONFIG.customBorder?BORDER_STYLES.MM4:BORDER_STYLES[optBorder()];
+const selectedBorder=()=>CONFIG.customBorder?BORDER_STYLES[normalizeBorder(CONFIG.customBorderLayout||"MM4")]:BORDER_STYLES[optBorder()];
 const nextBorder=value=>{const names=Object.keys(BORDER_STYLES);return names[(names.indexOf(normalizeBorder(value))+1)%names.length];};
 const optNames =()=>state.names ??CONFIG.showLevelNames;
 const playerAudio=(()=>{
@@ -988,6 +988,7 @@ document.querySelectorAll('.pickbtn[data-pick]').forEach(btn=>{
     const file=picker.files[0];if(!file)return;
     try{
       const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(reader.error);reader.readAsDataURL(file);});
+      if(btn.dataset.pick==='ps-border-default'){const match=file.name.match(/^(MM[1-6])OFF\.png$/i);CONFIG.customBorderLayout=match?match[1].toUpperCase():'MM4';}
       const input=$('#'+btn.dataset.pick);input.value=data;input.dispatchEvent(new Event('input',{bubbles:true}));
     }catch{}
   });
@@ -1206,7 +1207,7 @@ function refreshPackModal(){
   $('#ps-offset-y').value=CONFIG.stageOffsetY;
   $('#ps-squares').textContent=CONFIG.showTileSquares?'ON':'OFF';
   $('#ps-names').textContent=CONFIG.showLevelNames?'ON':'OFF';
-  $('#ps-border').textContent=CONFIG.borderStyle;
+  $('#ps-border').textContent=CONFIG.customBorder?'CUSTOM':CONFIG.borderStyle;
   $('#ps-custom-border').checked=!!CONFIG.customBorder;$('#custom-border-fields').hidden=!CONFIG.customBorder;$('#ps-border-default').value=CONFIG.customBorderDefault||'';$('#ps-border-active').value=CONFIG.customBorderActive||'';
   $('#ps-sounds').textContent=CONFIG.uiSounds?'ON':'OFF';
 
@@ -1251,8 +1252,9 @@ $('#ps-offset-y').addEventListener('input',e=>{
 });
 $('#ps-squares').addEventListener('click',()=>{CONFIG.showTileSquares=!CONFIG.showTileSquares;markDirty();refreshPackModal();applyConfig();});
 $('#ps-names').addEventListener('click',()=>{CONFIG.showLevelNames=!CONFIG.showLevelNames;state.names=null;save();markDirty();refreshPackModal();applyConfig();});
-$('#ps-custom-border').addEventListener('change',e=>{CONFIG.customBorder=e.target.checked;$('#custom-border-fields').hidden=!CONFIG.customBorder;markDirty();applyConfig();});
-$('#ps-border').addEventListener('click',()=>{CONFIG.borderStyle=nextBorder(CONFIG.borderStyle);state.border=null;save();markDirty();refreshPackModal();applyConfig();});
+for(const [id,key] of [['ps-border-default','customBorderDefault'],['ps-border-active','customBorderActive']])$('#'+id).addEventListener('input',e=>{CONFIG[key]=e.target.value;markDirty();applyConfig();});
+$('#ps-custom-border').addEventListener('change',e=>{CONFIG.customBorder=e.target.checked;$('#custom-border-fields').hidden=!CONFIG.customBorder;$('#ps-border').textContent=CONFIG.customBorder?'CUSTOM':CONFIG.borderStyle;markDirty();applyConfig();});
+$('#ps-border').addEventListener('click',()=>{if(CONFIG.customBorder)CONFIG.customBorder=false;else CONFIG.borderStyle=nextBorder(CONFIG.borderStyle);state.border=null;save();markDirty();refreshPackModal();applyConfig();});
 $('#ps-sounds').addEventListener('click',()=>{CONFIG.uiSounds=!CONFIG.uiSounds;delete playerAudio.sounds;savePlayerAudio();state.sounds=null;save();markDirty();refreshPackModal();applyConfig();});
 
 $('#ps-done').addEventListener('click',()=>$('#pack-modal').classList.remove('open'));
@@ -1271,7 +1273,7 @@ function serializePack(){
     titleBackground:CONFIG.titleBackground, selectBackground:CONFIG.selectBackground, wilyBackground:CONFIG.wilyBackground,
     stageOffsetY:CONFIG.stageOffsetY,
     stageSpacingX:CONFIG.stageSpacingX, stageSpacingY:CONFIG.stageSpacingY, showTileSquares:CONFIG.showTileSquares, showLevelNames:CONFIG.showLevelNames,
-    packThumbnail:CONFIG.packThumbnail||'',customBorder:!!CONFIG.customBorder,customBorderDefault:CONFIG.customBorderDefault||'',customBorderActive:CONFIG.customBorderActive||'',borderStyle:CONFIG.borderStyle, uiSounds:CONFIG.uiSounds,
+    packThumbnail:CONFIG.packThumbnail||'',customBorder:!!CONFIG.customBorder,customBorderLayout:CONFIG.customBorderLayout||'MM4',customBorderDefault:CONFIG.customBorderDefault||'',customBorderActive:CONFIG.customBorderActive||'',borderStyle:CONFIG.borderStyle, uiSounds:CONFIG.uiSounds,
     wily2Icon:CONFIG.wily2Icon||'',wily2Title:CONFIG.wily2Title??CONFIG.wilyTitle,wily2StageCount:CONFIG.wily2StageCount,secondWilyEnabled:!!CONFIG.secondWilyEnabled,wily2Background:CONFIG.wily2Background||'',music:{wily2:CONFIG.music.wily2||'',title:CONFIG.music.title,select:CONFIG.music.select,wily:CONFIG.music.wily,clear:CONFIG.music.clear},
     showTankTracker:CONFIG.showTankTracker??CONFIG.showTanks,showTanks:CONFIG.showTanks, tankLevels:CONFIG.tankLevels,
     showWeapons:CONFIG.showWeapons, weaponCount:CONFIG.weaponCount, weapons:CONFIG.weapons,
