@@ -13,7 +13,7 @@ window.PackCloud = (() => {
   }
   const ADMIN_UID='rVntW7XRN3Xtud9v6xMEFeWTKDh2';
   async function account(){const s=await sdk();await s.userAuth.authStateReady();return s.userAuth.currentUser;}
-  async function permissions(slug){if(location.protocol==='file:'&&window.localPackUser?.name)return {edit:true,admin:false};const user=await account();if(!user||user.isAnonymous)return {edit:false,admin:false};const s=await sdk();const record=slug?(await s.db.get(s.db.ref(s.database,'levelPackCreator/packs/'+slug))).val():null;return {edit:!slug||record?.owner===user.uid,admin:user.uid===ADMIN_UID};}
+  async function permissions(slug){if(location.protocol==='file:'&&window.localPackUser?.name)return {edit:true,admin:false};const user=await account();if(!user||user.isAnonymous)return {edit:false,admin:false};const s=await sdk();const record=slug?(await s.db.get(s.db.ref(s.database,'levelPackCreator/packs/'+slug))).val():null;return {edit:!slug||record?.owner===user.uid||user.uid===ADMIN_UID||user.uid===ADMIN_UID,admin:user.uid===ADMIN_UID};}
   async function creatorName(uid){if(!uid)return 'Unassigned';const s=await sdk();const profile=(await s.db.get(s.db.ref(s.database,'users/'+uid))).val();return profile?.username||'Unknown creator';}
   async function likes(){
     const s=await sdk(),user=await account();
@@ -52,7 +52,8 @@ window.PackCloud = (() => {
     const slug=pack.cloudSlug||matches[0]?.slug||baseSlug;
     const previous=(await s.db.get(s.db.ref(s.database,'levelPackCreator/packs/'+slug))).val();
     if(previous&&nameKey(previous.name)!==nameKey(name))throw Error('That URL is used by a different pack name. Choose another name.');
-    if(previous&&previous.owner!==user.uid)throw Error('Only the creator can edit this pack');
+    if(previous&&previous.owner!==user.uid&&user.uid!==ADMIN_UID)throw Error('Only the creator can edit this pack');
+    const owner=previous?.owner||user.uid;
     const builtins=new Set(await (await fetch(new URL('builtin-assets.json',document.baseURI))).json());
     const builtinHashes=await (await fetch(new URL('builtin-asset-hashes.json',document.baseURI))).json();
     const root='levelPackCreatorOwned/'+user.uid+'/'+slug+'/'+crypto.randomUUID()+'/';
@@ -80,17 +81,48 @@ window.PackCloud = (() => {
       if(level.customMugshot)level.image=await asset(level.image);
       if(level.localLevelData){progress('Uploading level files…');level.localLevelUrl=await upload(new Blob([level.localLevelData],{type:'text/plain'}),'mmlv');delete level.localLevelData;}
     }
-    result.cloudSlug=slug;result.cloudName=name;result.cloudOwner=user.uid;
+    result.cloudSlug=slug;result.cloudName=name;result.cloudOwner=owner;
     const manifestPath=root+'packs/'+crypto.randomUUID()+'.json';
     progress('Saving pack…');await s.storage.uploadBytes(s.storage.ref(s.bucket,manifestPath),new Blob([JSON.stringify(result)],{type:'application/json'}));
     const updatedAt=Date.now();
     const recordRef=s.db.ref(s.database,'levelPackCreator/packs/'+slug);
     const replaced=(await s.db.get(recordRef)).val();
     // Publish only after the new manifest is fully uploaded. Last completed save wins.
-    await s.db.set(recordRef,{name,manifestPath,updatedAt,owner:user.uid});
+    await s.db.set(recordRef,{name,manifestPath,updatedAt,owner});
     if(!previous)rememberCreated(slug);
     if(replaced){try{await remove(slug,replaced);}catch{progress('Pack saved; old files can be cleaned up later.');}}
     return {...result,cloudRevision:updatedAt};
+  }
+  let spacingUpdateRunning=false;
+  async function updateDefaultSpacing(progress=()=>{}){
+    const user=await account();
+    if(!user||user.isAnonymous||user.uid!==ADMIN_UID)throw Error('Sign in as SkyPilotSamurai to update online packs.');
+    if(spacingUpdateRunning)throw Error('Spacing update already running.');
+    spacingUpdateRunning=true;
+    const summary={updated:[],skipped:[],failed:[]};
+    try{
+      const s=await sdk();
+      for(const record of await list()){
+        progress('Checking '+record.name+'…');
+        try{
+          const url=await s.storage.getDownloadURL(s.storage.ref(s.bucket,record.manifestPath));
+          const response=await fetch(url,{cache:'no-store'});if(!response.ok)throw Error('Cannot read pack');
+          const pack=await response.json();
+          if(pack.stageSpacingX!==80||pack.stageSpacingY!==90||pack.stageOffsetY!==10){summary.skipped.push(record.name);continue;}
+          Object.assign(pack,{stageSpacingX:80,stageSpacingY:96,stageOffsetY:-10});
+          const manifestPath='levelPackCreatorOwned/'+user.uid+'/'+record.slug+'/'+crypto.randomUUID()+'/packs/spacing-update.json';
+          await s.storage.uploadBytes(s.storage.ref(s.bucket,manifestPath),new Blob([JSON.stringify(pack)],{type:'application/json'}));
+          const result=await s.db.runTransaction(s.db.ref(s.database,'levelPackCreator/packs/'+record.slug),current=>{
+            if(!current)return current;
+            if(current.manifestPath!==record.manifestPath||current.updatedAt!==record.updatedAt)return;
+            return {...current,manifestPath,updatedAt:Date.now()};
+          },{applyLocally:false});
+          if(!result.committed||result.snapshot?.val()===null)throw Error('Pack changed during update; left untouched');
+          summary.updated.push(record.name);
+        }catch(e){summary.failed.push(record.name);console.error('Spacing update failed:',record.slug,e);}
+      }
+      return summary;
+    }finally{spacingUpdateRunning=false;}
   }
   async function remove(slug,obsolete=null){
     if(!/^[a-z0-9][a-z0-9-]{0,69}$/.test(slug))throw Error('Invalid pack.');
@@ -132,5 +164,5 @@ window.PackCloud = (() => {
     }
     if(!obsolete)await s.db.remove(s.db.ref(s.database,'levelPackCreator/packs/'+slug));
   }
-  return {likes,like,list,load,publish,slugify,remove,olderVersions,canDelete,account,permissions,users,assign,creatorName};
+  return {updateDefaultSpacing,likes,like,list,load,publish,slugify,remove,olderVersions,canDelete,account,permissions,users,assign,creatorName};
 })();

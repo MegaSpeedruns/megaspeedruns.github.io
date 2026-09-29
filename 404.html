@@ -75,7 +75,7 @@ body.editing .select-menu{position:absolute;bottom:8px;left:3%;right:auto;z-inde
 .sel-wrap{--tile-size:clamp(48px,18cqw,170px);position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;}
 .sel-header{
   margin-top:2.2%;width:100%;display:flex;align-items:center;justify-content:center;gap:3%;
-  font-size:clamp(10px,2.8cqw,26px);color:#fff;letter-spacing:3px;white-space:nowrap;line-height:1.4;
+  font-size:clamp(9px,2.5cqw,23px);color:#fff;text-shadow:2px 2px 0 #013;letter-spacing:2px;white-space:nowrap;line-height:1.4;
 }
 .edit-banner{
   margin-top:.6%;font-size:clamp(6px,1vw,10px);color:#ffd850;text-shadow:2px 2px 0 #402;
@@ -175,7 +175,8 @@ body.squares-off .rm-tile.wily-tile{background:transparent;}
 .mbtn:hover{background:#2848d0;}
 .mbtn.green{background:#046;border-color:#4fd;}
 .mbtn.green.done{background:#062;}
-.mbtn.plain{background:#222;border-color:#666;min-width:40%;}
+.mbtn.plain{background:#222;border-color:#666;}
+.modal-btns > .mbtn{width:70%;min-width:0;box-sizing:border-box;overflow-wrap:anywhere;}
 .mbtn.orange{background:#830;border-color:#fa6;}
 .weblink{font-size:clamp(7px,1.1vw,10px);color:#8ac;cursor:pointer;text-decoration:underline;}
 /* form rows */
@@ -294,7 +295,7 @@ body.editing .wstage.locked{opacity:.8;cursor:pointer;}
 #weapon-row{display:flex;justify-content:center;gap:clamp(3px,1cqw,10px);width:94%;flex-shrink:0;margin:4px 0 48px;}
 #weapon-row[hidden]{display:none;}
 .weapon-icon{width:clamp(18px,4cqw,38px);height:clamp(18px,4cqw,38px);padding:0;border:0;background:transparent;cursor:pointer;}
-.weapon-icon img{width:100%;height:100%;image-rendering:pixelated;}
+.weapon-icon img{display:block;width:100%;height:100%;image-rendering:pixelated;}
 .weapon-icon:not(.earned) img{filter:grayscale(1) brightness(.4);}
 .weapon-icon:focus-visible{outline:2px solid #fff;outline-offset:3px;}
 .weapon-setting{border-top:2px solid #244769;margin-top:18px;padding-top:12px;}
@@ -309,24 +310,38 @@ body.editing .wstage.locked{opacity:.8;cursor:pointer;}
 .weapon-reward{display:flex;align-items:center;gap:10px;font-size:9px;line-height:1.8;margin:10px 0;}
 .weapon-reward input{flex-shrink:0;}
 .sel-grid-holder{min-height:0;}
-#equipment-row{display:flex;align-items:center;justify-content:center;gap:12px;width:96%;min-height:36px;flex-shrink:0;margin:4px 0 8px;}
-#weapon-row{width:auto;min-width:0;gap:clamp(2px,.65cqw,7px);margin:0;}
-#weapon-row .weapon-icon{width:clamp(12px,2.8cqw,30px);height:clamp(12px,2.8cqw,30px);}
-#tank-row{display:flex;gap:10px;flex-shrink:0;}
+#equipment-row{--equipment-icon-size:clamp(15px,3.5cqw,37.5px);display:flex;align-items:flex-end;justify-content:center;gap:12px;width:96%;min-height:36px;flex-shrink:0;margin:4px 0 8px;transform:translateY(3px);}
+#weapon-row{width:auto;min-width:0;gap:clamp(2px,.65cqw,7px);margin:0;transform:translateY(-4px);}
+#weapon-row .weapon-icon{display:block;flex-shrink:0;line-height:0;width:var(--equipment-icon-size);height:var(--equipment-icon-size);}
+#tank-row{display:flex;gap:10px;flex-shrink:0;transform:translateY(-4px);}
 #tank-row[hidden]{display:none;}
-.tank-counter{display:flex;align-items:center;gap:4px;font-size:11px;}
+.tank-counter{display:flex;align-items:center;gap:4px;font-size:13.75px;}
 .tank-counter span,.level-tank{text-shadow:-1px -1px 0 #000,0 -1px 0 #000,1px -1px 0 #000,-1px 0 0 #000,1px 0 0 #000,-1px 1px 0 #000,0 1px 0 #000,1px 1px 0 #000;}
-.tank-counter img,.level-tank img{width:24px;height:24px;object-fit:contain;}
+.tank-counter img,.level-tank img{width:30px;height:30px;object-fit:contain;}
+#tank-row .tank-counter{min-height:var(--equipment-icon-size);}
+#tank-row .tank-counter img{display:block;width:var(--equipment-icon-size);height:var(--equipment-icon-size);align-self:flex-end;image-rendering:pixelated;}
 .tank-counter button{font:inherit;width:20px;height:24px;background:#081428;color:#fff;border:1px solid #446;cursor:pointer;}
 .tank-counter button:disabled{opacity:.35;cursor:default;}
 #level-tanks{display:flex;justify-content:center;gap:18px;margin-top:10px;}
-#level-tanks[hidden]{display:none;}.level-tank{display:flex;align-items:center;gap:8px;font-size:11px;}
+#level-tanks[hidden]{display:none;}.level-tank{display:flex;align-items:center;gap:8px;font-size:13.75px;}
 body:not(.squares-off)[data-border-style="MM3"] .mugshot-backing{background:#fff;}
 @container (max-width:600px){#equipment-row{min-height:24px;margin-bottom:3px;}}
 .rm-name,#wily-label,#modal-title,.wstage,.wstage.beaten{color:#fff;}
 body[data-border-style="MM6"] .portrait-frame{clip-path:polygon(evenodd,0 0,100% 0,100% 100%,0 100%,0 0,16.666667% 16.666667%,16.666667% 83.333333%,83.333333% 83.333333%,83.333333% 16.666667%,16.666667% 16.666667%);}
 #game-choice{position:absolute;left:50%;font-size:clamp(15px,2.7vw,25.5px);top:calc(50% + 20px - .75em);transform:translateX(-50%);width:max-content;max-width:100%;display:flex;flex-direction:column;align-items:center;gap:24px;}#game-choice[hidden]{display:none;}#game-choice button{background:none;border:0;box-shadow:none;color:white;font:inherit;line-height:1.5;cursor:pointer;padding:0 8px;}#game-choice button:not([aria-disabled="true"]):hover,#game-choice button:focus-visible{color:#a4e4fc;}#game-choice button[aria-disabled="true"]{color:#666;cursor:pointer;}
 #ed-mugshot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:6px;max-height:220px;overflow:auto;padding:6px;margin:12px 0;}#ed-mugshot-grid[hidden]{display:none;}#ed-mugshot-grid button{padding:4px;background:#000;border:2px solid #446;cursor:pointer;}#ed-mugshot-grid button[aria-pressed="true"]{border-color:#fff;background:#1830a0;}#ed-mugshot-grid img{display:block;width:100%;aspect-ratio:1;image-rendering:pixelated;}
+.fline[hidden],select.source-select[hidden]{display:none;}
+.stage-background-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.stage-background-heading .stage-background-custom{display:flex;align-items:center;gap:8px;margin:0;}
+.stage-background-heading input[type="checkbox"]{width:auto;margin:0;flex-shrink:0;}
+.stage-background-thumb{align-self:flex-start;width:fit-content;padding:2px;border:2px solid #a4e4fc;background:#071328;cursor:pointer;}
+.stage-background-thumb img{display:block;width:80px;aspect-ratio:8/7;object-fit:cover;image-rendering:pixelated;}
+.stage-background-dialog{position:relative;padding:36px 20px 20px;background:#071328;border:4px solid #a4e4fc;width:min(620px,92vw);max-height:85vh;overflow:auto;}
+.stage-background-dialog h2{font-size:12px;line-height:1.6;}
+.stage-background-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:12px;}
+.stage-background-grid button{font:inherit;font-size:9px;line-height:1.5;color:white;border:2px solid #468;background:#183060;padding:6px;cursor:pointer;}
+.stage-background-grid button[aria-pressed="true"]{border-color:#fff;}
+.stage-background-grid img{display:block;width:100%;aspect-ratio:8/7;object-fit:cover;image-rendering:pixelated;margin-bottom:6px;}
 </style>
 </head>
 <body>
@@ -341,7 +356,7 @@ body[data-border-style="MM6"] .portrait-frame{clip-path:polygon(evenodd,0 0,100%
         <div class="t1" id="title-line1">LEVEL PACK</div>
       </div>
       </div>
-      <div class="press-start" id="btn-start">PRESS START</div><div id="game-choice" hidden><button type="button" id="load-pack-choice">PLAY PACK</button><button type="button" id="create-pack">CREATE PACK</button><button type="button" id="main-options">OPTIONS</button><button type="button" id="new-game">NEW GAME</button><button type="button" id="continue-game">CONTINUE</button></div>
+      <div class="press-start" id="btn-start">PRESS START</div><div id="game-choice" hidden><button type="button" id="load-pack-choice">PLAY PACK</button><button type="button" id="create-pack">CREATE PACK</button><button type="button" id="main-options">OPTIONS</button><button type="button" id="main-spacing-update" hidden>UPDATE DEFAULT PACK SPACING</button><button type="button" id="new-game">NEW GAME</button><button type="button" id="continue-game">CONTINUE</button></div>
 
 
     </div>
@@ -452,7 +467,7 @@ body[data-border-style="MM6"] .portrait-frame{clip-path:polygon(evenodd,0 0,100%
       
       
       
-      <div class="settings-tabs" role="tablist" aria-label="Pack settings"><button type="button" role="tab" id="settings-tab-0" aria-controls="settings-panel-0" aria-selected="true" tabindex="0">PACK</button><button type="button" role="tab" id="settings-tab-2" aria-controls="settings-panel-2" aria-selected="false" tabindex="-1">LEVEL GRID</button><button type="button" role="tab" id="settings-tab-3" aria-controls="settings-panel-3" aria-selected="false" tabindex="-1">MISC/WILY STAGES</button><button type="button" role="tab" id="settings-tab-4" aria-controls="settings-panel-4" aria-selected="false" tabindex="-1">BACKGROUNDS</button><button type="button" role="tab" id="settings-tab-5" aria-controls="settings-panel-5" aria-selected="false" tabindex="-1">AUDIO</button><button type="button" role="tab" id="settings-tab-weapons" aria-controls="settings-panel-weapons" aria-selected="false" tabindex="-1">WEAPONS</button><button type="button" role="tab" id="settings-tab-tanks" aria-controls="settings-panel-tanks" aria-selected="false" tabindex="-1">TANKS</button><button type="button" role="tab" id="settings-tab-victory" aria-controls="settings-panel-victory" aria-selected="false" tabindex="-1">VICTORY</button></div><section class="settings-section" role="tabpanel" id="settings-panel-0" aria-labelledby="settings-tab-0"><div class="frow"><div class="fline"><button type="button" class="pickbtn" id="ps-load-pack">LOAD PACK</button><button type="button" class="pickbtn" id="ps-default-pack">DEFAULT PACK</button><input id="ps-pack-file" type="file" accept=".js,.json" hidden></div></div><div class="frow"><label for="ps-thumbnail">PACK THUMBNAIL</label><div class="fline"><input id="ps-thumbnail" type="text"><button class="pickbtn" data-pick="ps-thumbnail" data-kind="images">PICK FILE</button></div></div><div class="frow"><label>PACK TITLE TEXT</label><input id="ps-name" type="text" maxlength="40"></div><div class="opt-row"><label for="ps-level-source">LEVEL SOURCE</label><select id="ps-level-source" class="source-select"><option value="online">ONLINE LEVEL ID</option><option value="local">MMLV</option></select></div><div class="opt-row"><label for="ps-show-title">SHOW TITLE</label><button type="button" class="val" id="ps-show-title" aria-pressed="true">ON</button></div><div class="opt-row"><label for="ps-font-size">TITLE TEXT FONT SIZE (PX)</label><input class="num" id="ps-font-size" type="number" min="6" max="120" step="1"></div><div class="opt-row"><label for="ps-title-text">TITLE TEXT COLOR</label><input class="title-color" id="ps-title-text" type="color"></div></section><section class="settings-section" role="tabpanel" id="settings-panel-2" aria-labelledby="settings-tab-2" hidden><div class="opt-row"><label for="ps-level-count">LEVEL COUNT</label><select id="ps-level-count" class="source-select"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="4x4">4 × 4 (TWO SETS)</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div><div class="opt-row"><span>LEVEL NAMES</span><span class="val" id="ps-names">ON</span></div><div class="opt-row"><label for="ps-level-font-size">LEVEL NAME FONT SIZE (PX)</label><input class="num" id="ps-level-font-size" type="number" min="6" max="120" step="1"></div><div class="opt-row"><span>LEVEL BORDERS</span><span class="val" id="ps-squares">ON</span></div><div class="opt-row"><span>BORDER STYLE</span><span class="val" id="ps-border">MM2</span></div><div class="opt-row"><label for="ps-custom-border">CUSTOM LEVEL BORDER</label><input id="ps-custom-border" type="checkbox"></div><div id="custom-border-fields" hidden><p class="hint">Use 48 × 48 pixel images with a transparent center for the mugshot.</p><div class="frow"><label for="ps-border-default">DEFAULT (NOT HOVERED)</label><div class="fline"><input id="ps-border-default" type="text"><button class="pickbtn" data-pick="ps-border-default" data-kind="images">PICK FILE</button></div></div><div class="frow"><label for="ps-border-active">ACTIVE (HOVERED)</label><div class="fline"><input id="ps-border-active" type="text"><button class="pickbtn" data-pick="ps-border-active" data-kind="images">PICK FILE</button></div></div></div><div class="opt-row"><label for="ps-spacing-x">LEVEL HORIZONTAL SPACING (PX)</label><input class="num" id="ps-spacing-x" type="number" min="0" max="400" step="2"></div><div class="opt-row"><label for="ps-spacing-y">LEVEL VERTICAL SPACING (PX)</label><input class="num" id="ps-spacing-y" type="number" min="0" max="400" step="2"></div><div class="opt-row"><label for="ps-offset-y">LEVEL VERTICAL OFFSET (PX)</label><input class="num" id="ps-offset-y" type="number" min="-400" max="400" step="2"></div></section><section class="settings-section" role="tabpanel" id="settings-panel-3" aria-labelledby="settings-tab-3" hidden><div class="opt-row"><label for="ps-intro">INTRO STAGE</label><input id="ps-intro" type="checkbox"></div><div class="opt-row"><label for="ps-midway-count">MIDWAY STAGES</label><select id="ps-midway-count" class="source-select"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></div><div id="midway-settings"></div><div class="opt-row"><label for="ps-wily-count">WILY STAGE COUNT</label><select id="ps-wily-count" class="source-select"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div><div class="frow"><label for="ps-wily-icon">WILY ICON</label><div class="fline"><input id="ps-wily-icon" type="text"><button class="pickbtn" data-pick="ps-wily-icon" data-kind="images">PICK FILE</button></div></div><div class="frow"><label for="ps-wily-text">WILY ICON TEXT</label><input id="ps-wily-text" type="text" maxlength="80"></div><div class="opt-row"><label for="ps-show-wily-title">SHOW WILY STAGES TITLE</label><button type="button" class="val" id="ps-show-wily-title">ON</button></div><div class="frow"><label for="ps-wily-title">WILY STAGES TITLE</label><input id="ps-wily-title" type="text" maxlength="160"></div><div class="opt-row"><label for="ps-wily-color">WILY TEXT COLOR</label><input class="title-color" id="ps-wily-color" type="color"></div><div class="opt-row"><label for="ps-second-wily">SECOND WILY SET</label><input id="ps-second-wily" type="checkbox"></div><div id="second-wily-options" hidden><div class="opt-row"><label for="ps-wily2-count">SECOND SET STAGE COUNT</label><select id="ps-wily2-count" class="source-select"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div><div class="frow"><label for="ps-wily2-icon">SECOND SET ICON</label><div class="fline"><input id="ps-wily2-icon" type="text" placeholder="Default Wily icon"><button class="pickbtn" data-pick="ps-wily2-icon" data-kind="images">PICK FILE</button></div></div><div class="frow"><label for="ps-wily2-title">SECOND SET TITLE</label><input id="ps-wily2-title" type="text" maxlength="160"></div></div></section><section class="settings-section" role="tabpanel" id="settings-panel-4" aria-labelledby="settings-tab-4" hidden><div class="frow"><label>TITLE SCREEN</label>
+      <div class="settings-tabs" role="tablist" aria-label="Pack settings"><button type="button" role="tab" id="settings-tab-0" aria-controls="settings-panel-0" aria-selected="true" tabindex="0">PACK</button><button type="button" role="tab" id="settings-tab-2" aria-controls="settings-panel-2" aria-selected="false" tabindex="-1">LEVEL GRID</button><button type="button" role="tab" id="settings-tab-3" aria-controls="settings-panel-3" aria-selected="false" tabindex="-1">MISC/WILY STAGES</button><button type="button" role="tab" id="settings-tab-4" aria-controls="settings-panel-4" aria-selected="false" tabindex="-1">BACKGROUNDS</button><button type="button" role="tab" id="settings-tab-5" aria-controls="settings-panel-5" aria-selected="false" tabindex="-1">AUDIO</button><button type="button" role="tab" id="settings-tab-weapons" aria-controls="settings-panel-weapons" aria-selected="false" tabindex="-1">WEAPONS</button><button type="button" role="tab" id="settings-tab-tanks" aria-controls="settings-panel-tanks" aria-selected="false" tabindex="-1">TANKS</button><button type="button" role="tab" id="settings-tab-victory" aria-controls="settings-panel-victory" aria-selected="false" tabindex="-1">VICTORY</button></div><section class="settings-section" role="tabpanel" id="settings-panel-0" aria-labelledby="settings-tab-0"><div class="frow"><div class="fline"><button type="button" class="pickbtn" id="ps-load-pack">LOAD PACK</button><button type="button" class="pickbtn" id="ps-default-pack">DEFAULT PACK</button><input id="ps-pack-file" type="file" accept=".js,.json" hidden></div></div><div class="frow"><label for="ps-thumbnail">PACK THUMBNAIL</label><div class="fline"><input id="ps-thumbnail" type="text"><button class="pickbtn" data-pick="ps-thumbnail" data-kind="images">PICK FILE</button></div></div><div class="frow"><label>PACK TITLE TEXT</label><input id="ps-name" type="text" maxlength="40"></div><div class="opt-row"><label for="ps-level-source">LEVEL SOURCE</label><select id="ps-level-source" class="source-select"><option value="online">ONLINE LEVEL ID</option><option value="local">MMLV</option></select></div><div class="opt-row"><label for="ps-show-title">SHOW TITLE</label><button type="button" class="val" id="ps-show-title" aria-pressed="true">ON</button></div><div class="opt-row"><label for="ps-font-size">TITLE TEXT FONT SIZE (PX)</label><input class="num" id="ps-font-size" type="number" min="6" max="120" step="1"></div><div class="opt-row"><label for="ps-title-text">TITLE TEXT COLOR</label><input class="title-color" id="ps-title-text" type="color"></div></section><section class="settings-section" role="tabpanel" id="settings-panel-2" aria-labelledby="settings-tab-2" hidden><div class="opt-row"><label for="ps-level-count">LEVEL COUNT</label><select id="ps-level-count" class="source-select"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="4x4">4 × 4 (TWO SETS)</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div><div class="opt-row"><span>LEVEL NAMES</span><span class="val" id="ps-names">ON</span></div><div class="opt-row"><label for="ps-level-font-size">LEVEL NAME FONT SIZE (PX)</label><input class="num" id="ps-level-font-size" type="number" min="6" max="120" step="1"></div><div class="opt-row"><span>LEVEL BORDERS</span><span class="val" id="ps-squares">ON</span></div><div class="opt-row"><span>BORDER STYLE</span><span class="val" id="ps-border">MM2</span></div><div class="opt-row"><label for="ps-custom-border">CUSTOM LEVEL BORDER</label><input id="ps-custom-border" type="checkbox"></div><div id="custom-border-fields" hidden><p class="hint">Use 48 × 48 pixel images with a transparent center for the mugshot.</p><div class="frow"><label for="ps-border-default">DEFAULT (NOT HOVERED)</label><div class="fline"><input id="ps-border-default" type="text"><button class="pickbtn" data-pick="ps-border-default" data-kind="images">PICK FILE</button></div></div><div class="frow"><label for="ps-border-active">ACTIVE (HOVERED)</label><div class="fline"><input id="ps-border-active" type="text"><button class="pickbtn" data-pick="ps-border-active" data-kind="images">PICK FILE</button></div></div></div><div class="opt-row"><label for="ps-spacing-x">LEVEL HORIZONTAL SPACING (PX)</label><input class="num" id="ps-spacing-x" type="number" min="0" max="400" step="2"></div><div class="opt-row"><label for="ps-spacing-y">LEVEL VERTICAL SPACING (PX)</label><input class="num" id="ps-spacing-y" type="number" min="0" max="400" step="2"></div><div class="opt-row"><label for="ps-offset-y">LEVEL VERTICAL OFFSET (PX)</label><input class="num" id="ps-offset-y" type="number" min="-400" max="400" step="1"></div><div class="frow"><button type="button" class="pickbtn" id="ps-default-spacing">DEFAULT SPACING</button></div></section><section class="settings-section" role="tabpanel" id="settings-panel-3" aria-labelledby="settings-tab-3" hidden><div class="opt-row"><label for="ps-intro">INTRO STAGE</label><input id="ps-intro" type="checkbox"></div><div class="opt-row"><label for="ps-midway-count">MIDWAY STAGES</label><select id="ps-midway-count" class="source-select"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></div><div id="midway-settings"></div><div class="opt-row"><label for="ps-wily-count">WILY STAGE COUNT</label><select id="ps-wily-count" class="source-select"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div><div class="frow"><label for="ps-wily-icon">WILY ICON</label><div class="fline"><input id="ps-wily-icon" type="text"><button class="pickbtn" data-pick="ps-wily-icon" data-kind="images">PICK FILE</button></div></div><div class="frow"><label for="ps-wily-text">WILY ICON TEXT</label><input id="ps-wily-text" type="text" maxlength="80"></div><div class="opt-row"><label for="ps-show-wily-title">SHOW WILY STAGES TITLE</label><button type="button" class="val" id="ps-show-wily-title">ON</button></div><div class="frow"><label for="ps-wily-title">WILY STAGES TITLE</label><input id="ps-wily-title" type="text" maxlength="160"></div><div class="opt-row"><label for="ps-wily-color">WILY TEXT COLOR</label><input class="title-color" id="ps-wily-color" type="color"></div><div class="opt-row"><label for="ps-second-wily">SECOND WILY SET</label><input id="ps-second-wily" type="checkbox"></div><div id="second-wily-options" hidden><div class="opt-row"><label for="ps-wily2-count">SECOND SET STAGE COUNT</label><select id="ps-wily2-count" class="source-select"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div><div class="frow"><label for="ps-wily2-icon">SECOND SET ICON</label><div class="fline"><input id="ps-wily2-icon" type="text" placeholder="Default Wily icon"><button class="pickbtn" data-pick="ps-wily2-icon" data-kind="images">PICK FILE</button></div></div><div class="frow"><label for="ps-wily2-title">SECOND SET TITLE</label><input id="ps-wily2-title" type="text" maxlength="160"></div></div></section><section class="settings-section" role="tabpanel" id="settings-panel-4" aria-labelledby="settings-tab-4" hidden><div class="frow"><label>TITLE SCREEN</label>
         <div class="fline"><input id="ps-titlebg" type="text"><button class="pickbtn" data-pick="ps-titlebg" data-kind="images">PICK FILE</button></div></div><div class="frow"><label>LEVEL SELECT</label>
         <div class="fline"><input id="ps-selectbg" type="text"><button class="pickbtn" data-pick="ps-selectbg" data-kind="images">PICK FILE</button></div></div><div class="frow"><label>WILY STAGES</label>
         <div class="fline"><input id="ps-wilybg" type="text"><button class="pickbtn" data-pick="ps-wilybg" data-kind="images">PICK FILE</button></div></div><div class="frow" id="ps-wily2-bg-row" hidden><label for="ps-wily2-bg">WILY STAGES 2</label><div class="fline"><input id="ps-wily2-bg" type="text"><button class="pickbtn" data-pick="ps-wily2-bg" data-kind="images">PICK FILE</button></div></div></section><section class="settings-section" role="tabpanel" id="settings-panel-5" aria-labelledby="settings-tab-5" hidden><div class="opt-row"><span>MUSIC</span><div class="music-controls"><button type="button" class="val" id="opt-music" aria-label="Music" aria-pressed="true">ON</button></div></div><div class="opt-row"><label for="opt-volume">MUSIC &amp; SFX VOLUME</label><div class="music-volume"><input id="opt-volume" type="range" min="0" max="100" step="1" value="10" aria-label="Music &amp; SFX volume"><output id="opt-volume-value" for="opt-volume">10%</output></div></div><div class="opt-row"><span>UI SOUNDS</span><span class="val" id="ps-sounds">ON</span></div><div class="frow"><label>TITLE MUSIC</label>
@@ -489,9 +504,9 @@ body[data-border-style="MM6"] .portrait-frame{clip-path:polygon(evenodd,0 0,100%
 <audio id="bgm" loop></audio>
 
 <!-- ======= editable pack config (JSON inside pack.js) ======= -->
-<script src="default-pack.js?v=20260928-restored-title"></script>
+<script src="default-pack.js?v=20260929-mmm-wily"></script>
 <script>if(location.protocol==='file:')document.write('<script src="user"><\/script>');</script>
-<script src="cloud-service.js?v=20260928-like-toggle"></script>
+<script src="cloud-service.js?v=20260929-main-spacing"></script>
 <script>
 /* ============================ config ============================ */
 const settingsTabs=[...document.querySelectorAll('.settings-tabs [role="tab"]')];
@@ -505,7 +520,7 @@ settingsTabs.forEach((tab,index)=>{
 const DEFAULTS = {
   showTanks:false, tankLevels:{}, showWeapons:true, weaponCount:10, weapons:[], victoryBackground:"", victoryCredits:"", wilyIcon:"", wilyText:"DR. WILY", wilyTitle:"DR. WILY'S FORTRESS", wilyTextColor:"#ffffff", showWilyTitle:true, levelSource:"online", packFontSize:100, levelNameFontSize:100, showTitle:true, titleTextColor:"#a4e4fc", titleBackgroundColor:"#1830a0", titleBorderColor:"#00b8f8", titleAccentColor:"#ffffff",
   packName:"Level Pack Creator", linkFormat:"megamaker://{id}",
-  titleBackground:"images/TitleScreen.png", selectBackground:"images/LevelSelect", wilyBackground:"images/WilyStages",
+  titleBackground:"images/title-screens/MM2-TitleScreen.png", selectBackground:"images/stage-select/MM2-StageSelect.png", wilyBackground:"images/wily-castles/MMM-WilyCastle.png",
   stageSpacing:12, stageOffsetY:0, showTileSquares:true, showLevelNames:true, borderStyle:"MM2",
   uiSounds:true, music:{title:"music/TitleScreen.mp3",select:"",wily:"music/WilyStages.mp3",clear:"music/Epilogue.mp3"}, levels:[]
 };
@@ -622,7 +637,45 @@ const BORDER_STYLES={
 const normalizeBorder=value=>Object.hasOwn(BORDER_STYLES,value)?value:'MM2';
 CONFIG.borderStyle=normalizeBorder(CONFIG.borderStyle);
 const optBorder=()=>normalizeBorder(state.border??CONFIG.borderStyle);
-const selectedBorder=()=>CONFIG.customBorder?BORDER_STYLES[normalizeBorder(CONFIG.customBorderLayout||"MM4")]:BORDER_STYLES[optBorder()];
+let customBorderGeometry=null,customBorderGeometrySource=null;
+function inspectCustomBorder(){
+  const source=CONFIG.customBorderDefault||CONFIG.customBorderActive||'';
+  if(source===customBorderGeometrySource)return;
+  customBorderGeometrySource=source;customBorderGeometry=null;
+  if(!source)return;
+  const image=new Image();image.crossOrigin='anonymous';
+  image.onload=async()=>{
+    if(source!==customBorderGeometrySource)return;
+    const width=image.naturalWidth,height=image.naturalHeight;
+    if(!width||!height||width*height>4194304)return;
+    let geometry=null;
+    try{
+      const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
+      const context=canvas.getContext('2d');context.drawImage(image,0,0);
+      const pixels=context.getImageData(0,0,width,height).data;
+      const cx=Math.floor(width/2),cy=Math.floor(height/2),start=cy*width+cx;
+      if(pixels[start*4+3]<128){
+        const seen=new Uint8Array(width*height),queue=new Uint32Array(width*height);let tail=1;queue[0]=start;seen[start]=1;
+        let minX=cx,maxX=cx,minY=cy,maxY=cy,edge=false;
+        for(let i=0;i<tail;i++){
+          if(i>0&&i%8192===0){await new Promise(resolve=>setTimeout(resolve,0));if(source!==customBorderGeometrySource)return;}
+          const p=queue[i],x=p%width,y=Math.floor(p/width);minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y);
+          if(x===0||y===0||x===width-1||y===height-1)edge=true;
+          for(let direction=0;direction<4;direction++){
+            if((direction===0&&x===0)||(direction===1&&x===width-1)||(direction===2&&y===0)||(direction===3&&y===height-1))continue;
+            const n=p+(direction===0?-1:direction===1?1:direction===2?-width:width);
+            if(!seen[n]&&pixels[n*4+3]<128){seen[n]=1;queue[tail++]=n;}
+          }
+        }
+        if(!edge)geometry={width,height,x:minX,y:minY,mugWidth:maxX-minX+1,mugHeight:maxY-minY+1};
+      }
+    }catch{}
+    if(!geometry){const known=Object.values(BORDER_STYLES).find(b=>b.width===width&&b.height===height);if(known)geometry={...known};}
+    if(geometry){customBorderGeometry=geometry;applyConfig();}
+  };
+  image.src=source;
+}
+const selectedBorder=()=>CONFIG.customBorder?(customBorderGeometry||BORDER_STYLES[normalizeBorder(CONFIG.customBorderLayout||"MM4")]):BORDER_STYLES[optBorder()];
 const nextBorder=value=>{const names=Object.keys(BORDER_STYLES);return names[(names.indexOf(normalizeBorder(value))+1)%names.length];};
 const optNames =()=>state.names ??CONFIG.showLevelNames;
 const playerAudio=(()=>{
@@ -683,8 +736,12 @@ function resolveAsset(path, exts, cb){
   })();
 }
 function setScreenBg(sel, path){
+  const movedBackgrounds={'images/LevelSelect':'images/stage-select/MM2-StageSelect.png','images/LevelSelect.png':'images/stage-select/MM2-StageSelect.png','images/WilyStages':'images/wily-castles/MMM-WilyCastle.png','images/WilyStages.png':'images/wily-castles/MMM-WilyCastle.png'};
+  path=movedBackgrounds[path]||path;
   const el=$(sel);
+  el._backgroundPath=path;
   resolveAsset(path, IMG_EXTS, url=>{
+    if(el._backgroundPath!==path)return;
     if(url){ el.style.backgroundImage='url("'+url+'")'; el.classList.add('custom-bg'); }
     else   { el.style.backgroundImage=''; el.classList.remove('custom-bg'); }
   });
@@ -754,6 +811,7 @@ function sfx(){
 
 /* ============================ apply config ============================ */
 function applyConfig(){
+  if(CONFIG.customBorder)inspectCustomBorder();
   document.body.classList.toggle('title-off',!CONFIG.showTitle);
   $('.wily-title').textContent=secondWilyActive()?(CONFIG.wily2Title??CONFIG.wilyTitle):CONFIG.wilyTitle;
   $('.wily-title').style.color=CONFIG.wilyTextColor;
@@ -816,10 +874,10 @@ document.addEventListener('keydown',e=>{
 async function pressStart(){
   sfx();if(editMode){showScreen('screen-select');return;}
   const loaded=!!CONFIG.cloudSlug||packWasLoaded;
-  $('#main-options').hidden=loaded;$('#create-pack').hidden=loaded;$('#load-pack-choice').hidden=loaded;
+  $('#main-spacing-update').hidden=true;$('#main-options').hidden=loaded;$('#create-pack').hidden=loaded;$('#load-pack-choice').hidden=loaded;
   $('#new-game').hidden=!loaded;$('#continue-game').hidden=!loaded||store.read().played!==true;
   $('#create-pack').setAttribute('aria-disabled','true');$('#btn-start').hidden=true;$('#game-choice').hidden=false;
-  if(!loaded){try{$('#create-pack').setAttribute('aria-disabled',String(!(await PackCloud.permissions()).edit));}catch{}}
+  if(!loaded){try{const access=await PackCloud.permissions();$('#create-pack').setAttribute('aria-disabled',String(!access.edit));$('#main-spacing-update').hidden=!(access.admin||(location.protocol==='file:'&&window.localPackUser?.name==='SkyPilotSamurai'));}catch{$('#main-spacing-update').hidden=!(location.protocol==='file:'&&window.localPackUser?.name==='SkyPilotSamurai');}}
 }
 $('#create-pack').onclick=async()=>{sfx();if(!(await PackCloud.permissions()).edit){window.showCreateLoginMessage();return;}editMode=true;applyConfig();showScreen('screen-select');};
 $('#load-pack-choice').onclick=()=>{sfx();window.browseCloudPacks();};
@@ -988,7 +1046,7 @@ document.querySelectorAll('.pickbtn[data-pick]').forEach(btn=>{
     const file=picker.files[0];if(!file)return;
     try{
       const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(reader.error);reader.readAsDataURL(file);});
-      if(btn.dataset.pick==='ps-border-default'){const match=file.name.match(/^(MM[1-6])OFF\.png$/i);CONFIG.customBorderLayout=match?match[1].toUpperCase():'MM4';}
+      if(btn.dataset.pick==='ps-border-default'){const match=file.name.match(/^(MM[1-6])(?:OFF|ON)\.png$/i);CONFIG.customBorderLayout=match?match[1].toUpperCase():'MM4';}
       const input=$('#'+btn.dataset.pick);input.value=data;input.dispatchEvent(new Event('input',{bubbles:true}));
     }catch{}
   });
@@ -1176,6 +1234,54 @@ $('#ps-pack-file').onchange=async e=>{
  sessionStorage.setItem('pending-level-pack',JSON.stringify(pack));dirty=false;location.reload();}catch{}
 };
 $('#ps-default-pack').onclick=()=>{sessionStorage.removeItem('pending-level-pack');sessionStorage.removeItem('selected-level-pack');dirty=false;location.reload();};
+const backgroundPresets=[["MEGA MAN 1","images/stage-select/MM1-StageSelect.png"],["MEGA MAN 2","images/stage-select/MM2-StageSelect.png"],["MEGA MAN 3","images/stage-select/MM3-StageSelect.png"],["MEGA MAN 4","images/stage-select/MM4-StageSelect.png"],["MEGA MAN 5","images/stage-select/MM5-StageSelect.png"],["MEGA MAN 6","images/stage-select/MM6-StageSelect.png"],["MMM ONLINE","images/stage-select/MMM-StageSelect-Online.png"],["MMM TITLE","images/stage-select/MMM-StageSelect-Title.png"]];
+const titleBackgroundPresets=[["MEGA MAN 2","images/title-screens/MM2-TitleScreen.png"],["MEGA MAN 1","images/title-screens/MM1-TitleScreen.png"],["MEGA MAN 3","images/title-screens/MM3-TitleScreen.png"],["MEGA MAN 4","images/title-screens/MM4-TitleScreen.png"],["MEGA MAN 5","images/title-screens/MM5-TitleScreen.png"],["MEGA MAN 6","images/title-screens/MM6-TitleScreen.png"]];
+const castleBackgroundPresets=[["MEGA MAN MAKER","images/wily-castles/MMM-WilyCastle.png"],["MEGA MAN 2","images/wily-castles/MM2-WilyCastle.png"],["MEGA MAN 3","images/wily-castles/MM3-WilyCastle.png"],["MEGA MAN 4","images/wily-castles/MM4-WilyCastle.png"],["COSSACK CITADEL","images/wily-castles/MM4-CossackCitadel.png"],["MEGA MAN 5","images/wily-castles/MM5-WilyCastle.png"],["PROTO MAN CASTLE","images/wily-castles/MM5-ProtoManCastle.png"],["MEGA MAN 6","images/wily-castles/MM6-WilyCastle.png"],["MR. X CASTLE","images/wily-castles/MM6-MrXCastle.png"]];
+function createBackgroundPicker(inputId,key,pickerId,title,presets){
+const stageBackgroundInput=$('#'+inputId),stageBackgroundFields=stageBackgroundInput.closest('.fline'),stageBackgroundHolder=stageBackgroundFields.parentElement;
+const stageBackgroundButton=document.createElement('button');stageBackgroundButton.type='button';stageBackgroundButton.id=pickerId;stageBackgroundButton.className='stage-background-thumb';stageBackgroundButton.setAttribute('aria-label','Choose '+title.toLowerCase()+' background');
+const stageBackgroundPreview=document.createElement('img');stageBackgroundPreview.alt=title+' background';stageBackgroundButton.append(stageBackgroundPreview);
+const stageBackgroundCustomLabel=document.createElement('label');stageBackgroundCustomLabel.className='stage-background-custom';stageBackgroundCustomLabel.htmlFor=inputId+'-custom';stageBackgroundCustomLabel.append(document.createTextNode('CUSTOM BACKGROUND'));
+const stageBackgroundCustom=document.createElement('input');stageBackgroundCustom.type='checkbox';stageBackgroundCustom.id=inputId+'-custom';stageBackgroundCustomLabel.append(stageBackgroundCustom);
+const stageBackgroundHeading=document.createElement('div');stageBackgroundHeading.className='stage-background-heading';const stageBackgroundTitle=stageBackgroundHolder.querySelector('label');stageBackgroundHolder.insertBefore(stageBackgroundHeading,stageBackgroundTitle);stageBackgroundHeading.append(stageBackgroundTitle,stageBackgroundCustomLabel);stageBackgroundHolder.insertBefore(stageBackgroundButton,stageBackgroundFields);
+let lastPresetBackground=presets[0][1],lastCustomBackground='';
+function refresh(){
+  const savedPath=CONFIG[key]||'';
+  const inheritedPath=key==='wily2Background'?(CONFIG.wilyBackground||presets[0][1]):presets[0][1];
+  const aliases={'images/WilyStages':'images/wily-castles/MMM-WilyCastle.png','images/WilyStages.png':'images/wily-castles/MMM-WilyCastle.png','images/LevelSelect':'images/stage-select/MM2-StageSelect.png','images/LevelSelect.png':'images/stage-select/MM2-StageSelect.png','images/TitleScreen.png':'images/title-screens/MM2-TitleScreen.png'};
+  const rawPath=savedPath||inheritedPath;
+  const path=aliases[rawPath]||rawPath;
+  const preset=presets.find(([,p])=>p===path||p===path+'.png');
+  stageBackgroundCustom.checked=!!savedPath&&!preset;stageBackgroundFields.hidden=!stageBackgroundCustom.checked;
+  if(preset)lastPresetBackground=preset[1];else lastCustomBackground=path;
+  stageBackgroundPreview.src=path?(hasExt(path)?path:path+'.png'):lastPresetBackground;
+}
+function chooseStageBackground(path){CONFIG[key]=path;if(key==='selectBackground'){CONFIG.stageOffsetY=defaultStageOffset(path);$('#ps-offset-y').value=CONFIG.stageOffsetY;}stageBackgroundInput.value=path;markDirty();applyConfig();refresh();}
+stageBackgroundCustom.onchange=()=>{
+  if(stageBackgroundCustom.checked){stageBackgroundFields.hidden=false;if(lastCustomBackground)chooseStageBackground(lastCustomBackground);}
+  else{lastCustomBackground=stageBackgroundInput.value;chooseStageBackground(lastPresetBackground);}
+};
+stageBackgroundInput.addEventListener('input',()=>{stageBackgroundPreview.src=stageBackgroundInput.value;if(key==='selectBackground'){CONFIG.stageOffsetY=defaultStageOffset(stageBackgroundInput.value);$('#ps-offset-y').value=CONFIG.stageOffsetY;}});
+stageBackgroundButton.onclick=()=>{
+  sfx();const overlay=document.createElement('div');overlay.className='overlay open';
+  const box=document.createElement('div');box.className='stage-background-dialog';box.setAttribute('role','dialog');box.setAttribute('aria-label',title+' backgrounds');
+  const close=document.createElement('button');close.type='button';close.className='menu-close';close.textContent='×';close.setAttribute('aria-label','Close background picker');const dismiss=()=>{overlay.remove();stageBackgroundButton.focus();};close.onclick=dismiss;
+  const heading=document.createElement('h2');heading.textContent=title.toUpperCase()+' BACKGROUND';
+  const grid=document.createElement('div');grid.className='stage-background-grid';
+  for(const [name,path] of presets){const button=document.createElement('button');button.type='button';button.setAttribute('aria-label',name);button.setAttribute('aria-pressed',String(CONFIG[key]===path));const image=document.createElement('img');image.src=path;image.alt='';const label=document.createElement('span');label.textContent=name;button.append(image,label);button.onclick=()=>{sfx();chooseStageBackground(path);dismiss();};grid.append(button);}
+  box.append(close,heading,grid);overlay.append(box);document.body.append(overlay);close.focus();overlay.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();dismiss();}});
+};
+
+return refresh;
+}
+const backgroundControls=[
+createBackgroundPicker('ps-selectbg','selectBackground','stage-background-picker','Stage select',backgroundPresets),
+createBackgroundPicker('ps-titlebg','titleBackground','title-background-picker','Title screen',titleBackgroundPresets),
+createBackgroundPicker('ps-wilybg','wilyBackground','wily-background-picker','Wily stages',castleBackgroundPresets),
+createBackgroundPicker('ps-wily2-bg','wily2Background','wily2-background-picker','Wily stages 2',castleBackgroundPresets)
+];
+function refreshBackgroundControls(){backgroundControls.forEach(refresh=>refresh());}
+
 function refreshPackModal(){
   refreshTankSettings();
   refreshWeaponSettings();
@@ -1211,6 +1317,7 @@ function refreshPackModal(){
   $('#ps-custom-border').checked=!!CONFIG.customBorder;$('#custom-border-fields').hidden=!CONFIG.customBorder;$('#ps-border-default').value=CONFIG.customBorderDefault||'';$('#ps-border-active').value=CONFIG.customBorderActive||'';
   $('#ps-sounds').textContent=CONFIG.uiSounds?'ON':'OFF';
 
+  refreshBackgroundControls();
   setHint('pick-hint-ps','');
 }
 $('#btn-pack-settings').addEventListener('click',()=>{refreshPackModal();$('#pack-modal').classList.add('open');});
@@ -1240,6 +1347,9 @@ $('#ps-level-font-size').addEventListener('input',e=>{
   CONFIG.levelNameFontSizePx=Math.max(6,Math.min(120,Number(e.target.value)||20));
   markDirty();applyConfig();
 });
+function defaultStageOffset(path=CONFIG.selectBackground){const background=String(path).toLowerCase();if(background==='images/stage-select/mm1-stageselect.png')return -5;if(background==='images/stage-select/mm3-stageselect.png')return -6;if(background==='images/stage-select/mm4-stageselect.png')return -8;if(background==='images/stage-select/mm5-stageselect.png')return -6;if(background==='images/stage-select/mm6-stageselect.png')return -6;return ['images/stage-select/mm2-stageselect.png','images/levelselect','images/levelselect.png'].includes(background)?-6:-10;}
+function resetStageSpacing(){Object.assign(CONFIG,{stageSpacingX:80,stageSpacingY:96,stageOffsetY:defaultStageOffset()});}
+$('#ps-default-spacing').onclick=()=>{sfx();resetStageSpacing();markDirty();refreshPackModal();applyConfig();};
 $('#ps-offset-y').addEventListener('input',e=>{
   CONFIG.stageOffsetY=Math.max(-400,Math.min(400,parseInt(e.target.value,10)||0));
   markDirty();applyConfig();
@@ -1411,6 +1521,6 @@ $('#opt-music').addEventListener('click',()=>{state.music=!optMusic();playerAudi
 
 applyConfig();
 </script>
-<script src="cloud-ui.js?v=20260928-reminder-caps"></script>
+<script src="cloud-ui.js?v=20260929-main-spacing"></script>
 </body>
 </html>

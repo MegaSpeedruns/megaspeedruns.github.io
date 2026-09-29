@@ -38,6 +38,13 @@
   },true);
   let busy=false;
   function dialog(title,closable=true){const overlay=document.createElement('div');overlay.className='cloud-dialog';const box=document.createElement('div');box.className='cloud-box';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');const heading=document.createElement('h2');heading.textContent=title;heading.style.fontSize='14px';box.append(heading);overlay.append(box);document.body.append(overlay);if(closable){const close=document.createElement('button');close.className='cloud-close';close.textContent='×';close.setAttribute('aria-label','Close');close.onclick=()=>overlay.remove();box.append(close);}return {overlay,box};}
+  document.getElementById('main-spacing-update').onclick=async()=>{
+    sfx();const {box,overlay}=dialog('UPDATE DEFAULT PACK SPACING',false);
+    status(box,'Checking admin login…');
+    try{const result=await PackCloud.updateDefaultSpacing(message=>status(box,message));status(box,'Updated '+result.updated.length+' packs. Left '+result.skipped.length+' unchanged.'+(result.failed.length?' Failed: '+result.failed.join(', ')+'.':''));}
+    catch(e){status(box,e.message||'Error updating pack spacing.');}
+    finally{const close=document.createElement('button');close.className='cloud-pack';close.textContent='CLOSE';close.onclick=()=>overlay.remove();box.append(close);}
+  };
   document.getElementById('main-options').onclick=()=>{
     sfx();const {overlay,box}=dialog('OPTIONS');
     const update=()=>{applyMusicVolume();switchMusic(document.querySelector('.screen.active').id);};
@@ -110,7 +117,7 @@
       like.onclick=async()=>{const liked=like.getAttribute("aria-pressed")!=="true";like.disabled=true;sfx();try{updateLike(await PackCloud.like(pack.slug,liked));}catch(e){like.disabled=false;status(box,e.message==='Sign in to like packs.'?(location.protocol==='file:'?'Likes need your real online login. The local user file only enables editing.':e.message):(/permission|denied/i.test(e.code||e.message)?'Likes are blocked by the database rules. Publish the updated Realtime Database rules.':typeof PackCloud.like!=='function'?'Update cloud-service.js and refresh the page.':'Unable to save like. Please try again.'));}};
       const access=await PackCloud.permissions(pack.slug);
       if(access.edit||access.admin){
-        const remove=document.createElement('button');remove.textContent='×';if(!access.edit)remove.classList.add('admin-pack-delete');remove.setAttribute('aria-label','Delete '+pack.name);remove.style.cssText='position:absolute;right:8px;top:8px;background:none;border:0;color:white;font-size:24px;cursor:pointer;';
+        const remove=document.createElement('button');remove.textContent='×';if(access.admin&&pack.owner!==(await PackCloud.account())?.uid)remove.classList.add('admin-pack-delete');remove.setAttribute('aria-label','Delete '+pack.name);remove.style.cssText='position:absolute;right:8px;top:8px;background:none;border:0;color:white;font-size:24px;cursor:pointer;';
         remove.onclick=()=>{
           const confirmation=dialog('Are you sure you want to delete '+pack.name+'?');
           const yes=document.createElement('button');yes.className='cloud-pack';yes.textContent='DELETE PACK';
