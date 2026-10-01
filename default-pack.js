@@ -16,7 +16,7 @@ window.LEVEL_PACK = {
   "linkFormat": "megamaker://{id}",
   "titleBackground": "images/title-screens/MM2-TitleScreen.png",
   "selectBackground": "images/stage-select/MM2-StageSelect.png",
-  "wilyBackground": "images/wily-castles/MMM-WilyCastle.png",
+  "wilyBackground": "images/wily-castles/MM3-WilyCastle.png",
   "stageOffsetY": -6,
   "stageSpacingX": 80,
   "stageSpacingY": 96,
