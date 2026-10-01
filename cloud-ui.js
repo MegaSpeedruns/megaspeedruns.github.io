@@ -136,7 +136,7 @@
       Object.assign(CONFIG,saved);
       dirty=false;document.body.classList.remove('dirty');status(box,'Pack saved. Share this link:');
       const link=document.createElement('a');link.href=new URL('packcreator.html?pack='+encodeURIComponent(saved.cloudSlug),document.baseURI).href;link.textContent=link.href;box.append(link);
-    }catch(e){status(box,'Error saving pack');}
+    }catch(e){console.error('Pack save failed',{code:e.code||'',message:e.message||'',slug:CONFIG.cloudSlug||'',name});status(box,'Error saving pack');}
     finally{busy=false;const close=document.createElement('button');close.className='cloud-pack';close.textContent='CLOSE';close.onclick=()=>overlay.remove();box.append(close);}
   };
   if(window.directPack){

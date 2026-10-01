@@ -67,7 +67,14 @@ window.PackCloud = (() => {
     }
     async function asset(path){
       if(!path)return '';
+      const legacyAssets={
+        'images/TitleScreen':'images/title-screens/MM2-TitleScreen.png',
+        'images/LevelSelect':'images/stage-select/MM2-StageSelect.png',
+        'images/WilyStages':'images/wily-castles/MMM-WilyCastle.png'
+      };
       const relative=path.replace(/^\.\//,'');
+      const legacy=legacyAssets[relative.replace(/\.png$/i,'')];
+      if(legacy&&builtins.has(legacy))return legacy;
       if(builtins.has(relative)||[...builtins].some(f=>f.replace(/\.[^.]+$/,'')===relative))return relative;
       if(/^https:\/\/firebasestorage\.googleapis\.com\//.test(path))return path;
       if(!/^(data:|blob:|https?:)/.test(path)&&!relative.startsWith('images/')&&!relative.startsWith('music/')&&!relative.startsWith('sounds/'))throw Error('Choose the custom asset with Pick File before saving.');
