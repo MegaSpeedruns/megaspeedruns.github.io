@@ -40,17 +40,38 @@
   function dialog(title,closable=true){const overlay=document.createElement('div');overlay.className='cloud-dialog';const box=document.createElement('div');box.className='cloud-box';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');const heading=document.createElement('h2');heading.textContent=title;heading.style.fontSize='14px';box.append(heading);overlay.append(box);document.body.append(overlay);if(closable){const close=document.createElement('button');close.className='cloud-close';close.textContent='×';close.setAttribute('aria-label','Close');close.onclick=()=>overlay.remove();box.append(close);}return {overlay,box};}
   document.getElementById('main-options').onclick=()=>{
     sfx();const {overlay,box}=dialog('OPTIONS');
+    const tabs=document.createElement('div');tabs.className='settings-tabs';tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','Options');
+    const panels=document.createElement('div');panels.style.cssText='display:grid;min-height:240px;';
+    const sections=['audio','display'].map(name=>{const tab=document.createElement('button');tab.type='button';tab.id='main-options-tab-'+name;tab.textContent=name.toUpperCase();tab.setAttribute('role','tab');tab.setAttribute('aria-controls','main-options-panel-'+name);const panel=document.createElement('section');panel.id='main-options-panel-'+name;panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',tab.id);panel.style.gridArea='1 / 1';tabs.append(tab);panels.append(panel);return {tab,panel};});
+    const selectTab=index=>sections.forEach(({tab,panel},i)=>{tab.setAttribute('aria-selected',String(i===index));tab.tabIndex=i===index?0:-1;panel.style.visibility=i===index?'visible':'hidden';panel.inert=i!==index;panel.setAttribute('aria-hidden',String(i!==index));});
+    sections.forEach(({tab},index)=>{tab.onclick=()=>{sfx();selectTab(index);};tab.onkeydown=e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?1:1-index;selectTab(next);sections[next].tab.focus();};});selectTab(0);
+    box.append(tabs,panels);const audioPanel=sections[0].panel,displayPanel=sections[1].panel;
     const update=()=>{applyMusicVolume();switchMusic(document.querySelector('.screen.active').id);};
     for(const [key,label,get] of [['music','MUSIC',optMusic],['sounds','SOUND EFFECTS',optSounds]]){
       const button=document.createElement('button');button.type='button';button.className='cloud-pack';
       const refresh=()=>{button.textContent=label+': '+(get()?'ON':'OFF');button.setAttribute('aria-pressed',String(!!get()));};
-      button.onclick=()=>{playerAudio[key]=!get();savePlayerAudio();refresh();if(key==='music')update();};refresh();box.append(button);
+      button.onclick=()=>{playerAudio[key]=!get();savePlayerAudio();refresh();if(key==='music')update();};refresh();audioPanel.append(button);
     }
     const label=document.createElement('label');label.htmlFor='main-audio-volume';label.textContent='MUSIC & SFX VOLUME';
     const volume=document.createElement('input');volume.id=label.htmlFor;volume.type='range';volume.min=0;volume.max=100;volume.step=1;volume.value=optVolume();
     const value=document.createElement('output');value.htmlFor=volume.id;value.textContent=volume.value+'%';
     volume.oninput=()=>{playerAudio.volume=Number(volume.value);savePlayerAudio();value.textContent=volume.value+'%';update();};
-    box.append(label,volume,value);box.querySelector('.cloud-close').focus();
+    audioPanel.append(label,volume,value);
+    const flash=document.createElement('button');flash.type='button';flash.id='main-flashing-border';flash.className='cloud-pack';
+    const refreshFlash=()=>{const on=playerDisplay.flashingBorders!==false;flash.textContent='FLASHING BORDER: '+(on?'ON':'OFF');flash.setAttribute('aria-pressed',String(on));};
+    flash.onclick=()=>{playerDisplay.flashingBorders=!(playerDisplay.flashingBorders!==false);savePlayerDisplay();document.body.classList.toggle('flashing-borders',playerDisplay.flashingBorders);refreshFlash();};refreshFlash();displayPanel.append(flash);box.querySelector('.cloud-close').focus();
+    (async()=>{
+      const localAdmin=location.protocol==='file:'&&window.localPackUser?.name==='SkyPilotSamurai';
+      const admin=localAdmin||(await PackCloud.permissions()).admin;
+      if(!admin||!overlay.isConnected)return;
+      const row=document.createElement('div');row.className='opt-row';
+      const label=document.createElement('label');label.htmlFor='main-border-flash-frames';label.textContent='BORDER FLASH INTERVAL (FRAMES)';
+      const input=document.createElement('input');input.id=label.htmlFor;input.className='num';input.type='number';input.min=1;input.max=120;input.step=1;input.value=borderFlashFrames();input.style.width='80px';
+      const note=document.createElement('p');note.style.fontSize='9px';
+      const describe=()=>{note.textContent=borderFlashFrames()+' frames on / '+borderFlashFrames()+' frames off (60 FPS). Default: 8. Lower is faster.';};
+      input.oninput=()=>{if(!input.value||!input.validity.valid)return;playerDisplay.borderFlashFrames=Number(input.value);savePlayerDisplay();applyBorderFlashRate();describe();};
+      input.onchange=()=>{input.value=borderFlashFrames();};describe();row.append(label,input);displayPanel.append(row,note);
+    })().catch(e=>console.error('Unable to check display admin access',e));
     overlay.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();overlay.remove();document.getElementById('main-options').focus();}});
   };
   function status(box,text){let p=box.querySelector('.cloud-status');if(!p){p=document.createElement('p');p.className='cloud-status';p.setAttribute('role','status');box.append(p);}p.textContent=text;}

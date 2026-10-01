@@ -16,6 +16,7 @@ if(location.protocol!=="file:"){const root=new URL(".",location.href).pathname;c
 <link rel="preload" as="image" href="border/MM1ON.png">
 <link rel="preload" as="image" href="border/MM2ON.PNG">
 <link rel="preload" as="image" href="border/MM3ON.png">
+<link rel="preload" as="image" href="border/MM3OFF-ON.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 :root{
@@ -101,6 +102,8 @@ body.editing .edit-banner{display:block;}
 }
 body[data-border-style="MM1"] .portrait-frame{image-rendering:crisp-edges;}
 .rm-tile:hover .portrait-frame,.rm-tile:focus-visible .portrait-frame{background-image:var(--border-on,url('border/MM2ON.PNG'));}
+body.flashing-borders .rm-tile:hover .portrait-frame,body.flashing-borders .rm-tile:focus-visible .portrait-frame{animation:border-hover-flash var(--border-flash-duration,.266666667s) steps(1,end) infinite;}
+@keyframes border-hover-flash{0%,100%{background-image:var(--border-on,url('border/MM2ON.PNG'));}50%{background-image:var(--border-hover-off,var(--border-off,url('border/MM2OFF.png')));}}
 body.squares-off .portrait-frame{display:none;}
 .rm-tile img{position:absolute;left:var(--mug-left,13.333333%);top:var(--mug-top,13.333333%);width:var(--mug-width,71.111111%);height:var(--mug-height,71.111111%);object-fit:cover;}
 /* Back the transparent opening with black, including fractional edge rounding. */
@@ -679,6 +682,10 @@ function inspectCustomBorder(){
 const selectedBorder=()=>CONFIG.customBorder?(customBorderGeometry||BORDER_STYLES[normalizeBorder(CONFIG.customBorderLayout||"MM4")]):BORDER_STYLES[optBorder()];
 const nextBorder=value=>{const names=Object.keys(BORDER_STYLES);return names[(names.indexOf(normalizeBorder(value))+1)%names.length];};
 const optNames =()=>state.names ??CONFIG.showLevelNames;
+const playerDisplay=(()=>{try{return {flashingBorders:true,...JSON.parse(localStorage.getItem('level-pack-display-v1')||'{}')};}catch{return {flashingBorders:true};}})();
+function borderFlashFrames(){const n=Number(playerDisplay.borderFlashFrames);return Number.isFinite(n)&&n>=1?Math.min(120,Math.round(n)):8;}
+function applyBorderFlashRate(){document.documentElement.style.setProperty('--border-flash-duration',(borderFlashFrames()*2/60)+'s');}
+function savePlayerDisplay(){try{localStorage.setItem('level-pack-display-v1',JSON.stringify(playerDisplay));}catch{}}
 const playerAudio=(()=>{
   try{const saved=JSON.parse(localStorage.getItem('level-pack-audio-v1')||'{}'),audio={};
     for(const key of ['music','sounds'])if(typeof saved?.[key]==='boolean')audio[key]=saved[key];
@@ -846,6 +853,7 @@ function applyConfig(){
   document.documentElement.style.setProperty('--tile-gap-x', (parseInt(CONFIG.stageSpacingX,10)||0)+'px');
   document.documentElement.style.setProperty('--tile-gap-y', (parseInt(CONFIG.stageSpacingY,10)||0)+'px');
   const border=selectedBorder(),style=document.body.style;
+  style.setProperty('--border-hover-off',!CONFIG.customBorder&&optBorder()==='MM3'?'url("border/MM3OFF-ON.png")':'var(--border-off)');
   document.body.dataset.borderStyle=CONFIG.customBorder?'CUSTOM':optBorder();
   style.setProperty('--border-off','url('+JSON.stringify(CONFIG.customBorder&&CONFIG.customBorderDefault?CONFIG.customBorderDefault:'border/'+border.off)+')');
   style.setProperty('--border-on','url('+JSON.stringify(CONFIG.customBorder?(CONFIG.customBorderActive||CONFIG.customBorderDefault||'border/'+border.on):'border/'+border.on)+')');
@@ -856,6 +864,8 @@ function applyConfig(){
   style.setProperty('--mug-height',100*border.mugHeight/border.height+'%');
   document.body.classList.toggle('names-off',!optNames());
   document.body.classList.toggle('squares-off',!CONFIG.showTileSquares);
+  document.body.classList.toggle('flashing-borders',playerDisplay.flashingBorders!==false);
+  applyBorderFlashRate();
   document.body.classList.toggle('editing',!!editMode);
   if(editMode){$('#game-choice').hidden=true;$('#btn-start').hidden=false;}
   $('.sel-header').textContent=editMode?'EDIT MODE':'STAGE SELECT';
@@ -1373,6 +1383,7 @@ function refreshPackModal(){
   $('#ps-spacing-y').value=CONFIG.stageSpacingY;
   $('#ps-offset-y').value=CONFIG.stageOffsetY;
   $('#ps-squares').textContent=CONFIG.showTileSquares?'ON':'OFF';
+
   $('#ps-names').textContent=CONFIG.showLevelNames?'ON':'OFF';
   $('#ps-border').textContent=CONFIG.customBorder?'CUSTOM':CONFIG.borderStyle;
   $('#ps-custom-border').checked=!!CONFIG.customBorder;$('#custom-border-fields').hidden=!CONFIG.customBorder;$('#ps-border-default').value=CONFIG.customBorderDefault||'';$('#ps-border-active').value=CONFIG.customBorderActive||'';
@@ -1583,6 +1594,6 @@ $('#opt-music').addEventListener('click',()=>{state.music=!optMusic();playerAudi
 
 applyConfig();
 </script>
-<script src="cloud-ui.js?v=20261001-save-legacy-assets"></script>
+<script src="cloud-ui.js?v=20261001-main-options-tabs"></script>
 </body>
 </html>
