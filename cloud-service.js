@@ -72,7 +72,7 @@ window.PackCloud = (() => {
         'images/LevelSelect':'images/stage-select/MM2-StageSelect.png',
         'images/WilyStages':'images/wily-castles/MMM-WilyCastle.png'
       };
-      const relative=path.replace(/^\.\//,'');
+      const relative=path.replace(/^\.\//,'').replace(/^images\/wilyicons\/[^/]+ Plates\/([^/]+)$/,'images/wilyicons/$1');
       const legacy=legacyAssets[relative.replace(/\.png$/i,'')];
       if(legacy&&builtins.has(legacy))return legacy;
       if(builtins.has(relative)||[...builtins].some(f=>f.replace(/\.[^.]+$/,'')===relative))return relative;

@@ -2,7 +2,7 @@ window.LEVEL_PACK = {
   "levelSource": "online",
   "packFontSizePx": 26,
   "levelNameFontSizePx": 20,
-  "wilyIcon": "images/default-assets/b68087562c204803123604f49a5b5c1949482d4c0d0907736741e8c0e64d8a4c.png",
+  "wilyIcon": "images/wilyicons/sprFlashPlate1.png",
   "wilyText": "DR. WILY",
   "wilyTitle": "DR. WILY'S FORTRESS",
   "wilyTextColor": "#ffffff",
