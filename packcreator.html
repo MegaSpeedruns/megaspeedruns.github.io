@@ -736,18 +736,13 @@ async function playLevel(l){
 }
 function hasExt(p){ if(/^(data:|blob:)/i.test(p))return true; try{return /\.[a-z0-9]{2,5}$/i.test(decodeURIComponent(new URL(p,document.baseURI).pathname));}catch{return false;} }
 /* resolve "images/TitleScreen" -> first extension that loads; cb(url or null) */
-function resolveAsset(path, exts, cb){
-  if(!path){ cb(null); return; }
-  if(hasExt(path)){ cb(path); return; }
-  let i=0;
-  (function tryNext(){
-    if(i>=exts.length){ cb(null); return; }
-    const url=path+'.'+exts[i++];
-    const im=new Image();
-    im.onload=()=>cb(url);
-    im.onerror=tryNext;
-    im.src=url;
-  })();
+const resolvedAssetPaths=new Map(),resolvingAssetPaths=new Map();
+function resolveAsset(path,exts,cb){
+ if(!path){cb(null);return;}if(hasExt(path)){cb(path);return;}
+ const key=path+'|'+exts.join(',');if(resolvedAssetPaths.has(key)){cb(resolvedAssetPaths.get(key));return;}
+ if(resolvingAssetPaths.has(key)){resolvingAssetPaths.get(key).push(cb);return;}resolvingAssetPaths.set(key,[cb]);let i=0;
+ const finish=url=>{if(url)resolvedAssetPaths.set(key,url);const callbacks=resolvingAssetPaths.get(key)||[];resolvingAssetPaths.delete(key);callbacks.forEach(fn=>fn(url));};
+ (function next(){if(i>=exts.length){finish(null);return;}const url=path+'.'+exts[i++],audio=exts.some(e=>/^(mp3|ogg|wav)$/i.test(e));const media=audio?new Audio():new Image();if(audio){media.preload='metadata';media.onloadedmetadata=()=>finish(url);}else media.onload=()=>finish(url);media.onerror=next;media.src=url;})();
 }
 function setScreenBg(sel, path){
   const movedBackgrounds={'images/LevelSelect':'images/stage-select/MM2-StageSelect.png','images/LevelSelect.png':'images/stage-select/MM2-StageSelect.png','images/WilyStages':'images/wily-castles/MMM-WilyCastle.png','images/WilyStages.png':'images/wily-castles/MMM-WilyCastle.png'};
@@ -1621,5 +1616,8 @@ $('#opt-music').addEventListener('click',()=>{state.music=!optMusic();playerAudi
 applyConfig();
 </script>
 <script src="cloud-ui.js?v=20261001-main-options-tabs"></script>
+<script>
+if(location.protocol==='https:'&&'serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register(new URL('pack-assets-sw.js',document.baseURI),{updateViaCache:'none'}).catch(error=>console.warn('Asset cache unavailable',error));});}
+</script>
 </body>
 </html>
