@@ -102,7 +102,7 @@ body.editing .edit-banner{display:block;}
 }
 body[data-border-style="MM1"] .portrait-frame{image-rendering:crisp-edges;}
 .rm-tile:hover .portrait-frame,.rm-tile:focus-visible .portrait-frame{background-image:var(--border-on,url('border/MM2ON.PNG'));}
-body.flashing-borders .rm-tile:hover .portrait-frame,body.flashing-borders .rm-tile:focus-visible .portrait-frame{animation:border-hover-flash var(--border-flash-duration,.266666667s) steps(1,end) infinite;}
+body.flashing-borders:not(.gif-border):not(.single-image-border) .rm-tile:hover .portrait-frame,body.flashing-borders:not(.gif-border):not(.single-image-border) .rm-tile:focus-visible .portrait-frame{animation:border-hover-flash var(--border-flash-duration,.266666667s) steps(1,end) infinite;}
 @keyframes border-hover-flash{0%,100%{background-image:var(--border-on,url('border/MM2ON.PNG'));}50%{background-image:var(--border-hover-off,var(--border-off,url('border/MM2OFF.png')));}}
 body.squares-off .portrait-frame{display:none;}
 .rm-tile img{position:absolute;left:var(--mug-left,13.333333%);top:var(--mug-top,13.333333%);width:var(--mug-width,71.111111%);height:var(--mug-height,71.111111%);object-fit:cover;}
@@ -679,6 +679,12 @@ function inspectCustomBorder(){
   };
   image.src=source;
 }
+function isGifBorderAsset(path){
+  if(typeof path!=='string')return false;
+  if(/^data:image\/gif[;,]/i.test(path))return true;
+  try{path=decodeURIComponent(path);}catch{}
+  return /\.gif(?:[?#]|$)/i.test(path);
+}
 const selectedBorder=()=>CONFIG.customBorder?(customBorderGeometry||BORDER_STYLES[normalizeBorder(CONFIG.customBorderLayout||"MM4")]):BORDER_STYLES[optBorder()];
 const nextBorder=value=>{const names=Object.keys(BORDER_STYLES);return names[(names.indexOf(normalizeBorder(value))+1)%names.length];};
 const optNames =()=>state.names ??CONFIG.showLevelNames;
@@ -856,7 +862,7 @@ function applyConfig(){
   const border=selectedBorder(),style=document.body.style;
   style.setProperty('--border-hover-off',!CONFIG.customBorder&&optBorder()==='MM3'?'url("border/MM3OFF-ON.png")':'var(--border-off)');
   document.body.dataset.borderStyle=CONFIG.customBorder?'CUSTOM':optBorder();
-  style.setProperty('--border-off','url('+JSON.stringify(CONFIG.customBorder&&CONFIG.customBorderDefault?CONFIG.customBorderDefault:'border/'+border.off)+')');
+  style.setProperty('--border-off','url('+JSON.stringify(CONFIG.customBorder?(CONFIG.customBorderDefault||CONFIG.customBorderActive||'border/'+border.off):'border/'+border.off)+')');
   style.setProperty('--border-on','url('+JSON.stringify(CONFIG.customBorder?(CONFIG.customBorderActive||CONFIG.customBorderDefault||'border/'+border.on):'border/'+border.on)+')');
   style.setProperty('--border-ratio',border.width+'/'+border.height);
   style.setProperty('--mug-left',100*border.x/border.width+'%');
@@ -866,6 +872,8 @@ function applyConfig(){
   document.body.classList.toggle('names-off',!optNames());
   document.body.classList.toggle('squares-off',!CONFIG.showTileSquares);
   document.body.classList.toggle('flashing-borders',playerDisplay.flashingBorders!==false);
+  document.body.classList.toggle('gif-border',!!CONFIG.customBorder&&[CONFIG.customBorderDefault,CONFIG.customBorderActive].some(isGifBorderAsset));
+  document.body.classList.toggle('single-image-border',!!CONFIG.customBorder&&(!!CONFIG.customBorderDefault!==!!CONFIG.customBorderActive));
   applyBorderFlashRate();
   document.body.classList.toggle('editing',!!editMode);
   if(editMode){$('#game-choice').hidden=true;$('#btn-start').hidden=false;}
