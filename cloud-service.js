@@ -36,10 +36,15 @@ window.PackCloud = (() => {
   async function load(slug){
     const s=await sdk();const record=(await s.db.get(s.db.ref(s.database,'levelPackCreator/packs/'+slug))).val();
     if(!record?.manifestPath)throw Error('Pack not found.');
+    const visibility=record.visibility==='private'?'private':'public';
+    if(visibility==='private'&&!(location.protocol==='file:'&&window.localPackUser?.name)){
+      const viewer=await account();
+      if(!viewer||viewer.isAnonymous||(viewer.uid!==record.owner&&viewer.uid!==ADMIN_UID))throw Error('This pack is private.');
+    }
     const url=await s.storage.getDownloadURL(s.storage.ref(s.bucket,record.manifestPath));
     const response=await fetch(url);if(!response.ok)throw Error('Pack could not be loaded.');
     const pack=await response.json();if(!Array.isArray(pack.levels))throw Error('Invalid pack.');
-    return {...pack,cloudSlug:slug,cloudName:record.name,cloudRevision:record.updatedAt,cloudOwner:record.owner||null};
+    return {...pack,cloudSlug:slug,cloudName:record.name,cloudRevision:record.updatedAt,cloudOwner:record.owner||null,visibility,cloudVisibility:visibility};
   }
   const nameKey=name=>String(name||'').normalize('NFKC').trim().toLowerCase();
   async function olderVersions(){const groups=new Map();for(const p of await list()){const key=nameKey(p.name);if(!key)continue;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(p);}return [...groups.values()].flatMap(group=>group.slice(1));}
@@ -54,6 +59,7 @@ window.PackCloud = (() => {
     if(previous&&nameKey(previous.name)!==nameKey(name))throw Error('That URL is used by a different pack name. Choose another name.');
     if(previous&&previous.owner!==user.uid&&user.uid!==ADMIN_UID)throw Error('Only the creator can edit this pack');
     const owner=previous?.owner||user.uid;
+    const visibility=pack.visibility==='private'?'private':'public';
     const builtins=new Set(await (await fetch(new URL('builtin-assets.json',document.baseURI))).json());
     const builtinHashes=await (await fetch(new URL('builtin-asset-hashes.json',document.baseURI))).json();
     const root='levelPackCreatorOwned/'+user.uid+'/'+slug+'/'+crypto.randomUUID()+'/';
@@ -88,14 +94,14 @@ window.PackCloud = (() => {
       if(level.customMugshot)level.image=await asset(level.image);
       if(level.localLevelData){progress('Uploading level files…');level.localLevelUrl=await upload(new Blob([level.localLevelData],{type:'text/plain'}),'mmlv');delete level.localLevelData;}
     }
-    result.cloudSlug=slug;result.cloudName=name;result.cloudOwner=owner;
+    result.cloudSlug=slug;result.cloudName=name;result.cloudOwner=owner;result.visibility=visibility;result.cloudVisibility=visibility;
     const manifestPath=root+'packs/'+crypto.randomUUID()+'.json';
     progress('Saving pack…');await s.storage.uploadBytes(s.storage.ref(s.bucket,manifestPath),new Blob([JSON.stringify(result)],{type:'application/json'}));
     const updatedAt=Date.now();
     const recordRef=s.db.ref(s.database,'levelPackCreator/packs/'+slug);
     const replaced=(await s.db.get(recordRef)).val();
     // Publish only after the new manifest is fully uploaded. Last completed save wins.
-    await s.db.set(recordRef,{name,manifestPath,updatedAt,owner});
+    await s.db.set(recordRef,{name,manifestPath,updatedAt,owner,visibility});
     if(!previous)rememberCreated(slug);
     if(replaced){try{await remove(slug,replaced);}catch{progress('Pack saved; old files can be cleaned up later.');}}
     return {...result,cloudRevision:updatedAt};
